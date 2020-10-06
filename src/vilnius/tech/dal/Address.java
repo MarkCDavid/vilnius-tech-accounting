@@ -38,6 +38,7 @@ public class Address extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatReference(city, "City") +
                 formatValue(street, "Street") +
                 formatValue(postal, "Postal Code");
@@ -45,6 +46,7 @@ public class Address extends BaseOid implements Serializable {
 
     @Override
     public String toShortString() {
-        return  String.format("%s, %s, %s", city, street, postal);
+        if(isDeleted()) return "<deleted>";
+        return String.format("%s, %s, %s", city, street, postal);
     }
 }

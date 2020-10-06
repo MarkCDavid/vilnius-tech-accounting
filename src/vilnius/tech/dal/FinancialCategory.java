@@ -57,6 +57,15 @@ public class FinancialCategory extends BaseOid implements Serializable {
         this.incomes = incomes;
     }
 
+    public FinancialCategory getParent() {
+        return parent;
+    }
+
+    public void setParent(FinancialCategory parent) {
+        this.parent = parent;
+    }
+
+    private FinancialCategory parent;
     private String name;
     private User owner;
     private List<FinancialCategory> subcategories;

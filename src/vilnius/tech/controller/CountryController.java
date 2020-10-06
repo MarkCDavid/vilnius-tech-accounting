@@ -1,8 +1,6 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
-import vilnius.tech.dal.Session;
+import vilnius.tech.dal.*;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
@@ -13,11 +11,11 @@ import java.util.function.Function;
 
 public class CountryController extends CRUDManager<Country> implements CRUD<Country> {
 
-    public CountryController(Session session, int indentation) {
+    public CountryController(Session session) {
         super(session);
-        this.indentation = indentation;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
         referenceMap.put("cities", new Reference(City.class, (Function<City, Integer>) city -> city.getCountry().getOid()));
@@ -25,8 +23,8 @@ public class CountryController extends CRUDManager<Country> implements CRUD<Coun
 
     @Override
     public Country create(Scanner scanner) {
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Country name");
-        String code = UserInput.getString(scanner, "\t".repeat(indentation) + "Country code");
+        String name = UserInput.getString(scanner, "Country name");
+        String code = UserInput.getString(scanner, "Country code");
 
         Country country = new Country(getSession());
 
@@ -36,34 +34,46 @@ public class CountryController extends CRUDManager<Country> implements CRUD<Coun
     }
 
     @Override
-    public Country read(Scanner scanner, boolean create) {
-        return create ? Selector.readViaOidOrCreate(this, scanner) : Selector.readViaOid(this, scanner);
-    }
-
-    @Override
-    public Country read(Scanner scanner) {
-        return read(scanner, false);
-    }
-
-    @Override
     public List<Country> readAll() {
         return getSession().get(Country.class);
     }
 
     @Override
     public Country update(Scanner scanner) {
-        return null;
+        Country country = read(scanner);
+
+        if(UserInput.getUserConfirmation(scanner, "Update Country name")) {
+            country.setName(UserInput.getString(scanner, "Country name"));
+        }
+
+        if(UserInput.getUserConfirmation(scanner, "Update Country code")) {
+            country.setCode(UserInput.getString(scanner, "Country code"));
+        }
+
+        return country;
     }
 
     @Override
     public void delete(Scanner scanner) {
+        Country country = read(scanner);
+        if(country == null || country.isDeleted())
+            return;
 
+        List<City> cRefs = getSession().query(City.class, c -> c.getCountry().getOid() == country.getOid());
+        if(!cRefs.isEmpty() && !UserInput.getDeleteConfirmation(scanner, getManagedObjectName(), "City", cRefs.size())) {
+            return;
+        }
+
+        for(City c: cRefs) {
+            c.setCountry(null);
+        }
+
+        country.setDeleted(true);
     }
 
-    private final int indentation;
 
     @Override
     protected String getManagedObjectName() {
-        return "COUNTNRTNRN";
+        return "Country";
     }
 }

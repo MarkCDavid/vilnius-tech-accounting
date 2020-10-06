@@ -68,7 +68,7 @@ public class CompanyController extends Manager {
             System.out.println(source);
         }
         else if(Objects.equals(userInput, USERS)) {
-            new UserController(getSession(),indentation + 1).manage(scanner);
+            new UserController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, CATEGORIES)) {
 
@@ -80,10 +80,10 @@ public class CompanyController extends Manager {
 
         }
         else if(Objects.equals(userInput, CITIES)) {
-            new CityController(getSession(),indentation + 1).manage(scanner);
+            new CityController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, COUNTRIES)) {
-            new CountryController(getSession(), indentation + 1).manage(scanner);
+            new CountryController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, EXPENSE_TYPES)) {
 

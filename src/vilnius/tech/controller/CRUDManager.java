@@ -1,11 +1,15 @@
 package vilnius.tech.controller;
 
+import vilnius.tech.dal.Address;
 import vilnius.tech.dal.BaseOid;
 import vilnius.tech.dal.Session;
 import vilnius.tech.utils.Display;
+import vilnius.tech.utils.Selector;
 
 import java.util.*;
+import java.util.function.Predicate;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class CRUDManager<T extends BaseOid> extends Manager implements CRUD<T> {
 
     public CRUDManager(Session session) {
@@ -14,10 +18,20 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
         initializeReferenceMap(references);
     }
 
-    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
-
-    }
+    protected void initializeReferenceMap(Map<String, Reference> referenceMap) { }
     protected abstract String getManagedObjectName();
+
+    @Override
+    public T read(Scanner scanner, boolean create) {
+        return create ?
+                Selector.readViaOidOrCreate(this, scanner) :
+                Selector.readViaOid(this, scanner);
+    }
+
+    @Override
+    public T read(Scanner scanner) {
+        return read(scanner, false);
+    }
 
     @Override
     protected boolean isRoot() {
@@ -48,39 +62,55 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
             create(scanner);
         }
         else if(Objects.equals(userInput, READ)) {
-            T value = read(scanner);
-            if(value == null) {
-                System.out.println("No value selected!");
-            }
-            else {
-                System.out.println(value);
-            }
-
+            handleRead(scanner);
         }
         else if(Objects.equals(userInput, READ_ALL)) {
-            if(readAll().isEmpty()) {
-                System.out.printf("No %s available.%n", getManagedObjectName());
-            }
-            else {
-                Display.showWithOid(this);
-            }
+            handleReadAll();
         }
         else if(Objects.equals(userInput, UPDATE)) {
-            System.out.println("NOT IMPLEMENTED");
+            update(scanner);
         }
         else if(Objects.equals(userInput, DELETE)) {
-            System.out.println("NOT IMPLEMENTED");
+            delete(scanner);
         }
         else if(references.containsKey(userInput)){
-            Reference reference = references.get(userInput);
-            T value = read(scanner);
-            if(value == null)
-                return;
-            List<BaseOid> result = getSession().query(reference.getType(), baseOid -> value.getOid() == reference.getOid(baseOid), false);
-            for(BaseOid o: result) {
-                System.out.printf("%s) %s%n", o.getOid(), o.toShortString());
-            }
+            handleReferences(scanner, userInput);
         }
+    }
+
+    private void handleRead(Scanner scanner) {
+        T value = read(scanner);
+        if(value == null) {
+            System.out.println("No value selected!");
+        }
+        else {
+            System.out.println(value);
+        }
+    }
+
+    private void handleReadAll() {
+        if(readAll().isEmpty()) {
+            System.out.printf("No %s available.%n", getManagedObjectName());
+        }
+        else {
+            Display.showWithOid(this);
+        }
+    }
+
+    private void handleReferences(Scanner scanner, String userInput) {
+        T value = read(scanner, false);
+        if(value == null)
+            return;
+
+        Reference reference = references.get(userInput);
+        List<BaseOid> result = getSession().query(reference.getType(), queryReference(value, reference));
+        for(BaseOid o: result) {
+            System.out.printf("%s) %s%n", o.getOid(), o.toShortString());
+        }
+    }
+
+    private Predicate<T> queryReference(T value, Reference reference) {
+        return base -> value.getOid() == reference.getOid(base);
     }
 
     private final Map<String, Reference> references;

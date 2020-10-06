@@ -29,12 +29,14 @@ public class City extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatValue(name, "City Name") +
                 formatReference(country, "Country");
     }
 
     @Override
     public String toShortString() {
-        return String.format("%s - %s", name, country.toShortString());
+        if(isDeleted()) return "<deleted>";
+        return String.format("%s - %s", name, country != null ? country.toShortString() : null);
     }
 }

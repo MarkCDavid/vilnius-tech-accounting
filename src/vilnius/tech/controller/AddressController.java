@@ -1,32 +1,28 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Address;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Company;
-import vilnius.tech.dal.Session;
+import vilnius.tech.dal.*;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class AddressController implements CRUD<Address> {
+public class AddressController extends CRUDManager<Address> implements CRUD<Address> {
 
-    public AddressController(Session session, int indentation) {
-        this.session = session;
-        this.indentation = indentation;
+    public AddressController(Session session) {
+        super(session);
     }
 
     @Override
     public Address create(Scanner scanner) {
 
-        System.out.println("\t".repeat(indentation) + "City:");
-        City city = new CityController(session, indentation + 1).read(scanner, true);
+        System.out.println("City:");
+        City city = new CityController(getSession()).read(scanner, true);
 
-        String street = UserInput.getString(scanner, "\t".repeat(indentation) + "Street");
-        String postal = UserInput.getString(scanner, "\t".repeat(indentation) + "Postal");
+        String street = UserInput.getString(scanner, "Street");
+        String postal = UserInput.getString(scanner, "Postal");
 
-        Address address = new Address(session);
+        Address address = new Address(getSession());
         address.setCity(city);
         address.setStreet(street);
         address.setPostal(postal);
@@ -34,30 +30,58 @@ public class AddressController implements CRUD<Address> {
     }
 
     @Override
-    public Address read(Scanner scanner, boolean create) {
-        return create ? Selector.readViaOidOrCreate(this, scanner) : Selector.readViaOid(this, scanner);
-    }
-
-    @Override
-    public Address read(Scanner scanner) {
-        return read(scanner, false);
-    }
-
-    @Override
     public List<Address> readAll() {
-        return session.get(Address.class);
+        return getSession().get(Address.class);
     }
 
     @Override
     public Address update(Scanner scanner) {
-        return null;
+        Address address = read(scanner);
+
+        if(UserInput.getUserConfirmation(scanner, "Update City")) {
+            address.setCity(new CityController(getSession()).read(scanner, true));
+        }
+
+        if(UserInput.getUserConfirmation(scanner, "Update Street")) {
+            address.setStreet(UserInput.getString(scanner, "Street"));
+        }
+
+        if(UserInput.getUserConfirmation(scanner, "Update Postal")) {
+            address.setPostal(UserInput.getString(scanner, "Postal"));
+        }
+
+        return address;
     }
 
     @Override
     public void delete(Scanner scanner) {
+        Address address = read(scanner);
+        if(address == null || address.isDeleted())
+            return;
 
+        List<ContactInformation> ciRefs = getSession().query(ContactInformation.class, ci -> ci.getAddress().getOid() == address.getOid());
+        if(!ciRefs.isEmpty() && !UserInput.getDeleteConfirmation(scanner, getManagedObjectName(), "ContactInformation", ciRefs.size())) {
+            return;
+        }
+
+        List<JuridicalUser> juRefs = getSession().query(JuridicalUser.class, ju -> ju.getAddress().getOid() == address.getOid());
+        if(!juRefs.isEmpty() && !UserInput.getDeleteConfirmation(scanner, getManagedObjectName(), "Juridical User", ciRefs.size())) {
+            return;
+        }
+
+        for(ContactInformation ci: ciRefs) {
+            ci.setAddress(null);
+        }
+
+        for(JuridicalUser ju: juRefs) {
+            ju.setAddress(null);
+        }
+
+        address.setDeleted(true);
     }
 
-    private final Session session;
-    private final int indentation;
+    @Override
+    protected String getManagedObjectName() {
+        return "Address";
+    }
 }

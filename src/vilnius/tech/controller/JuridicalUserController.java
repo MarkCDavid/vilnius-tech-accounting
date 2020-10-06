@@ -9,23 +9,22 @@ import java.util.Scanner;
 
 public class JuridicalUserController extends CRUDManager<JuridicalUser> {
 
-    public JuridicalUserController(Session session, int indentation) {
+    public JuridicalUserController(Session session) {
         super(session);
-        this.indentation = indentation;
     }
 
 
     @Override
     public JuridicalUser create(Scanner scanner) {
-        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
+        String username = UserInput.getString(scanner, "Username");
+        String password = UserInput.getString(scanner, "Password");
+        String name = UserInput.getString(scanner, "Name");
 
-        System.out.println("\t".repeat(indentation) + "Address:");
-        Address address = new AddressController(getSession(),indentation + 1).read(scanner, true);
+        System.out.println("Address:");
+        Address address = new AddressController(getSession()).read(scanner, true);
 
-        System.out.println("\t".repeat(indentation) + "Contact:");
-        PhysicalUser contactUser = new PhysicalUserController(getSession(),indentation + 1).read(scanner, true);
+        System.out.println("Contact:");
+        PhysicalUser contactUser = new PhysicalUserController(getSession()).read(scanner, true);
 
         JuridicalUser juridicalUser = new JuridicalUser(getSession());
         juridicalUser.setUsername(username);
@@ -62,8 +61,6 @@ public class JuridicalUserController extends CRUDManager<JuridicalUser> {
     public void delete(Scanner scanner) {
 
     }
-
-    private final int indentation;
 
     private static final String OBJECT_NAME = "Juridical User";
     @Override

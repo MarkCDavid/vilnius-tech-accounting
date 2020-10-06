@@ -38,6 +38,7 @@ public class ContactInformation extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatReference(address, "Address") +
                 formatValue(email, "Email") +
                 formatValue(phoneNumber, "Phone Number");
@@ -45,6 +46,7 @@ public class ContactInformation extends BaseOid implements Serializable {
 
     @Override
     public String toShortString() {
+        if(isDeleted()) return "<deleted>";
         return String.format("%s, %s, %s", address.toShortString(), email, phoneNumber);
     }
 }

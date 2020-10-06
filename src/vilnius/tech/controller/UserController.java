@@ -9,9 +9,8 @@ import java.util.Scanner;
 
 public class UserController extends Manager {
 
-    public UserController(Session session, int indentation) {
+    public UserController(Session session) {
         super(session);
-        this.indentation = indentation;
     }
 
     @Override
@@ -28,12 +27,10 @@ public class UserController extends Manager {
     @Override
     protected void matchOptions(Scanner scanner, String userInput) {
         if(Objects.equals(userInput, PhysicalUser.CODE)) {
-            new PhysicalUserController(getSession(), indentation).manage(scanner);
+            new PhysicalUserController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, JuridicalUser.CODE)) {
-            new JuridicalUserController(getSession(), indentation).manage(scanner);
+            new JuridicalUserController(getSession()).manage(scanner);
         }
     }
-
-    private final int indentation;
 }

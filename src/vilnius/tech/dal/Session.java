@@ -20,6 +20,10 @@ public class Session implements Serializable {
         getCore(type).add(value);
     }
 
+    public <T extends BaseOid> List<T> query(Class<T> type, Predicate<T> predicate) {
+        return query(type, predicate, false);
+    }
+
     public <T extends BaseOid> List<T> query(Class<T> type, Predicate<T> predicate, boolean queryDeleted) {
         return get(type, queryDeleted).stream().filter(predicate).collect(Collectors.toList());
     }

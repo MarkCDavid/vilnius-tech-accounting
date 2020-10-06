@@ -29,12 +29,14 @@ public class Company extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatValue(name, "Name") +
                formatReference(contactInformation, "Contact Information");
     }
 
     @Override
     public String toShortString() {
+        if(isDeleted()) return "<deleted>";
         return String.format("Company Name: %s%n", name);
     }
 }

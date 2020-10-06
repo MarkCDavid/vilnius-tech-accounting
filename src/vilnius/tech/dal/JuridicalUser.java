@@ -40,6 +40,7 @@ public final class JuridicalUser extends User implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatValue(getUsername(), "Username") +
                 formatValue(name, "Name") +
                 formatReference(address, "Address") +

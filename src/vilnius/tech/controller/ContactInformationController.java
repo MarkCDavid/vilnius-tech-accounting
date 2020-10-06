@@ -9,19 +9,18 @@ import java.util.Scanner;
 
 public class ContactInformationController implements CRUD<ContactInformation> {
 
-    public ContactInformationController(Session session, int indentation) {
+    public ContactInformationController(Session session) {
         this.session = session;
-        this.indentation = indentation;
     }
 
     @Override
     public ContactInformation create(Scanner scanner) {
 
-        System.out.println("\t".repeat(indentation) + "Address:");
-        Address address = new AddressController(session,indentation + 1).read(scanner, true);
+        System.out.println("Address:");
+        Address address = new AddressController(session).read(scanner, true);
 
-        String email = UserInput.getString(scanner, "\t".repeat(indentation) + "Email");
-        String phoneNumber = UserInput.getString(scanner, "\t".repeat(indentation) + "Phone Number");
+        String email = UserInput.getString(scanner, "Email");
+        String phoneNumber = UserInput.getString(scanner, "Phone Number");
 
         ContactInformation contactInformation = new ContactInformation(session);
 
@@ -57,6 +56,4 @@ public class ContactInformationController implements CRUD<ContactInformation> {
     }
 
     private final Session session;
-
-    private final int indentation;
 }

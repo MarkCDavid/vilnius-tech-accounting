@@ -40,6 +40,7 @@ public final class PhysicalUser extends User implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatValue(getUsername(), "Username") +
                 formatValue(name, "Name") +
                 formatValue(surname, "Surname") +

@@ -9,20 +9,19 @@ import java.util.Scanner;
 
 public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
-    public PhysicalUserController(Session session, int indentation) {
+    public PhysicalUserController(Session session) {
         super(session);
-        this.indentation = indentation;
     }
 
     @Override
     public PhysicalUser create(Scanner scanner) {
-        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
-        String surname = UserInput.getString(scanner, "\t".repeat(indentation) + "Surname");
+        String username = UserInput.getString(scanner, "Username");
+        String password = UserInput.getString(scanner, "Password");
+        String name = UserInput.getString(scanner, "Name");
+        String surname = UserInput.getString(scanner, "Surname");
 
-        System.out.println("\t".repeat(indentation) + "Contact Information:");
-        ContactInformation contactInformation = new ContactInformationController(getSession(),indentation + 1).read(scanner, true);
+        System.out.println("Contact Information:");
+        ContactInformation contactInformation = new ContactInformationController(getSession()).read(scanner, true);
         PhysicalUser physicalUser = new PhysicalUser(getSession());
 
         physicalUser.setUsername(username);
@@ -59,8 +58,6 @@ public class PhysicalUserController extends CRUDManager<PhysicalUser> {
     public void delete(Scanner scanner) {
 
     }
-
-    private final int indentation;
 
     private static final String OBJECT_NAME = "Physical User";
 

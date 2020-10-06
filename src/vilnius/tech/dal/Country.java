@@ -26,11 +26,13 @@ public class Country extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
+        if(isDeleted()) return "<deleted>";
         return formatValue(name, "Country Name") + formatValue(code, "Code");
     }
 
     @Override
     public String toShortString() {
+        if(isDeleted()) return "<deleted>";
         return String.format("%s (%s)", name, code);
     }
 

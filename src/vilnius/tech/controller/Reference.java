@@ -3,24 +3,23 @@ package vilnius.tech.controller;
 import vilnius.tech.dal.BaseOid;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class Reference<T extends BaseOid> {
 
-    public Reference(Class<T> type, Function<T, Integer> matchFetcher) {
+    public Reference(Class<T> type, Function<T, Integer> oidRetriever) {
         this.type = type;
-        this.matchFetcher = matchFetcher;
+        this.oidRetriever = oidRetriever;
     }
 
     Class<T> type;
-    Function<T, Integer> matchFetcher;
+    Function<T, Integer> oidRetriever;
 
     public Class<T> getType() {
         return type;
     }
 
     public Integer getOid(T value) {
-        return matchFetcher.apply(value);
+        return oidRetriever.apply(value);
     }
 
 
