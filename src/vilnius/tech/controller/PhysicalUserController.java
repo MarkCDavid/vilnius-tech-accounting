@@ -1,16 +1,25 @@
 package vilnius.tech.controller;
 
 import vilnius.tech.dal.*;
-import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
     public PhysicalUserController(Session session) {
         super(session);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
+        referenceMap.put("financial categories - owner", new Reference(FinancialCategory.class, (Function<FinancialCategory, Integer>) fc -> fc.getOwner().getOid()));
+        referenceMap.put("expenses", new Reference(Expense.class, (Function<Expense, Integer>) e -> e.getOwner().getOid()));
+        referenceMap.put("incomes", new Reference(Income.class, (Function<Income, Integer>) i -> i.getOwner().getOid()));
     }
 
     @Override
