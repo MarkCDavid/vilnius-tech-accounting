@@ -47,6 +47,6 @@ public class ContactInformation extends BaseOid implements Serializable {
     @Override
     public String toShortString() {
         if(isDeleted()) return "<deleted>";
-        return String.format("%s, %s, %s", address.toShortString(), email, phoneNumber);
+        return String.format("%s, %s, %s", address != null ? address.toShortString() : null, email, phoneNumber);
     }
 }

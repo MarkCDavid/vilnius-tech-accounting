@@ -73,10 +73,10 @@ public class MainController extends Manager {
 
         }
         else if(Objects.equals(userInput, CONTACTS)) {
-
+            new ContactInformationController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, ADDRESSES)) {
-
+            new AddressController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, CITIES)) {
             new CityController(getSession()).manage(scanner);
@@ -85,10 +85,10 @@ public class MainController extends Manager {
             new CountryController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, EXPENSE_TYPES)) {
-
+            new ExpenseTypeController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, INCOME_TYPES)) {
-
+            new IncomeTypeController(getSession()).manage(scanner);
         }
         else if(Objects.equals(userInput, SAVE)) {
             Serializer.saveSession(scanner, getSession());

@@ -26,7 +26,7 @@ public abstract class Manager {
         }
     }
 
-    private String getQuitDescription() {
+    protected String getQuitDescription() {
         return isRoot() ? "quit application" : "go back";
     }
 

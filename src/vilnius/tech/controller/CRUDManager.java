@@ -44,13 +44,27 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
     private static final String UPDATE = "update";
     private static final String DELETE = "delete";
 
+    protected boolean createEnabled() { return true; }
+    protected boolean readEnabled() { return true; }
+    protected boolean updateEnabled() { return true; }
+    protected boolean deleteEnabled() { return true; }
+
     @Override
     protected void showOptions(Scanner scanner) {
-        System.out.printf("%s - create '%s'%n", CREATE, getManagedObjectName());
-        System.out.printf("%s - display '%s'%n", READ, getManagedObjectName());
-        System.out.printf("%s - display all '%s'%n", READ_ALL, getManagedObjectName());
-        System.out.printf("%s - update '%s'%n", UPDATE, getManagedObjectName());
-        System.out.printf("%s - delete '%s'%n", DELETE, getManagedObjectName());
+        if(createEnabled())
+            System.out.printf("%s - create '%s'%n", CREATE, getManagedObjectName());
+
+        if(readEnabled()) {
+            System.out.printf("%s - display '%s'%n", READ, getManagedObjectName());
+
+            System.out.printf("%s - display all '%s'%n", READ_ALL, getManagedObjectName());
+        }
+
+        if(updateEnabled())
+            System.out.printf("%s - update '%s'%n", UPDATE, getManagedObjectName());
+        if(deleteEnabled())
+            System.out.printf("%s - delete '%s'%n", DELETE, getManagedObjectName());
+
         for(String key: references.keySet()) {
             System.out.printf("%s - show references%n", key);
         }
@@ -58,19 +72,19 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
 
     @Override
     protected void matchOptions(Scanner scanner, String userInput) {
-        if(Objects.equals(userInput, CREATE)) {
+        if(createEnabled() && Objects.equals(userInput, CREATE)) {
             create(scanner);
         }
-        else if(Objects.equals(userInput, READ)) {
+        else if(readEnabled() && Objects.equals(userInput, READ)) {
             handleRead(scanner);
         }
-        else if(Objects.equals(userInput, READ_ALL)) {
+        else if(readEnabled() && Objects.equals(userInput, READ_ALL)) {
             handleReadAll();
         }
-        else if(Objects.equals(userInput, UPDATE)) {
+        else if(updateEnabled() && Objects.equals(userInput, UPDATE)) {
             update(scanner);
         }
-        else if(Objects.equals(userInput, DELETE)) {
+        else if(deleteEnabled() && Objects.equals(userInput, DELETE)) {
             delete(scanner);
         }
         else if(references.containsKey(userInput)){

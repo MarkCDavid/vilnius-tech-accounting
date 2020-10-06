@@ -74,7 +74,18 @@ public class FinancialCategory extends BaseOid implements Serializable {
     private List<Income> incomes;
 
     @Override
+    public String toString() {
+        return parent == null? "" : formatReference(parent.toShortString(), "Parent") +
+                formatReference(name, "Name") +
+                formatReference(owner, "Owner") +
+                formatValue(subcategories.size(), "Subcategories") +
+                formatValue(responsibleUsers.size(), "Responsible") +
+                formatValue(expenses.size(), "Expenses") +
+                formatValue(incomes.size(), "Income");
+    }
+
+    @Override
     public String toShortString() {
-        return null;
+        return String.format("%s - %s", name, owner != null ? owner.toShortString() : null);
     }
 }

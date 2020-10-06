@@ -1,16 +1,23 @@
 package vilnius.tech.controller;
 
 import vilnius.tech.dal.*;
-import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class ContactInformationController extends CRUDManager<ContactInformation> implements CRUD<ContactInformation> {
 
     public ContactInformationController(Session session) {
         super(session);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
+        referenceMap.put("physical users", new Reference(PhysicalUser.class, (Function<PhysicalUser, Integer>) pu -> pu.getContactInfo().getOid()));
     }
 
     @Override

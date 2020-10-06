@@ -3,6 +3,7 @@ package vilnius.tech.utils;
 import vilnius.tech.controller.CRUD;
 import vilnius.tech.dal.BaseOid;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
@@ -30,7 +31,7 @@ public class Selector {
             return crud.create(scanner);
         }
 
-        Optional<Integer> optionalOid = UserInput.toOid(userChoice);
+        Optional<Integer> optionalOid = UserInput.toInteger(userChoice);
 
         if(optionalOid.isEmpty())
             return null;

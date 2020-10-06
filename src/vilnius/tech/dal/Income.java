@@ -1,7 +1,9 @@
 package vilnius.tech.dal;
 
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Income extends BaseOid implements Serializable {
 
@@ -41,13 +43,36 @@ public class Income extends BaseOid implements Serializable {
         this.dateTime = dateTime;
     }
 
+    public FinancialCategory getParent() {
+        return parent;
+    }
+
+    public void setParent(FinancialCategory parent) {
+        this.parent = parent;
+    }
+
+    private FinancialCategory parent;
     private IncomeType type;
     private User owner;
     private long sum;
     private ZonedDateTime dateTime;
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault());
+
+    @Override
+    public String toString() {
+        return formatReference(type, "Type") +
+                formatReference(owner, "Owner") +
+                formatValue(sum, "Sum") +
+                formatValue(DATE_FORMAT.format(dateTime), "DateTime");
+    }
+
     @Override
     public String toShortString() {
-        return null;
+        return String.format("%s, %s. %s income at %s",
+                type != null ? type.toShortString() : null,
+                owner != null ? owner.toShortString() : null,
+                sum,
+                DATE_FORMAT.format(dateTime));
     }
 }

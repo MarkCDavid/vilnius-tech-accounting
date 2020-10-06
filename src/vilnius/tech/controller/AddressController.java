@@ -1,16 +1,24 @@
 package vilnius.tech.controller;
 
 import vilnius.tech.dal.*;
-import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class AddressController extends CRUDManager<Address> implements CRUD<Address> {
 
     public AddressController(Session session) {
         super(session);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
+        referenceMap.put("contact information", new Reference(ContactInformation.class, (Function<ContactInformation, Integer>) ci -> ci.getAddress().getOid()));
+        referenceMap.put("juridical users", new Reference(JuridicalUser.class, (Function<JuridicalUser, Integer>) ju -> ju.getAddress().getOid()));
     }
 
     @Override

@@ -47,6 +47,6 @@ public class Address extends BaseOid implements Serializable {
     @Override
     public String toShortString() {
         if(isDeleted()) return "<deleted>";
-        return String.format("%s, %s, %s", city, street, postal);
+        return String.format("%s, %s, %s", city != null ? city.toShortString() : null, street, postal);
     }
 }

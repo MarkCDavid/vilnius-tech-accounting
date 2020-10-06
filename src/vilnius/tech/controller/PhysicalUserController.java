@@ -35,16 +35,6 @@ public class PhysicalUserController extends CRUDManager<PhysicalUser> {
     }
 
     @Override
-    public PhysicalUser read(Scanner scanner, boolean create) {
-        return create ? Selector.readViaOidOrCreate(this, scanner) : Selector.readViaOid(this, scanner);
-    }
-
-    @Override
-    public PhysicalUser read(Scanner scanner) {
-        return read(scanner, false);
-    }
-
-    @Override
     public List<PhysicalUser> readAll() {
         return getSession().get(PhysicalUser.class);
     }

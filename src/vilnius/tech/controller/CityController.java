@@ -1,18 +1,23 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Address;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
-import vilnius.tech.dal.Session;
+import vilnius.tech.dal.*;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class CityController extends CRUDManager<City> implements CRUD<City> {
 
     public CityController(Session session) {
         super(session);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
+        referenceMap.put("addresses", new Reference(Address.class, (Function<Address, Integer>) address -> address.getCity().getOid()));
     }
 
     @Override
