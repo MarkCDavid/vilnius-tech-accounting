@@ -5,6 +5,10 @@ import java.util.List;
 
 public class FinancialCategory extends BaseOid implements Serializable {
 
+    public FinancialCategory(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

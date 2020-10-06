@@ -6,6 +6,10 @@ import java.util.List;
 
 public class Company extends BaseOid implements Serializable {
 
+    public Company(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

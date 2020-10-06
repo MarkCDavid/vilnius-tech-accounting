@@ -19,21 +19,22 @@ public class ContactInformationController implements CRUD<ContactInformation> {
 
     @Override
     public ContactInformation create(Scanner scanner) {
-
-        System.out.println("\t".repeat(indentation) + "Address:");
-        Address address = new AddressController(source,indentation + 1).read(scanner, true);
-
-        String email = UserInput.getString(scanner, "\t".repeat(indentation) + "Email");
-        String phoneNumber = UserInput.getString(scanner, "\t".repeat(indentation) + "Phone Number");
-
-        ContactInformation contactInformation = new ContactInformation();
-        contactInformation.setOid(source.getContactsInformation().size());
-        source.getContactsInformation().add(contactInformation);
-
-        contactInformation.setAddress(address);
-        contactInformation.setEmail(email);
-        contactInformation.setPhoneNumber(phoneNumber);
-        return contactInformation;
+//
+//        System.out.println("\t".repeat(indentation) + "Address:");
+//        Address address = new AddressController(source,indentation + 1).read(scanner, true);
+//
+//        String email = UserInput.getString(scanner, "\t".repeat(indentation) + "Email");
+//        String phoneNumber = UserInput.getString(scanner, "\t".repeat(indentation) + "Phone Number");
+//
+//        ContactInformation contactInformation = new ContactInformation();
+//        contactInformation.setOid(source.getContactsInformation().size());
+//        source.getContactsInformation().add(contactInformation);
+//
+//        contactInformation.setAddress(address);
+//        contactInformation.setEmail(email);
+//        contactInformation.setPhoneNumber(phoneNumber);
+//        return contactInformation;
+        return null;
     }
 
     @Override

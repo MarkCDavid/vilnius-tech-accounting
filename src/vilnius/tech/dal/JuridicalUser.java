@@ -6,6 +6,10 @@ public final class JuridicalUser extends User implements Serializable {
 
     public static final String CODE = "juridical";
 
+    public JuridicalUser(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

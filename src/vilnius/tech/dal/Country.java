@@ -1,8 +1,15 @@
 package vilnius.tech.dal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Country extends BaseOid implements Serializable {
+
+    public Country(Session session) {
+        super(session);
+        cities = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
@@ -20,9 +27,6 @@ public class Country extends BaseOid implements Serializable {
         this.code = code;
     }
 
-    private String name;
-    private String code;
-
     @Override
     public String toString() {
         return String.format("%s (%s)", name, code);
@@ -30,6 +34,19 @@ public class Country extends BaseOid implements Serializable {
 
     @Override
     public String toShortString() {
-        return null;
+        return toString();
     }
+
+
+
+
+
+    private String name;
+    private String code;
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    private final List<City> cities;
 }

@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public abstract class User extends BaseOid implements Serializable {
 
+    public User(Session session) {
+        super(session);
+    }
+
     public String getUsername() {
         return username;
     }

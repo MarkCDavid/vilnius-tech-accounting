@@ -16,26 +16,27 @@ public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
     @Override
     public PhysicalUser create(Scanner scanner) {
-        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
-        String surname = UserInput.getString(scanner, "\t".repeat(indentation) + "Surname");
-
-        System.out.println("\t".repeat(indentation) + "Contact Information:");
-        ContactInformation contactInformation = new ContactInformationController(source,indentation + 1).read(scanner, true);
-
-        PhysicalUser physicalUser = new PhysicalUser();
-        physicalUser.setOid(source.getPhysicalUsers().size());
-        source.getPhysicalUsers().add(physicalUser);
-
-        physicalUser.setUsername(username);
-        physicalUser.setPassword(password);
-        physicalUser.setName(name);
-        physicalUser.setSurname(surname);
-        physicalUser.setContactInformation(contactInformation);
-
-
-        return physicalUser;
+//        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
+//        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
+//        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
+//        String surname = UserInput.getString(scanner, "\t".repeat(indentation) + "Surname");
+//
+//        System.out.println("\t".repeat(indentation) + "Contact Information:");
+//        ContactInformation contactInformation = new ContactInformationController(source,indentation + 1).read(scanner, true);
+//
+//        PhysicalUser physicalUser = new PhysicalUser();
+//        physicalUser.setOid(source.getPhysicalUsers().size());
+//        source.getPhysicalUsers().add(physicalUser);
+//
+//        physicalUser.setUsername(username);
+//        physicalUser.setPassword(password);
+//        physicalUser.setName(name);
+//        physicalUser.setSurname(surname);
+//        physicalUser.setContactInformation(contactInformation);
+//
+//
+//        return physicalUser;
+        return null;
     }
 
     @Override

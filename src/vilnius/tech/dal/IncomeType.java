@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class IncomeType extends BaseOid implements Serializable {
 
+    public IncomeType(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

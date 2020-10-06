@@ -1,20 +1,20 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Company;
-import vilnius.tech.dal.ContactInformation;
+import vilnius.tech.dal.City;
 import vilnius.tech.dal.Country;
+import vilnius.tech.dal.Session;
+import vilnius.tech.utils.Display;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Scanner;
-import java.util.function.Predicate;
 
-public class CountryController implements CRUD<Country> {
+public class CountryController extends CRUDManager<Country> implements CRUD<Country> {
 
-    public CountryController(Company source, int indentation) {
-        this.source = source;
+    public CountryController(Session session, int indentation) {
+        this.session = session;
         this.indentation = indentation;
     }
 
@@ -23,9 +23,7 @@ public class CountryController implements CRUD<Country> {
         String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Country name");
         String code = UserInput.getString(scanner, "\t".repeat(indentation) + "Country code");
 
-        Country country = new Country();
-        country.setOid(source.getCountries().size());
-        source.getCountries().add(country);
+        Country country = new Country(session);
 
         country.setName(name);
         country.setCode(code);
@@ -44,7 +42,7 @@ public class CountryController implements CRUD<Country> {
 
     @Override
     public List<Country> readAll() {
-        return source.getCountries();
+        return session.get(Country.class);
     }
 
     @Override
@@ -57,6 +55,28 @@ public class CountryController implements CRUD<Country> {
 
     }
 
-    private final Company source;
+    @Override
+    protected void showOptions(Scanner scanner) {
+        super.showOptions(scanner);
+        System.out.println("cities - show cities of selected country");
+    }
+
+    @Override
+    protected void matchOptions(Scanner scanner, String userInput) {
+        super.matchOptions(scanner, userInput);
+        if(Objects.equals(userInput, "cities")) {
+            Country country = read(scanner);
+            for(City city: session.query(City.class, city -> city.getCountry().getOid() == country.getOid(), false)) {
+                System.out.printf("%s) %s%n", city.getOid(), city);
+            }
+        }
+    }
+
+    private final Session session;
     private final int indentation;
+
+    @Override
+    protected String getManagedObjectName() {
+        return "CONTRY";
+    }
 }

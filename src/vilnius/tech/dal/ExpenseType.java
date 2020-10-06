@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class ExpenseType extends BaseOid implements Serializable {
 
+    public ExpenseType(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

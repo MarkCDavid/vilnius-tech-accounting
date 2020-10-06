@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class ContactInformation extends BaseOid implements Serializable {
 
+    public ContactInformation(Session session) {
+        super(session);
+    }
+
     public Address getAddress() {
         return address;
     }

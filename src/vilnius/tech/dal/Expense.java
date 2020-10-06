@@ -5,6 +5,10 @@ import java.time.ZonedDateTime;
 
 public class Expense extends BaseOid implements Serializable {
 
+    public Expense(Session session) {
+        super(session);
+    }
+
     public ExpenseType getType() {
         return type;
     }

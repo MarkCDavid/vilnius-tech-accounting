@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class City extends BaseOid implements Serializable {
 
+    public City(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }
@@ -17,7 +21,7 @@ public class City extends BaseOid implements Serializable {
     }
 
     public void setCountry(Country country) {
-        this.country = country;
+        setValue(country, "country", "cities");
     }
 
     private String name;

@@ -17,26 +17,27 @@ public class JuridicalUserController extends CRUDManager<JuridicalUser> {
 
     @Override
     public JuridicalUser create(Scanner scanner) {
-        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
-
-        System.out.println("\t".repeat(indentation) + "Address:");
-        Address address = new AddressController(source,indentation + 1).read(scanner, true);
-
-        System.out.println("\t".repeat(indentation) + "Contact:");
-        PhysicalUser contactUser = new PhysicalUserController(source,indentation + 1).read(scanner, true);
-
-        JuridicalUser juridicalUser = new JuridicalUser();
-        juridicalUser.setOid(source.getJuridicalUsers().size());
-        source.getJuridicalUsers().add(juridicalUser);
-
-        juridicalUser.setUsername(username);
-        juridicalUser.setPassword(password);
-        juridicalUser.setName(name);
-        juridicalUser.setAddress(address);
-        juridicalUser.setContactUser(contactUser);
-        return juridicalUser;
+//        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
+//        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
+//        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
+//
+//        System.out.println("\t".repeat(indentation) + "Address:");
+//        Address address = new AddressController(source,indentation + 1).read(scanner, true);
+//
+//        System.out.println("\t".repeat(indentation) + "Contact:");
+//        PhysicalUser contactUser = new PhysicalUserController(source,indentation + 1).read(scanner, true);
+//
+//        JuridicalUser juridicalUser = new JuridicalUser();
+//        juridicalUser.setOid(source.getJuridicalUsers().size());
+//        source.getJuridicalUsers().add(juridicalUser);
+//
+//        juridicalUser.setUsername(username);
+//        juridicalUser.setPassword(password);
+//        juridicalUser.setName(name);
+//        juridicalUser.setAddress(address);
+//        juridicalUser.setContactUser(contactUser);
+//        return juridicalUser;
+        return null;
     }
 
 

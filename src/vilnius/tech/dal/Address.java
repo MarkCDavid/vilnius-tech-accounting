@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class Address extends BaseOid implements Serializable {
 
+    public Address(Session session) {
+        super(session);
+    }
+
     public City getCity() {
         return city;
     }

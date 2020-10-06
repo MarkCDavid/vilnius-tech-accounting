@@ -6,6 +6,10 @@ public final class PhysicalUser extends User implements Serializable {
 
     public static final String CODE = "physical";
 
+    public PhysicalUser(Session session) {
+        super(session);
+    }
+
     public String getName() {
         return name;
     }

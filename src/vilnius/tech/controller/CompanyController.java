@@ -1,8 +1,7 @@
 package vilnius.tech.controller;
 
 import vilnius.tech.dal.Company;
-import vilnius.tech.dal.ContactInformation;
-import vilnius.tech.utils.UserInput;
+import vilnius.tech.dal.Session;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -10,24 +9,26 @@ import java.util.Scanner;
 public class CompanyController extends Manager {
 
     public CompanyController() {
-        this(new Company(), 0);
+        this(new Session(), 0);
     }
 
-    public CompanyController(Company source, int indentation) {
-        this.source = source;
+    public CompanyController(Session session, int indentation) {
+        this.session = session;
+        this.source = new Company(session);
         this.indentation = indentation;
     }
 
     public Company create(Scanner scanner) {
 
-        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Company name");
-
-        System.out.println("\t".repeat(indentation) + "Contact Information:");
-        ContactInformation contactInformation = new ContactInformationController(source,indentation + 1).read(scanner, true);
-
-        source.setName(name);
-        source.setContactInformation(contactInformation);
-        return source;
+//        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Company name");
+//
+//        System.out.println("\t".repeat(indentation) + "Contact Information:");
+//        ContactInformation contactInformation = new ContactInformationController(source,indentation + 1).read(scanner, true);
+//
+//        source.setName(name);
+//        source.setContactInformation(contactInformation);
+//        return source;
+        return null;
     }
 
 
@@ -79,10 +80,10 @@ public class CompanyController extends Manager {
 
         }
         else if(Objects.equals(userInput, CITIES)) {
-
+            new CityController(session,indentation + 1).manage(scanner);
         }
         else if(Objects.equals(userInput, COUNTRIES)) {
-
+            new CountryController(session, indentation + 1).manage(scanner);
         }
         else if(Objects.equals(userInput, EXPENSE_TYPES)) {
 
@@ -91,10 +92,11 @@ public class CompanyController extends Manager {
 
         }
         else if(Objects.equals(userInput, SAVE)) {
-            Serializer.saveCompany(scanner, source);
+            Serializer.saveSession(scanner, session);
         }
     }
 
     private final Company source;
+    private final Session session;
     private final int indentation;
 }

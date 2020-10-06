@@ -1,32 +1,33 @@
 package vilnius.tech.controller;
 
 import vilnius.tech.dal.Company;
+import vilnius.tech.dal.Session;
 
 import java.io.*;
 import java.util.Scanner;
 
 public class Serializer {
-    public static Company loadCompany(Scanner scanner) {
+    public static Session loadSession(Scanner scanner) {
         String filename = getFilename(scanner);
 
         try(ObjectInputStream stream = new ObjectInputStream(new FileInputStream(filename))) {
-            return (Company) stream.readObject();
+            return (Session) stream.readObject();
         }
         catch (ClassNotFoundException exception) {
             System.out.printf("File '%s' is corrupted and cannot be loaded.%n", filename);
-            return new CompanyController().create(scanner);
+            return new Session();
         }
         catch (IOException exception) {
             System.out.printf("File '%s' cannot be opened.%n", filename);
-            return new CompanyController().create(scanner);
+            return new Session();
         }
     }
 
-    public static void saveCompany(Scanner scanner, Company company) {
+    public static void saveSession(Scanner scanner, Session session) {
         String filename = getFilename(scanner);
 
         try(ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(filename))) {
-            stream.writeObject(company);
+            stream.writeObject(session);
         }
         catch (IOException exception) {
             System.out.printf("Failed writing data to '%s'.%n", filename);

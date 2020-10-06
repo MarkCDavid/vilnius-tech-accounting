@@ -19,20 +19,21 @@ public class AddressController implements CRUD<Address> {
     @Override
     public Address create(Scanner scanner) {
 
-        System.out.println("\t".repeat(indentation) + "City:");
-        City city = new CityController(source, indentation + 1).read(scanner, true);
+//        System.out.println("\t".repeat(indentation) + "City:");
+//        City city = new CityController(source, indentation + 1).read(scanner, true);
+//
+//        String street = UserInput.getString(scanner, "\t".repeat(indentation) + "Street");
+//        String postal = UserInput.getString(scanner, "\t".repeat(indentation) + "Postal");
 
-        String street = UserInput.getString(scanner, "\t".repeat(indentation) + "Street");
-        String postal = UserInput.getString(scanner, "\t".repeat(indentation) + "Postal");
+//        Address address = new Address();
+//        address.setOid(source.getAddresses().size());
+//        source.getAddresses().add(address);
 
-        Address address = new Address();
-        address.setOid(source.getAddresses().size());
-        source.getAddresses().add(address);
-
-        address.setCity(city);
-        address.setStreet(street);
-        address.setPostal(postal);
-        return address;
+//        address.setCity(city);
+//        address.setStreet(street);
+//        address.setPostal(postal);
+//        return address;
+        return null;
     }
 
     @Override

@@ -1,19 +1,18 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Address;
 import vilnius.tech.dal.City;
-import vilnius.tech.dal.Company;
 import vilnius.tech.dal.Country;
+import vilnius.tech.dal.Session;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class CityController implements CRUD<City> {
+public class CityController extends CRUDManager<City> implements CRUD<City> {
 
-    public CityController(Company source, int indentation) {
-        this.source = source;
+    public CityController(Session session, int indentation) {
+        this.session = session;
         this.indentation = indentation;
     }
 
@@ -22,12 +21,9 @@ public class CityController implements CRUD<City> {
         String name = UserInput.getString(scanner, "\t".repeat(indentation) + "City name");
 
         System.out.println("\t".repeat(indentation) + "Country:");
-        Country country = new CountryController(source, indentation + 1).read(scanner, true);
+        Country country = new CountryController(session, indentation + 1).read(scanner, true);
 
-        City city = new City();
-        city.setOid(source.getCities().size());
-        source.getCities().add(city);
-
+        City city = new City(session);
         city.setName(name);
         city.setCountry(country);
         return city;
@@ -45,7 +41,7 @@ public class CityController implements CRUD<City> {
 
     @Override
     public List<City> readAll() {
-        return source.getCities();
+        return session.get(City.class);
     }
 
     @Override
@@ -58,6 +54,11 @@ public class CityController implements CRUD<City> {
 
     }
 
-    private final Company source;
+    private final Session session;
     private final int indentation;
+
+    @Override
+    protected String getManagedObjectName() {
+        return "City";
+    }
 }
