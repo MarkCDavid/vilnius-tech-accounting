@@ -21,7 +21,7 @@ public class City extends BaseOid implements Serializable {
     }
 
     public void setCountry(Country country) {
-        setValue(country, "country", "cities");
+        this.country = country;
     }
 
     private String name;
@@ -29,11 +29,12 @@ public class City extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s - %s", name, country);
+        return formatValue(name, "City Name") +
+                formatReference(country, "Country");
     }
 
     @Override
     public String toShortString() {
-        return toString();
+        return String.format("%s - %s", name, country.toShortString());
     }
 }

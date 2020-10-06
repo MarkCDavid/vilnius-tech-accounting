@@ -1,10 +1,6 @@
 package vilnius.tech.dal;
 
-
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.function.Function;
 
 public abstract class BaseOid implements Serializable {
 
@@ -18,34 +14,6 @@ public abstract class BaseOid implements Serializable {
     }
 
     public abstract String toShortString();
-
-    public <V extends BaseOid> void setValue(V value, String valueFieldName, String referenceFieldName) {
-        try {
-            Field valueField = getClass().getDeclaredField(valueFieldName);
-            Field referenceField = value.getClass().getDeclaredField(referenceFieldName);
-
-            valueField.setAccessible(true);
-            referenceField.setAccessible(true);
-
-            if (valueField.get(this) != null) {
-                //noinspection unchecked
-                List<BaseOid> references = (List<BaseOid>) referenceField.get(valueField.get(this));
-                references.remove(this);
-            }
-
-            valueField.set(this, value);
-
-            if (valueField.get(this) != null) {
-                //noinspection unchecked
-                List<BaseOid> references = (List<BaseOid>) referenceField.get(valueField.get(this));
-                references.add(this);
-            }
-        }
-        catch (NoSuchFieldException | IllegalAccessException exception) {
-            throw new InvalidBaseOidAccess();
-        }
-    }
-
 
     public int getOid() {
         return oid;
@@ -61,6 +29,14 @@ public abstract class BaseOid implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    protected <T> String formatValue(T value, String caption) {
+        return String.format("%s: %s%n", caption, value.toString());
+    }
+
+    protected <T> String formatReference(T reference, String caption) {
+        return String.format("=== %s ===%n%s%n=== %s ===%n", caption, reference.toString(), caption);
     }
 
     private int oid;

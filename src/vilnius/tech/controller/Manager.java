@@ -1,10 +1,19 @@
 package vilnius.tech.controller;
 
+import vilnius.tech.dal.Session;
 import vilnius.tech.utils.UserInput;
 
 import java.util.Scanner;
 
 public abstract class Manager {
+
+    public Manager(Session session) {
+        this.session = session;
+    }
+
+    public Session getSession() {
+        return session;
+    }
 
     public void manage(Scanner scanner) {
         while(true) {
@@ -25,4 +34,6 @@ public abstract class Manager {
 
     protected abstract void showOptions(Scanner scanner);
     protected abstract void matchOptions(Scanner scanner, String userInput);
+
+    private final Session session;
 }

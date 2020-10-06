@@ -38,7 +38,9 @@ public class ContactInformation extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s%nEmail: %s%nPhone Number: %s", address, email, phoneNumber);
+        return formatReference(address, "Address") +
+                formatValue(email, "Email") +
+                formatValue(phoneNumber, "Phone Number");
     }
 
     @Override

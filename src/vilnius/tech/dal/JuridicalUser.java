@@ -40,7 +40,10 @@ public final class JuridicalUser extends User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s - %s%n%s%nContact:%n%s", getUsername(), name, address, contactUser);
+        return formatValue(getUsername(), "Username") +
+                formatValue(name, "Name") +
+                formatReference(address, "Address") +
+                formatReference(contactUser, "Contact");
     }
 
     @Override

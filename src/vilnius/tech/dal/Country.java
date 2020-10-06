@@ -1,14 +1,11 @@
 package vilnius.tech.dal;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Country extends BaseOid implements Serializable {
 
     public Country(Session session) {
         super(session);
-        cities = new ArrayList<>();
     }
 
     public String getName() {
@@ -29,24 +26,14 @@ public class Country extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", name, code);
+        return formatValue(name, "Country Name") + formatValue(code, "Code");
     }
 
     @Override
     public String toShortString() {
-        return toString();
+        return String.format("%s (%s)", name, code);
     }
-
-
-
-
 
     private String name;
     private String code;
-
-    public List<City> getCities() {
-        return cities;
-    }
-
-    private final List<City> cities;
 }

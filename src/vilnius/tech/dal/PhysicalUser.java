@@ -40,7 +40,10 @@ public final class PhysicalUser extends User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s - %s %s%n%s", getUsername(), name, surname, contactInformation);
+        return formatValue(getUsername(), "Username") +
+                formatValue(name, "Name") +
+                formatValue(surname, "Surname") +
+                formatReference(contactInformation, "Contact Information");
     }
 
     @Override

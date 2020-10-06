@@ -1,9 +1,6 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Address;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Company;
-import vilnius.tech.dal.ContactInformation;
+import vilnius.tech.dal.*;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
@@ -12,29 +9,26 @@ import java.util.Scanner;
 
 public class ContactInformationController implements CRUD<ContactInformation> {
 
-    public ContactInformationController(Company source, int indentation) {
-        this.source = source;
+    public ContactInformationController(Session session, int indentation) {
+        this.session = session;
         this.indentation = indentation;
     }
 
     @Override
     public ContactInformation create(Scanner scanner) {
-//
-//        System.out.println("\t".repeat(indentation) + "Address:");
-//        Address address = new AddressController(source,indentation + 1).read(scanner, true);
-//
-//        String email = UserInput.getString(scanner, "\t".repeat(indentation) + "Email");
-//        String phoneNumber = UserInput.getString(scanner, "\t".repeat(indentation) + "Phone Number");
-//
-//        ContactInformation contactInformation = new ContactInformation();
-//        contactInformation.setOid(source.getContactsInformation().size());
-//        source.getContactsInformation().add(contactInformation);
-//
-//        contactInformation.setAddress(address);
-//        contactInformation.setEmail(email);
-//        contactInformation.setPhoneNumber(phoneNumber);
-//        return contactInformation;
-        return null;
+
+        System.out.println("\t".repeat(indentation) + "Address:");
+        Address address = new AddressController(session,indentation + 1).read(scanner, true);
+
+        String email = UserInput.getString(scanner, "\t".repeat(indentation) + "Email");
+        String phoneNumber = UserInput.getString(scanner, "\t".repeat(indentation) + "Phone Number");
+
+        ContactInformation contactInformation = new ContactInformation(session);
+
+        contactInformation.setAddress(address);
+        contactInformation.setEmail(email);
+        contactInformation.setPhoneNumber(phoneNumber);
+        return contactInformation;
     }
 
     @Override
@@ -49,7 +43,7 @@ public class ContactInformationController implements CRUD<ContactInformation> {
 
     @Override
     public List<ContactInformation> readAll() {
-        return source.getContactsInformation();
+        return session.get(ContactInformation.class);
     }
 
     @Override
@@ -62,7 +56,7 @@ public class ContactInformationController implements CRUD<ContactInformation> {
 
     }
 
-    private final Company source;
+    private final Session session;
 
     private final int indentation;
 }

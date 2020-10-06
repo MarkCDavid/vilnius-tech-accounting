@@ -13,7 +13,7 @@ public class CompanyController extends Manager {
     }
 
     public CompanyController(Session session, int indentation) {
-        this.session = session;
+        super(session);
         this.source = new Company(session);
         this.indentation = indentation;
     }
@@ -68,7 +68,7 @@ public class CompanyController extends Manager {
             System.out.println(source);
         }
         else if(Objects.equals(userInput, USERS)) {
-            new UserController(source,indentation + 1).manage(scanner);
+            new UserController(getSession(),indentation + 1).manage(scanner);
         }
         else if(Objects.equals(userInput, CATEGORIES)) {
 
@@ -80,10 +80,10 @@ public class CompanyController extends Manager {
 
         }
         else if(Objects.equals(userInput, CITIES)) {
-            new CityController(session,indentation + 1).manage(scanner);
+            new CityController(getSession(),indentation + 1).manage(scanner);
         }
         else if(Objects.equals(userInput, COUNTRIES)) {
-            new CountryController(session, indentation + 1).manage(scanner);
+            new CountryController(getSession(), indentation + 1).manage(scanner);
         }
         else if(Objects.equals(userInput, EXPENSE_TYPES)) {
 
@@ -92,11 +92,10 @@ public class CompanyController extends Manager {
 
         }
         else if(Objects.equals(userInput, SAVE)) {
-            Serializer.saveSession(scanner, session);
+            Serializer.saveSession(scanner, getSession());
         }
     }
 
     private final Company source;
-    private final Session session;
     private final int indentation;
 }

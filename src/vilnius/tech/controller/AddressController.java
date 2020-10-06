@@ -3,6 +3,7 @@ package vilnius.tech.controller;
 import vilnius.tech.dal.Address;
 import vilnius.tech.dal.City;
 import vilnius.tech.dal.Company;
+import vilnius.tech.dal.Session;
 import vilnius.tech.utils.Selector;
 import vilnius.tech.utils.UserInput;
 
@@ -11,29 +12,25 @@ import java.util.Scanner;
 
 public class AddressController implements CRUD<Address> {
 
-    public AddressController(Company source, int indentation) {
-        this.source = source;
+    public AddressController(Session session, int indentation) {
+        this.session = session;
         this.indentation = indentation;
     }
 
     @Override
     public Address create(Scanner scanner) {
 
-//        System.out.println("\t".repeat(indentation) + "City:");
-//        City city = new CityController(source, indentation + 1).read(scanner, true);
-//
-//        String street = UserInput.getString(scanner, "\t".repeat(indentation) + "Street");
-//        String postal = UserInput.getString(scanner, "\t".repeat(indentation) + "Postal");
+        System.out.println("\t".repeat(indentation) + "City:");
+        City city = new CityController(session, indentation + 1).read(scanner, true);
 
-//        Address address = new Address();
-//        address.setOid(source.getAddresses().size());
-//        source.getAddresses().add(address);
+        String street = UserInput.getString(scanner, "\t".repeat(indentation) + "Street");
+        String postal = UserInput.getString(scanner, "\t".repeat(indentation) + "Postal");
 
-//        address.setCity(city);
-//        address.setStreet(street);
-//        address.setPostal(postal);
-//        return address;
-        return null;
+        Address address = new Address(session);
+        address.setCity(city);
+        address.setStreet(street);
+        address.setPostal(postal);
+        return address;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class AddressController implements CRUD<Address> {
 
     @Override
     public List<Address> readAll() {
-        return source.getAddresses();
+        return session.get(Address.class);
     }
 
     @Override
@@ -61,6 +58,6 @@ public class AddressController implements CRUD<Address> {
 
     }
 
-    private final Company source;
+    private final Session session;
     private final int indentation;
 }

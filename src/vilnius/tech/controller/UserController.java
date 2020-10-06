@@ -1,16 +1,16 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.dal.Company;
 import vilnius.tech.dal.JuridicalUser;
 import vilnius.tech.dal.PhysicalUser;
+import vilnius.tech.dal.Session;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 public class UserController extends Manager {
 
-    public UserController(Company source, int indentation) {
-        this.source = source;
+    public UserController(Session session, int indentation) {
+        super(session);
         this.indentation = indentation;
     }
 
@@ -28,13 +28,12 @@ public class UserController extends Manager {
     @Override
     protected void matchOptions(Scanner scanner, String userInput) {
         if(Objects.equals(userInput, PhysicalUser.CODE)) {
-            new PhysicalUserController(source, indentation).manage(scanner);
+            new PhysicalUserController(getSession(), indentation).manage(scanner);
         }
         else if(Objects.equals(userInput, JuridicalUser.CODE)) {
-            new JuridicalUserController(source,indentation).manage(scanner);
+            new JuridicalUserController(getSession(), indentation).manage(scanner);
         }
     }
 
-    private final Company source;
     private final int indentation;
 }

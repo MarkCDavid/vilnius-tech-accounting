@@ -9,34 +9,30 @@ import java.util.Scanner;
 
 public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
-    public PhysicalUserController(Company source, int indentation) {
-        this.source = source;
+    public PhysicalUserController(Session session, int indentation) {
+        super(session);
         this.indentation = indentation;
     }
 
     @Override
     public PhysicalUser create(Scanner scanner) {
-//        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-//        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-//        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
-//        String surname = UserInput.getString(scanner, "\t".repeat(indentation) + "Surname");
-//
-//        System.out.println("\t".repeat(indentation) + "Contact Information:");
-//        ContactInformation contactInformation = new ContactInformationController(source,indentation + 1).read(scanner, true);
-//
-//        PhysicalUser physicalUser = new PhysicalUser();
-//        physicalUser.setOid(source.getPhysicalUsers().size());
-//        source.getPhysicalUsers().add(physicalUser);
-//
-//        physicalUser.setUsername(username);
-//        physicalUser.setPassword(password);
-//        physicalUser.setName(name);
-//        physicalUser.setSurname(surname);
-//        physicalUser.setContactInformation(contactInformation);
-//
-//
-//        return physicalUser;
-        return null;
+        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
+        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
+        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
+        String surname = UserInput.getString(scanner, "\t".repeat(indentation) + "Surname");
+
+        System.out.println("\t".repeat(indentation) + "Contact Information:");
+        ContactInformation contactInformation = new ContactInformationController(getSession(),indentation + 1).read(scanner, true);
+        PhysicalUser physicalUser = new PhysicalUser(getSession());
+
+        physicalUser.setUsername(username);
+        physicalUser.setPassword(password);
+        physicalUser.setName(name);
+        physicalUser.setSurname(surname);
+        physicalUser.setContactInformation(contactInformation);
+
+
+        return physicalUser;
     }
 
     @Override
@@ -51,7 +47,7 @@ public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
     @Override
     public List<PhysicalUser> readAll() {
-        return source.getPhysicalUsers();
+        return getSession().get(PhysicalUser.class);
     }
 
     @Override
@@ -64,7 +60,6 @@ public class PhysicalUserController extends CRUDManager<PhysicalUser> {
 
     }
 
-    private final Company source;
     private final int indentation;
 
     private static final String OBJECT_NAME = "Physical User";

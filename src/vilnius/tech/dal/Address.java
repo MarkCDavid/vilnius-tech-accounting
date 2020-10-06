@@ -38,7 +38,9 @@ public class Address extends BaseOid implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s%n%s%n%s", city, street, postal);
+        return formatReference(city, "City") +
+                formatValue(street, "Street") +
+                formatValue(postal, "Postal Code");
     }
 
     @Override

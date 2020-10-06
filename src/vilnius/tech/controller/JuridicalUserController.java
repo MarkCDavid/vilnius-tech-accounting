@@ -9,35 +9,31 @@ import java.util.Scanner;
 
 public class JuridicalUserController extends CRUDManager<JuridicalUser> {
 
-    public JuridicalUserController(Company source, int indentation) {
-        this.source = source;
+    public JuridicalUserController(Session session, int indentation) {
+        super(session);
         this.indentation = indentation;
     }
 
 
     @Override
     public JuridicalUser create(Scanner scanner) {
-//        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
-//        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
-//        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
-//
-//        System.out.println("\t".repeat(indentation) + "Address:");
-//        Address address = new AddressController(source,indentation + 1).read(scanner, true);
-//
-//        System.out.println("\t".repeat(indentation) + "Contact:");
-//        PhysicalUser contactUser = new PhysicalUserController(source,indentation + 1).read(scanner, true);
-//
-//        JuridicalUser juridicalUser = new JuridicalUser();
-//        juridicalUser.setOid(source.getJuridicalUsers().size());
-//        source.getJuridicalUsers().add(juridicalUser);
-//
-//        juridicalUser.setUsername(username);
-//        juridicalUser.setPassword(password);
-//        juridicalUser.setName(name);
-//        juridicalUser.setAddress(address);
-//        juridicalUser.setContactUser(contactUser);
-//        return juridicalUser;
-        return null;
+        String username = UserInput.getString(scanner, "\t".repeat(indentation) + "Username");
+        String password = UserInput.getString(scanner, "\t".repeat(indentation) + "Password");
+        String name = UserInput.getString(scanner, "\t".repeat(indentation) + "Name");
+
+        System.out.println("\t".repeat(indentation) + "Address:");
+        Address address = new AddressController(getSession(),indentation + 1).read(scanner, true);
+
+        System.out.println("\t".repeat(indentation) + "Contact:");
+        PhysicalUser contactUser = new PhysicalUserController(getSession(),indentation + 1).read(scanner, true);
+
+        JuridicalUser juridicalUser = new JuridicalUser(getSession());
+        juridicalUser.setUsername(username);
+        juridicalUser.setPassword(password);
+        juridicalUser.setName(name);
+        juridicalUser.setAddress(address);
+        juridicalUser.setContactUser(contactUser);
+        return juridicalUser;
     }
 
 
@@ -54,7 +50,7 @@ public class JuridicalUserController extends CRUDManager<JuridicalUser> {
 
     @Override
     public List<JuridicalUser> readAll() {
-        return source.getJuridicalUsers();
+        return getSession().get(JuridicalUser.class);
     }
 
     @Override
@@ -67,7 +63,6 @@ public class JuridicalUserController extends CRUDManager<JuridicalUser> {
 
     }
 
-    private final Company source;
     private final int indentation;
 
     private static final String OBJECT_NAME = "Juridical User";
