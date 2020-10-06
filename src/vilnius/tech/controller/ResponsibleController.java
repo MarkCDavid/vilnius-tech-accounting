@@ -19,12 +19,6 @@ public class ResponsibleController extends CRUDManager<User> implements CRUD<Use
         this.responsible = responsible;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
-        referenceMap.put("expenses", new Reference(Expense.class, (Function<Expense, Integer>) expense -> expense.getType().getOid()));
-    }
-
     @Override
     public User create(Scanner scanner) {
         User user = new UserController(getSession()).read(scanner);

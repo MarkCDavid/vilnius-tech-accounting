@@ -18,15 +18,12 @@ public class IncomeController extends CRUDManager<Income> implements CRUD<Income
         this.parent = parent;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
-        referenceMap.put("incomes", new Reference(Income.class, (Function<Income, Integer>) income -> income.getType().getOid()));
-    }
 
     @Override
     public Income create(Scanner scanner) {
+        System.out.println("Income type:");
         IncomeType type = new IncomeTypeController(getSession()).read(scanner);
+        System.out.println("Owner:");
         User owner = new UserController(getSession()).read(scanner);
         int sum = UserInput.getInteger(scanner, "Income").orElse(0);
         ZonedDateTime dateTime = UserInput.getDate(scanner, "Date (empty for current time)");

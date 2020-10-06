@@ -43,6 +43,7 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
     private static final String READ_ALL = "read all";
     private static final String UPDATE = "update";
     private static final String DELETE = "delete";
+    private static final String SAVE = "save";
 
     protected boolean createEnabled() { return true; }
     protected boolean readEnabled() { return true; }
@@ -65,6 +66,8 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
         if(deleteEnabled())
             System.out.printf("%s - delete '%s'%n", DELETE, getManagedObjectName());
 
+        System.out.printf("%s - save%n", SAVE);
+
         for(String key: references.keySet()) {
             System.out.printf("%s - show references%n", key);
         }
@@ -86,6 +89,9 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
         }
         else if(deleteEnabled() && Objects.equals(userInput, DELETE)) {
             delete(scanner);
+        }
+        else if(Objects.equals(userInput, SAVE)) {
+            Serializer.saveSession(scanner, getSession());
         }
         else if(references.containsKey(userInput)){
             handleReferences(scanner, userInput);
@@ -112,7 +118,7 @@ public abstract class CRUDManager<T extends BaseOid> extends Manager implements 
     }
 
     private void handleReferences(Scanner scanner, String userInput) {
-        T value = read(scanner, false);
+        T value = Selector.readViaOid(this, scanner, false);
         if(value == null)
             return;
 

@@ -1,12 +1,19 @@
 package vilnius.tech.dal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FinancialCategory extends BaseOid implements Serializable {
 
     public FinancialCategory(Session session) {
         super(session);
+
+        this.incomes = new ArrayList<>();
+        this.expenses = new ArrayList<>();
+        this.subcategories = new ArrayList<>();
+        this.responsibleUsers = new ArrayList<>();
+
     }
 
     public String getName() {
@@ -29,32 +36,16 @@ public class FinancialCategory extends BaseOid implements Serializable {
         return subcategories;
     }
 
-    public void setSubcategories(List<FinancialCategory> subcategories) {
-        this.subcategories = subcategories;
-    }
-
     public List<User> getResponsibleUsers() {
         return responsibleUsers;
-    }
-
-    public void setResponsibleUsers(List<User> responsibleUsers) {
-        this.responsibleUsers = responsibleUsers;
     }
 
     public List<Expense> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Expense> expenses) {
-        this.expenses = expenses;
-    }
-
     public List<Income> getIncomes() {
         return incomes;
-    }
-
-    public void setIncomes(List<Income> incomes) {
-        this.incomes = incomes;
     }
 
     public FinancialCategory getParent() {
@@ -68,16 +59,15 @@ public class FinancialCategory extends BaseOid implements Serializable {
     private FinancialCategory parent;
     private String name;
     private User owner;
-    private List<FinancialCategory> subcategories;
-    private List<User> responsibleUsers;
-    private List<Expense> expenses;
-    private List<Income> incomes;
+    private final List<FinancialCategory> subcategories;
+    private final List<User> responsibleUsers;
+    private final List<Expense> expenses;
+    private final List<Income> incomes;
 
     @Override
     public String toString() {
-        return parent == null? "" : formatReference(parent.toShortString(), "Parent") +
-                formatReference(name, "Name") +
-                formatReference(owner, "Owner") +
+        return (parent == null? "" : formatReference(parent.toShortString(), "Parent")) +
+                String.format("%s%n", toShortString()) +
                 formatValue(subcategories.size(), "Subcategories") +
                 formatValue(responsibleUsers.size(), "Responsible") +
                 formatValue(expenses.size(), "Expenses") +

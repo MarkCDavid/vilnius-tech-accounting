@@ -18,8 +18,15 @@ public class Selector {
     }
 
     public static <T extends BaseOid> T readViaOid(CRUD<T> crud, Scanner scanner) {
+       return readViaOid(crud, scanner, true);
+    }
+
+    public static <T extends BaseOid> T readViaOid(CRUD<T> crud, Scanner scanner, boolean allowCreate) {
         Display.showWithOid(crud);
-        System.out.println("create - create new");
+
+        if(allowCreate)
+            System.out.println("create - create new");
+
         System.out.println("quit - quit without choosing");
 
         String userChoice = UserInput.getString(scanner, "choose");
@@ -27,7 +34,7 @@ public class Selector {
             return null;
         }
 
-        if(Objects.equals(userChoice, "create")) {
+        if (allowCreate && Objects.equals(userChoice, "create")) {
             return crud.create(scanner);
         }
 

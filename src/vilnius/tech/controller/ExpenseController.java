@@ -19,15 +19,11 @@ public class ExpenseController extends CRUDManager<Expense> implements CRUD<Expe
         this.parent = parent;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    protected void initializeReferenceMap(Map<String, Reference> referenceMap) {
-        referenceMap.put("expenses", new Reference(Expense.class, (Function<Expense, Integer>) expense -> expense.getType().getOid()));
-    }
-
     @Override
     public Expense create(Scanner scanner) {
+        System.out.println("Expense type:");
         ExpenseType type = new ExpenseTypeController(getSession()).read(scanner);
+        System.out.println("Owner:");
         User owner = new UserController(getSession()).read(scanner);
         int sum = UserInput.getInteger(scanner, "Expense").orElse(0);
         ZonedDateTime dateTime = UserInput.getDate(scanner, "Date (empty for current time)");

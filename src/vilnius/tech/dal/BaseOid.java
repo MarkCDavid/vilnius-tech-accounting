@@ -32,11 +32,11 @@ public abstract class BaseOid implements Serializable {
     }
 
     protected <T> String formatValue(T value, String caption) {
-        return String.format("%s: %s%n", caption, value.toString());
+        return String.format("%s: %s%n", caption, value != null ? value.toString() : null);
     }
 
     protected <T> String formatReference(T reference, String caption) {
-        return String.format("=== %s ===%n%s%n=== %s ===%n", caption, reference.toString(), caption);
+        return String.format("=== %s ===%n%s%n=== %s ===%n", caption, reference != null ? reference.toString() : null, caption);
     }
 
     private int oid;

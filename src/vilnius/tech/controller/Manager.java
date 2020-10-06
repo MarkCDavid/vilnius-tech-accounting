@@ -16,7 +16,7 @@ public abstract class Manager {
     }
 
     public void manage(Scanner scanner) {
-        while(true) {
+        while(managing) {
             showOptions(scanner);
             System.out.printf("quit - %s%n", getQuitDescription());
             String userInput = UserInput.getString(scanner, "command");
@@ -31,6 +31,12 @@ public abstract class Manager {
     }
 
     protected abstract boolean isRoot();
+
+    protected void forceQuit() {
+        managing = false;
+    }
+
+    private boolean managing = true;
 
     protected abstract void showOptions(Scanner scanner);
     protected abstract void matchOptions(Scanner scanner, String userInput);
