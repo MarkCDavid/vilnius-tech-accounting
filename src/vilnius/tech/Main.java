@@ -1,6 +1,6 @@
 package vilnius.tech;
 
-import vilnius.tech.controller.CompanyController;
+import vilnius.tech.controller.MainController;
 import vilnius.tech.controller.Serializer;
 import vilnius.tech.dal.Session;
 
@@ -13,7 +13,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Session session = Serializer.loadSession(scanner);
 
-        new CompanyController(session, 0).manage(scanner);
+        new MainController(session).manage(scanner);
 
 
     }

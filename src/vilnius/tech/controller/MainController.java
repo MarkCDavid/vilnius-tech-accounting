@@ -6,16 +6,15 @@ import vilnius.tech.dal.Session;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class CompanyController extends Manager {
+public class MainController extends Manager {
 
-    public CompanyController() {
-        this(new Session(), 0);
+    public MainController() {
+        this(new Session());
     }
 
-    public CompanyController(Session session, int indentation) {
+    public MainController(Session session) {
         super(session);
         this.source = new Company(session);
-        this.indentation = indentation;
     }
 
     public Company create(Scanner scanner) {
@@ -97,5 +96,4 @@ public class CompanyController extends Manager {
     }
 
     private final Company source;
-    private final int indentation;
 }

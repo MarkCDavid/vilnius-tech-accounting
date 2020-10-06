@@ -60,7 +60,7 @@ public class AddressController extends CRUDManager<Address> implements CRUD<Addr
             return;
 
         List<ContactInformation> ciRefs = getSession().query(ContactInformation.class, ci -> ci.getAddress().getOid() == address.getOid());
-        if(!ciRefs.isEmpty() && !UserInput.getDeleteConfirmation(scanner, getManagedObjectName(), "ContactInformation", ciRefs.size())) {
+        if(!ciRefs.isEmpty() && !UserInput.getDeleteConfirmation(scanner, getManagedObjectName(), "Contact Information", ciRefs.size())) {
             return;
         }
 
