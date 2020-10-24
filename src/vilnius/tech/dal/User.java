@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public abstract class User extends BaseOid implements Serializable {
 
     public User(Session session) {
-        super(session);
+        super(session, User.class);
     }
 
     public String getUsername() {

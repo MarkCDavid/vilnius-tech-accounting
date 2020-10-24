@@ -1,5 +1,7 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -8,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class Expense extends BaseOid implements Serializable {
 
     public Expense(Session session) {
-        super(session);
+        super(session, Expense.class);
     }
 
     public ExpenseType getType() {
@@ -49,21 +51,4 @@ public class Expense extends BaseOid implements Serializable {
     private ZonedDateTime dateTime;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault());
-
-    @Override
-    public String toString() {
-        return formatReference(type, "Type") +
-                formatReference(owner, "Owner") +
-                formatValue(sum, "Sum") +
-                formatValue(DATE_FORMAT.format(dateTime), "DateTime");
-    }
-
-    @Override
-    public String toShortString() {
-        return String.format("%s, %s. %s expense at %s",
-                type != null ? type.toShortString() : null,
-                owner != null ? owner.toShortString() : null,
-                sum,
-                DATE_FORMAT.format(dateTime));
-    }
 }

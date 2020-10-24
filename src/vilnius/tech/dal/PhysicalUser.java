@@ -1,10 +1,10 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public final class PhysicalUser extends User implements Serializable {
-
-    public static final String CODE = "physical";
 
     public PhysicalUser(Session session) {
         super(session);
@@ -37,18 +37,4 @@ public final class PhysicalUser extends User implements Serializable {
     private String name;
     private String surname;
     private ContactInformation contactInformation;
-
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatValue(getUsername(), "Username") +
-                formatValue(name, "Name") +
-                formatValue(surname, "Surname") +
-                formatReference(contactInformation, "Contact Information");
-    }
-
-    @Override
-    public String toShortString() {
-        return String.format("%s - %s %s", getUsername(), name, surname);
-    }
 }

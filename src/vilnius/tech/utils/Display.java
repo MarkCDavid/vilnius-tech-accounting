@@ -1,9 +1,6 @@
 package vilnius.tech.utils;
 
-import vilnius.tech.controller.CRUD;
 import vilnius.tech.dal.BaseOid;
-
-import java.util.List;
 
 
 public class Display {

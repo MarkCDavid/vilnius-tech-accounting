@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public class ContactInformation extends BaseOid implements Serializable {
 
     public ContactInformation(Session session) {
-        super(session);
+        super(session, ContactInformation.class);
     }
 
     public Address getAddress() {
@@ -35,18 +37,4 @@ public class ContactInformation extends BaseOid implements Serializable {
     private Address address;
     private String email;
     private String phoneNumber;
-
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatReference(address, "Address") +
-                formatValue(email, "Email") +
-                formatValue(phoneNumber, "Phone Number");
-    }
-
-    @Override
-    public String toShortString() {
-        if(isDeleted()) return "<deleted>";
-        return String.format("%s, %s, %s", address != null ? address.toShortString() : null, email, phoneNumber);
-    }
 }

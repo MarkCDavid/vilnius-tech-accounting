@@ -1,7 +1,6 @@
-package vilnius.tech.controller;
+package vilnius.tech.session;
 
-import vilnius.tech.dal.Company;
-import vilnius.tech.dal.Session;
+import vilnius.tech.session.Session;
 
 import java.io.*;
 import java.util.Scanner;

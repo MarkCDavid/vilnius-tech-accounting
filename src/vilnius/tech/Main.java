@@ -1,20 +1,23 @@
 package vilnius.tech;
 
-import vilnius.tech.controller.MainController;
-import vilnius.tech.controller.Serializer;
-import vilnius.tech.dal.Session;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import java.util.Scanner;
+public class Main extends Application {
 
-public class Main {
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
+    }
+
 
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-        Session session = Serializer.loadSession(scanner);
-
-        new MainController(session).manage(scanner);
-
-
+        launch(args);
     }
 }

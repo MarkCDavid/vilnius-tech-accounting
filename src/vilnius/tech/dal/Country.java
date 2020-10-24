@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public class Country extends BaseOid implements Serializable {
 
     public Country(Session session) {
-        super(session);
+        super(session, Country.class);
     }
 
     public String getName() {
@@ -22,18 +24,6 @@ public class Country extends BaseOid implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatValue(name, "Country Name") + formatValue(code, "Code");
-    }
-
-    @Override
-    public String toShortString() {
-        if(isDeleted()) return "<deleted>";
-        return String.format("%s (%s)", name, code);
     }
 
     private String name;

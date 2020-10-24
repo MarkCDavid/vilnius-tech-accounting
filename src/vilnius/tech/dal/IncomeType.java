@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public class IncomeType extends BaseOid implements Serializable {
 
     public IncomeType(Session session) {
-        super(session);
+        super(session, IncomeType.class);
     }
 
     public String getName() {
@@ -26,15 +28,5 @@ public class IncomeType extends BaseOid implements Serializable {
 
     private String name;
     private String code;
-
-    @Override
-    public String toString() {
-        return formatValue(name, "Name") + formatValue(code, "Code");
-    }
-
-    @Override
-    public String toShortString() {
-        return String.format("%s - %s", name, code);
-    }
 
 }

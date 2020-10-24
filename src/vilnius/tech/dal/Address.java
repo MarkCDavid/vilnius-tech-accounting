@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public class Address extends BaseOid implements Serializable {
 
     public Address(Session session) {
-        super(session);
+        super(session, Address.class);
     }
 
     public City getCity() {
@@ -35,18 +37,4 @@ public class Address extends BaseOid implements Serializable {
     private City city;
     private String street;
     private String postal;
-
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatReference(city, "City") +
-                formatValue(street, "Street") +
-                formatValue(postal, "Postal Code");
-    }
-
-    @Override
-    public String toShortString() {
-        if(isDeleted()) return "<deleted>";
-        return String.format("%s, %s, %s", city != null ? city.toShortString() : null, street, postal);
-    }
 }

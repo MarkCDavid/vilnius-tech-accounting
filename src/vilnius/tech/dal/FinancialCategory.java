@@ -1,5 +1,7 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 public class FinancialCategory extends BaseOid implements Serializable {
 
     public FinancialCategory(Session session) {
-        super(session);
+        super(session, FinancialCategory.class);
 
         this.incomes = new ArrayList<>();
         this.expenses = new ArrayList<>();
@@ -63,19 +65,4 @@ public class FinancialCategory extends BaseOid implements Serializable {
     private final List<User> responsibleUsers;
     private final List<Expense> expenses;
     private final List<Income> incomes;
-
-    @Override
-    public String toString() {
-        return (parent == null? "" : formatReference(parent.toShortString(), "Parent")) +
-                String.format("%s%n", toShortString()) +
-                formatValue(subcategories.size(), "Subcategories") +
-                formatValue(responsibleUsers.size(), "Responsible") +
-                formatValue(expenses.size(), "Expenses") +
-                formatValue(incomes.size(), "Income");
-    }
-
-    @Override
-    public String toShortString() {
-        return String.format("%s - %s", name, owner != null ? owner.toShortString() : null);
-    }
 }

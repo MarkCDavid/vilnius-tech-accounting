@@ -1,11 +1,13 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public class Company extends BaseOid implements Serializable {
 
     public Company(Session session) {
-        super(session);
+        super(session, Company.class);
     }
 
     public String getName() {
@@ -26,17 +28,4 @@ public class Company extends BaseOid implements Serializable {
 
     private String name;
     private ContactInformation contactInformation;
-
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatValue(name, "Name") +
-               formatReference(contactInformation, "Contact Information");
-    }
-
-    @Override
-    public String toShortString() {
-        if(isDeleted()) return "<deleted>";
-        return String.format("Company Name: %s%n", name);
-    }
 }

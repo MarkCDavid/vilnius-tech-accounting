@@ -1,10 +1,10 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public final class JuridicalUser extends User implements Serializable {
-
-    public static final String CODE = "juridical";
 
     public JuridicalUser(Session session) {
         super(session);
@@ -38,17 +38,4 @@ public final class JuridicalUser extends User implements Serializable {
     private Address address;
     private PhysicalUser contactUser;
 
-    @Override
-    public String toString() {
-        if(isDeleted()) return "<deleted>";
-        return formatValue(getUsername(), "Username") +
-                formatValue(name, "Name") +
-                formatReference(address, "Address") +
-                formatReference(contactUser, "Contact");
-    }
-
-    @Override
-    public String toShortString() {
-        return String.format("%s - %s", getUsername(), name);
-    }
 }

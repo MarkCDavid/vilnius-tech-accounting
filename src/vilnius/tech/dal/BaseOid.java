@@ -1,19 +1,25 @@
 package vilnius.tech.dal;
 
+import vilnius.tech.session.Session;
+
 import java.io.Serializable;
 
 public abstract class BaseOid implements Serializable {
 
-    public BaseOid(Session session) {
+    public BaseOid(Session session, Class<? extends BaseOid> classInfo) {
         this.session = session;
-        this.session.add(getClass(), this);
+        this.classInfo = classInfo;
+
+        this.session.add(classInfo, this);
     }
 
     public Session getSession() {
         return session;
     }
 
-    public abstract String toShortString();
+    public Class<? extends BaseOid> getClassInfo() {
+        return classInfo;
+    }
 
     public int getOid() {
         return oid;
@@ -23,24 +29,8 @@ public abstract class BaseOid implements Serializable {
         this.oid = oid;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    protected <T> String formatValue(T value, String caption) {
-        return String.format("%s: %s%n", caption, value != null ? value.toString() : null);
-    }
-
-    protected <T> String formatReference(T reference, String caption) {
-        return String.format("=== %s ===%n%s%n=== %s ===%n", caption, reference != null ? reference.toString() : null, caption);
-    }
-
     private int oid;
-    private boolean deleted;
-
     private final Session session;
+
+    private final Class<? extends BaseOid> classInfo;
 }
