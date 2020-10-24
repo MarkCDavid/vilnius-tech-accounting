@@ -9,8 +9,7 @@ public abstract class BaseOid implements Serializable {
     public BaseOid(Session session, Class<? extends BaseOid> classInfo) {
         this.session = session;
         this.classInfo = classInfo;
-
-        this.session.add(classInfo, this);
+        this.session.add(this);
     }
 
     public Session getSession() {

@@ -13,9 +13,7 @@ public class FinancialCategory extends BaseOid implements Serializable {
 
         this.incomes = new ArrayList<>();
         this.expenses = new ArrayList<>();
-        this.subcategories = new ArrayList<>();
         this.responsibleUsers = new ArrayList<>();
-
     }
 
     public String getName() {
@@ -32,10 +30,6 @@ public class FinancialCategory extends BaseOid implements Serializable {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    public List<FinancialCategory> getSubcategories() {
-        return subcategories;
     }
 
     public List<User> getResponsibleUsers() {
@@ -61,7 +55,6 @@ public class FinancialCategory extends BaseOid implements Serializable {
     private FinancialCategory parent;
     private String name;
     private User owner;
-    private final List<FinancialCategory> subcategories;
     private final List<User> responsibleUsers;
     private final List<Expense> expenses;
     private final List<Income> incomes;

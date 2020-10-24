@@ -17,11 +17,11 @@ public class Session implements Serializable {
         this.sequence = new SessionSequence();
     }
 
-    public <T extends BaseOid> void add(Class<T> classInfo, BaseOid value) {
-        ensureCollectionExists(classInfo);
+    public void add(BaseOid value) {
+        ensureCollectionExists(value.getClassInfo());
 
-        value.setOid(sequence.next(classInfo));
-        data.get(classInfo).put(value);
+        value.setOid(sequence.next(value.getClassInfo()));
+        data.get(value.getClassInfo()).put(value);
     }
 
     public <T extends BaseOid> T get(Class<T> classInfo, int oid) {
@@ -30,10 +30,10 @@ public class Session implements Serializable {
         return classInfo.cast(data.get(classInfo).get(oid));
     }
 
-    public <T extends BaseOid> List<T> query(Class<T> classInfo, Predicate<BaseOid> predicate) {
+    public <T extends BaseOid> List<T> query(Class<T> classInfo, Predicate<T> predicate) {
         ensureCollectionExists(classInfo);
 
-        return data.get(classInfo).query(predicate).stream().map(classInfo::cast).collect(Collectors.toList());
+        return data.get(classInfo).query((Predicate<BaseOid>) predicate).stream().map(classInfo::cast).collect(Collectors.toList());
     }
 
     private <T extends BaseOid> void ensureCollectionExists(Class<T> type) {

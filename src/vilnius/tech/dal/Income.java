@@ -45,15 +45,6 @@ public class Income extends BaseOid implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public FinancialCategory getParent() {
-        return parent;
-    }
-
-    public void setParent(FinancialCategory parent) {
-        this.parent = parent;
-    }
-
-    private FinancialCategory parent;
     private IncomeType type;
     private User owner;
     private long sum;
