@@ -28,4 +28,9 @@ public class Country extends BaseOid implements Serializable {
 
     private String name;
     private String code;
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

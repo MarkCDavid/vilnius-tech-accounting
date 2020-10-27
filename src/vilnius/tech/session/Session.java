@@ -36,6 +36,10 @@ public class Session implements Serializable {
         return data.get(classInfo).query((Predicate<BaseOid>) predicate).stream().map(classInfo::cast).collect(Collectors.toList());
     }
 
+    public <T extends BaseOid> List<T> query(Class<T> classInfo) {
+        return query(classInfo, ignored -> true);
+    }
+
     private <T extends BaseOid> void ensureCollectionExists(Class<T> type) {
         if (!data.containsKey(type))
             data.put(type, new BaseOidCollection(type));

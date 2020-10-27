@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
@@ -17,8 +18,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="textFieldUsername" layoutX="204.0" layoutY="143.0" promptText="Username" />
-                        <PasswordField fx:id="passwordFieldPassword" layoutX="204.0" layoutY="185.0" promptText="Password" />
+                        <TextField fx:id="sitfUsername" accessibleText="Username" layoutX="204.0" layoutY="143.0" promptText="Username" />
+                        <PasswordField fx:id="sipfPassword" accessibleText="Password" layoutX="204.0" layoutY="185.0" promptText="Password" />
                         <Button layoutX="258.0" layoutY="228.0" mnemonicParsing="false" onAction="#buttonSignInAction" text="Sign In" />
                      </children>
                   </AnchorPane>
@@ -26,9 +27,32 @@
           </Tab>
           <Tab text="Sign Up">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="sutfSurname" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="280.0" layoutY="168.0" text="UP" />
+                        <TextField fx:id="sutfUsername" accessibleText="Username" layoutX="22.0" layoutY="24.0" prefHeight="26.0" prefWidth="154.0" promptText="Username" />
+                        <PasswordField fx:id="supfPassword" accessibleText="Password" layoutX="22.0" layoutY="62.0" prefHeight="26.0" prefWidth="153.0" promptText="Password" />
+                        <ChoiceBox fx:id="sucbUserType" accessibleText="User Type" layoutX="22.0" layoutY="113.0" prefHeight="26.0" prefWidth="153.0" />
+                        <Label layoutX="23.0" layoutY="97.0" text="User Type" />
+                        <Button layoutX="482.0" layoutY="298.0" mnemonicParsing="false" onAction="#buttonSignUpAction" text="Sign Up" />
+                        <TextField fx:id="signUpName" layoutX="212.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" promptText="Name" />
+                        <TextField fx:id="signUpSurname" layoutX="212.0" layoutY="74.0" prefHeight="26.0" prefWidth="154.0" promptText="Surname" />
+                        <ChoiceBox fx:id="sucbCountry" layoutX="213.0" layoutY="125.0" prefHeight="26.0" prefWidth="153.0" />
+                        <Label fx:id="sucbCountryLabel" layoutX="212.0" layoutY="104.0" text="Country" />
+                        <ChoiceBox fx:id="sucbCity" layoutX="213.0" layoutY="170.0" prefHeight="26.0" prefWidth="153.0" />
+                        <Label fx:id="sucbCityLabel" layoutX="213.0" layoutY="154.0" text="City" />
+                        <TextField fx:id="signUpStreet" layoutX="213.0" layoutY="207.0" prefHeight="26.0" prefWidth="154.0" promptText="Street" />
+                        <TextField fx:id="signUpPostal" layoutX="213.0" layoutY="242.0" prefHeight="26.0" prefWidth="154.0" promptText="Postal" />
+                        <Label fx:id="suPhysicalLabel" layoutX="213.0" layoutY="16.0" text="Physical" />
+                        <TextField fx:id="signUpEmail" layoutX="212.0" layoutY="278.0" prefHeight="26.0" prefWidth="154.0" promptText="Email" />
+                        <TextField fx:id="signUpPhone" layoutX="213.0" layoutY="310.0" prefHeight="26.0" prefWidth="154.0" promptText="Phone" />
+                        <TextField fx:id="signUpJuridicalName" layoutX="397.0" layoutY="37.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Name" />
+                        <ChoiceBox fx:id="sucbJuridicalCountry" layoutX="398.0" layoutY="95.0" prefHeight="26.0" prefWidth="153.0" />
+                        <Label fx:id="sucbJuridicalCountryLabel" layoutX="397.0" layoutY="74.0" text="Country" />
+                        <ChoiceBox fx:id="sucbJuridicalCity" layoutX="398.0" layoutY="146.0" prefHeight="26.0" prefWidth="153.0" />
+                        <Label fx:id="sucbJuridicalCityLabel" layoutX="398.0" layoutY="130.0" text="City" />
+                        <TextField fx:id="signUpJuridicalStreet" layoutX="397.0" layoutY="183.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Street" />
+                        <TextField fx:id="signUpJuridicalPostal" layoutX="397.0" layoutY="220.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Postal" />
+                        <Label fx:id="suJuridicalLabel" layoutX="397.0" layoutY="16.0" text="Juridical" />
                      </children>
                   </AnchorPane>
             </content>

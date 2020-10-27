@@ -28,4 +28,9 @@ public class City extends BaseOid implements Serializable {
 
     private String name;
     private Country country;
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
