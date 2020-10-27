@@ -4,20 +4,23 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import vilnius.tech.controller.crud.JuridicalUserCU;
+import vilnius.tech.controller.crud.PhysicalUserCU;
 import vilnius.tech.dal.City;
 import vilnius.tech.dal.Country;
 import vilnius.tech.dal.User;
 import vilnius.tech.session.Session;
 import vilnius.tech.utils.ChoiceBoxUtils;
-import vilnius.tech.utils.MessageBox;
+import vilnius.tech.utils.UsersUtils;
 import vilnius.tech.utils.controls.CityCountryChoiceBoxPair;
 import vilnius.tech.validation.Validator;
 import vilnius.tech.validation.validators.ChoiceBoxNotNullValidation;
 import vilnius.tech.validation.validators.TextLengthValidation;
+import vilnius.tech.validation.validators.UserExistsValidation;
+import vilnius.tech.validation.validators.UserValidValidation;
 import vilnius.tech.view.View;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class GatewayController extends SessionController {
@@ -33,45 +36,32 @@ public class GatewayController extends SessionController {
 
     @FXML
     public void initialize() {
-        signInValidator.register(new TextLengthValidation(sitfUsername, 6, 32));
-        signInValidator.register(new TextLengthValidation(sipfPassword, 6, 32));
+        signInValidator.register(0, new TextLengthValidation(sitfUsername, 5, 32));
+        signInValidator.register(0, new TextLengthValidation(sipfPassword, 5, 32));
+        signInValidator.register(5, new UserValidValidation(getSession(), sitfUsername, sipfPassword));
 
-        signUpValidator.register(new TextLengthValidation(sutfUsername, 6, 32));
-        signUpValidator.register(new TextLengthValidation(supfPassword, 6, 32));
-        signUpValidator.register(new ChoiceBoxNotNullValidation<String>(sucbUserType));
+        signUpValidator.register(0, new TextLengthValidation(sutfUsername, 5, 32));
+        signUpValidator.register(0, new TextLengthValidation(supfPassword, 5, 32));
+        signUpValidator.register(0, new ChoiceBoxNotNullValidation<>(sucbUserType));
+        signUpValidator.register(5, new UserExistsValidation(getSession(), sutfUsername));
+
+        new CityCountryChoiceBoxPair(getSession(), sucbCountry, sucbCity, signUpValidator);
+        new CityCountryChoiceBoxPair(getSession(), sucbJuridicalCountry, sucbJuridicalCity, signUpValidator);
 
         sucbUserType.setItems(FXCollections.observableArrayList(PHYSICAL, JURIDICAL));
         ChoiceBoxUtils.OnSelectionChanged(sucbUserType, this::onUserTypeChanged);
 
-        physicalChoiceBoxPair = new CityCountryChoiceBoxPair(getSession(), sucbCountry, sucbCity, signInValidator);
-        juridicalChoiceBoxPair = new CityCountryChoiceBoxPair(getSession(), sucbJuridicalCountry, sucbJuridicalCity, signInValidator);
-
-
         enableControls(null);
     }
-
-    private CityCountryChoiceBoxPair physicalChoiceBoxPair;
-    private CityCountryChoiceBoxPair juridicalChoiceBoxPair;
-    private Validator signInValidator;
-    private Validator signUpValidator;
-
-    @FXML
-    public TextField sitfUsername;
-
-    @FXML
-    public PasswordField sipfPassword;
 
     public void buttonSignInAction(ActionEvent actionEvent) throws IOException {
 
         if(!signInValidator.validate())
             return;
 
-        List<User> users = getSession().query(User.class, user -> matchCredentials(user, sitfUsername.getText(), sipfPassword.getText()));
-
-        if(users.size() != 1) {
-            MessageBox.show(Alert.AlertType.ERROR, "Authentication Failure", "Username or password incorrect.");
-            return;
-        }
+        var users = getSession().query(User.class, user -> UsersUtils.matchCredentials(user, sitfUsername.getText(), sipfPassword.getText()));
+        if(users.isEmpty())
+            throw new IllegalStateException("No user fetched after validation!");
 
         new View(new MainController(users.get(0), getSession()), getStage(), "Main").render("main.fxml");
 
@@ -82,35 +72,27 @@ public class GatewayController extends SessionController {
         if(!signUpValidator.validate())
             return;
 
-        if(sucbUserType.getValue() == null)
-        {
-            MessageBox.show(Alert.AlertType.ERROR, "User type unspecified", "Please select the type of the account you want to create.");
-            return;
+        var user = createUser();
+
+        new View(new MainController(user, getSession()), getStage(), "Main").render("main.fxml");
+    }
+
+    private User createUser() {
+        var userType = sucbUserType.getValue();
+        if(Objects.equals(userType, PHYSICAL)) {
+            return PhysicalUserCU.create(getSession(), sutfUsername.getText(), supfPassword.getText(), sucbCity.getValue(),
+                    signUpStreet.getText(), signUpPostal.getText(), signUpPhone.getText(), signUpEmail.getText(),
+                    signUpName.getText(), signUpSurname.getText());
         }
-
-        List<User> users = getSession().query(User.class, user -> matchUsername(user, sutfUsername.getText()));
-
-        if(users.size() > 0) {
-            MessageBox.show(Alert.AlertType.ERROR, "User exists", String.format("User with username %s already exists.", sutfUsername.getText()));
-            return;
+        else if (Objects.equals(userType, JURIDICAL)) {
+            return JuridicalUserCU.create(getSession(), sutfUsername.getText(), supfPassword.getText(), sucbCity.getValue(),
+                    signUpStreet.getText(), signUpPostal.getText(), signUpPhone.getText(), signUpEmail.getText(),
+                    signUpName.getText(), signUpSurname.getText(), signUpJuridicalName.getText(), sucbJuridicalCity.getValue(),
+                    signUpJuridicalStreet.getText(), signUpJuridicalPostal.getText());
         }
-
-        new View(new MainController(users.get(0), getSession()), getStage(), "Main").render("main.fxml");
-
+        throw new IllegalStateException(String.format("The selected user type '%s' is not valid!", userType));
     }
 
-
-    private boolean matchCredentials(User user, String username, String password) {
-        return matchUsername(user, username) && matchPassword(user, password);
-    }
-
-    private boolean matchPassword(User user, String value) {
-        return Objects.equals(user.getPassword(), value);
-    }
-
-    private boolean matchUsername(User user, String value) {
-        return Objects.equals(user.getUsername(), value);
-    }
 
     private void onUserTypeChanged(ChoiceBox<String> choiceBox, String userType) {
         enableControls(userType);
@@ -148,70 +130,33 @@ public class GatewayController extends SessionController {
         signUpJuridicalPostal.setVisible(selectedJuridical);
     }
 
-    @FXML
-    public TextField sutfUsername;
 
-    @FXML
-    public PasswordField supfPassword;
+    private final Validator signInValidator;
+    private final Validator signUpValidator;
 
-    @FXML
-    public ChoiceBox<String> sucbUserType;
 
-    @FXML
-    public Label suPhysicalLabel;
-
-    @FXML
-    public TextField signUpName;
-
-    @FXML
-    public TextField signUpSurname;
-
-    @FXML
-    public Label sucbCountryLabel;
-
-    @FXML
-    public ChoiceBox<Country> sucbCountry;
-
-    @FXML
-    public Label sucbCityLabel;
-
-    @FXML
-    public ChoiceBox<City> sucbCity;
-
-    @FXML
-    public TextField signUpStreet;
-
-    @FXML
-    public TextField signUpPostal;
-
-    @FXML
-    public TextField signUpEmail;
-
-    @FXML
-    public TextField signUpPhone;
-
-    @FXML
-    public Label suJuridicalLabel;
-
-    @FXML
-    public TextField signUpJuridicalName;
-
-    @FXML
-    public Label sucbJuridicalCountryLabel;
-
-    @FXML
-    public ChoiceBox<Country> sucbJuridicalCountry;
-
-    @FXML
-    public Label sucbJuridicalCityLabel;
-
-    @FXML
-    public ChoiceBox<City> sucbJuridicalCity;
-
-    @FXML
-    public TextField signUpJuridicalStreet;
-
-    @FXML
-    public TextField signUpJuridicalPostal;
-
+    @FXML public TextField sitfUsername;
+    @FXML public PasswordField sipfPassword;
+    @FXML public TextField sutfUsername;
+    @FXML public PasswordField supfPassword;
+    @FXML public ChoiceBox<String> sucbUserType;
+    @FXML public Label suPhysicalLabel;
+    @FXML public TextField signUpName;
+    @FXML public TextField signUpSurname;
+    @FXML public Label sucbCountryLabel;
+    @FXML public ChoiceBox<Country> sucbCountry;
+    @FXML public Label sucbCityLabel;
+    @FXML public ChoiceBox<City> sucbCity;
+    @FXML public TextField signUpStreet;
+    @FXML public TextField signUpPostal;
+    @FXML public TextField signUpEmail;
+    @FXML public TextField signUpPhone;
+    @FXML public Label suJuridicalLabel;
+    @FXML public TextField signUpJuridicalName;
+    @FXML public Label sucbJuridicalCountryLabel;
+    @FXML public ChoiceBox<Country> sucbJuridicalCountry;
+    @FXML public Label sucbJuridicalCityLabel;
+    @FXML public ChoiceBox<City> sucbJuridicalCity;
+    @FXML public TextField signUpJuridicalStreet;
+    @FXML public TextField signUpJuridicalPostal;
 }

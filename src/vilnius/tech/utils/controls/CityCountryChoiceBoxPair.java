@@ -23,7 +23,7 @@ public class CityCountryChoiceBoxPair {
         ChoiceBoxUtils.OnSelectionChanged(countries, this::onCountryChanged);
         ChoiceBoxUtils.OnSelectionChanged(cities, this::onCityChanged);
 
-        validator.register(new CountryCityValidation(this.countries, this.cities));
+        validator.register(1, new CountryCityValidation(this.countries, this.cities));
     }
 
 

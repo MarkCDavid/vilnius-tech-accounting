@@ -34,6 +34,7 @@ public class DatabaseSelection extends Controller {
         if(session == null)
             return;
 
+        getStage().setOnCloseRequest(windowEvent -> saveDatabase(session, file));
         switchToLogin(session);
     }
 
@@ -50,11 +51,13 @@ public class DatabaseSelection extends Controller {
         if(!saveDatabase(session, file))
             return;
 
+        getStage().setOnCloseRequest(windowEvent -> saveDatabase(session, file));
         switchToLogin(session);
     }
 
     public void switchToLogin(Session session) throws IOException {
         new View(new GatewayController(session), getStage(), "Gateway").render("gateway.fxml");
+
     }
 
     private Session openDatabase(File file) {

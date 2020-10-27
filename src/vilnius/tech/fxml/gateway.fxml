@@ -36,9 +36,9 @@
                         <Button layoutX="482.0" layoutY="298.0" mnemonicParsing="false" onAction="#buttonSignUpAction" text="Sign Up" />
                         <TextField fx:id="signUpName" layoutX="212.0" layoutY="36.0" prefHeight="26.0" prefWidth="154.0" promptText="Name" />
                         <TextField fx:id="signUpSurname" layoutX="212.0" layoutY="74.0" prefHeight="26.0" prefWidth="154.0" promptText="Surname" />
-                        <ChoiceBox fx:id="sucbCountry" layoutX="213.0" layoutY="125.0" prefHeight="26.0" prefWidth="153.0" />
+                        <ChoiceBox fx:id="sucbCountry" accessibleText="Country" layoutX="213.0" layoutY="125.0" prefHeight="26.0" prefWidth="153.0" />
                         <Label fx:id="sucbCountryLabel" layoutX="212.0" layoutY="104.0" text="Country" />
-                        <ChoiceBox fx:id="sucbCity" layoutX="213.0" layoutY="170.0" prefHeight="26.0" prefWidth="153.0" />
+                        <ChoiceBox fx:id="sucbCity" accessibleText="City" layoutX="213.0" layoutY="170.0" prefHeight="26.0" prefWidth="153.0" />
                         <Label fx:id="sucbCityLabel" layoutX="213.0" layoutY="154.0" text="City" />
                         <TextField fx:id="signUpStreet" layoutX="213.0" layoutY="207.0" prefHeight="26.0" prefWidth="154.0" promptText="Street" />
                         <TextField fx:id="signUpPostal" layoutX="213.0" layoutY="242.0" prefHeight="26.0" prefWidth="154.0" promptText="Postal" />
@@ -46,9 +46,9 @@
                         <TextField fx:id="signUpEmail" layoutX="212.0" layoutY="278.0" prefHeight="26.0" prefWidth="154.0" promptText="Email" />
                         <TextField fx:id="signUpPhone" layoutX="213.0" layoutY="310.0" prefHeight="26.0" prefWidth="154.0" promptText="Phone" />
                         <TextField fx:id="signUpJuridicalName" layoutX="397.0" layoutY="37.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Name" />
-                        <ChoiceBox fx:id="sucbJuridicalCountry" layoutX="398.0" layoutY="95.0" prefHeight="26.0" prefWidth="153.0" />
+                        <ChoiceBox fx:id="sucbJuridicalCountry" accessibleHelp="Juridical City" accessibleText="Juridical Country" layoutX="398.0" layoutY="95.0" prefHeight="26.0" prefWidth="153.0" />
                         <Label fx:id="sucbJuridicalCountryLabel" layoutX="397.0" layoutY="74.0" text="Country" />
-                        <ChoiceBox fx:id="sucbJuridicalCity" layoutX="398.0" layoutY="146.0" prefHeight="26.0" prefWidth="153.0" />
+                        <ChoiceBox fx:id="sucbJuridicalCity" accessibleText="Juridical City" layoutX="398.0" layoutY="146.0" prefHeight="26.0" prefWidth="153.0" />
                         <Label fx:id="sucbJuridicalCityLabel" layoutX="398.0" layoutY="130.0" text="City" />
                         <TextField fx:id="signUpJuridicalStreet" layoutX="397.0" layoutY="183.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Street" />
                         <TextField fx:id="signUpJuridicalPostal" layoutX="397.0" layoutY="220.0" prefHeight="26.0" prefWidth="154.0" promptText="Juridical Postal" />

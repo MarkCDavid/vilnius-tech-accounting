@@ -4,24 +4,32 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Control;
 import vilnius.tech.utils.MessageBox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Validator {
 
-    public void register(Validation validation) {
-        this.validations.add(validation);
+    public void register(int priority, Validation validation) {
+        if(!validations.containsKey(priority))
+            validations.put(priority, new ArrayList<>());
+
+        this.validations.get(priority).add(validation);
     }
 
     public boolean validate() {
         List<String> validationMessages = new ArrayList<>();
-        for(var validation: validations){
-            ValidationResult validationResult = validation.validate();
-            if(!validationResult.isValid())
-                validationMessages.add(validationResult.getMessage());
+        List<Integer> priorities = validations.keySet().stream().sorted().collect(Collectors.toList());
+        for(var priority: priorities){
+            if(!validationMessages.isEmpty())
+                break;
+
+            for(var validation: validations.get(priority)) {
+                ValidationResult validationResult = validation.validate();
+                if (!validationResult.isValid())
+                    validationMessages.add(validationResult.getMessage());
+            }
         }
+
         if(validationMessages.isEmpty())
             return true;
 
@@ -34,5 +42,5 @@ public class Validator {
     }
 
 
-    private final List<Validation> validations = new ArrayList<>();
+    private final Map<Integer, List<Validation>> validations = new HashMap<>();
 }
