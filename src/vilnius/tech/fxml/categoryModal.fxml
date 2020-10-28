@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="177.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="219.0" layoutY="137.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <Button layoutX="160.0" layoutY="137.0" mnemonicParsing="false" onAction="#onSave" text="Save" />
+      <TextField fx:id="textFieldCategoryName" layoutX="63.0" layoutY="63.0" promptText="Category Name" />
+      <Label layoutX="63.0" layoutY="47.0" text="Category Name" />
+   </children>
+</Pane>

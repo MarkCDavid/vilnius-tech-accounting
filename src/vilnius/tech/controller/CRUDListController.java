@@ -24,18 +24,18 @@ public abstract class CRUDListController<T extends BaseOid> extends SessionContr
     }
 
     protected abstract ObservableList<T> getDataSource();
-    protected abstract void onAddNew();
-    protected abstract void onUpdate(T item);
+    protected abstract void onAddNew() throws IOException;
+    protected abstract void onUpdate(T item) throws IOException;
 
     @FXML
-    private void onAddNewCore() {
+    private void onAddNewCore() throws IOException {
         onAddNew();
         this.listCrud.setItems(getDataSource());
     }
 
 
     @FXML
-    private void onUpdateCore() {
+    private void onUpdateCore() throws IOException {
         onUpdate(listCrud.getSelectionModel().getSelectedItem());
         this.listCrud.setItems(getDataSource());
     }

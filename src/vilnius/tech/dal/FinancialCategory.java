@@ -52,10 +52,25 @@ public class FinancialCategory extends BaseOid implements Serializable {
         this.parent = parent;
     }
 
+    @Override
+    public void delete() {
+        var childCategories = getSession().query(FinancialCategory.class, financialCategory -> financialCategory.getParent() == this);
+
+        for(var childCategory: childCategories)
+            childCategory.delete();
+
+        super.delete();
+    }
+
     private FinancialCategory parent;
     private String name;
     private User owner;
     private final List<User> responsibleUsers;
     private final List<Expense> expenses;
     private final List<Income> incomes;
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

@@ -4,9 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import vilnius.tech.seeds.CategorySeeder;
 import vilnius.tech.seeds.CountryCitySeeder;
+import vilnius.tech.seeds.ExpenseTypeSeeder;
+import vilnius.tech.seeds.IncomeTypeSeeder;
 import vilnius.tech.session.Serializer;
 import vilnius.tech.session.Session;
 import vilnius.tech.session.SessionSerializationException;
@@ -48,6 +50,10 @@ public class DatabaseSelection extends Controller {
 
         Session session = new Session();
         new CountryCitySeeder().seed(session);
+        new CategorySeeder().seed(session);
+        new IncomeTypeSeeder().seed(session);
+        new ExpenseTypeSeeder().seed(session);
+
         if(!saveDatabase(session, file))
             return;
 

@@ -37,8 +37,9 @@ public class MainController extends SessionController {
         new View(controller, getStage(), "Income Types", "listcrud.fxml").render();
     }
 
-    public void onManageTransactionCategories() {
-        System.out.println("CAT");
+    public void onManageTransactionCategories() throws IOException {
+        var controller = new CategoryController(getView(), getUser(), getSession());
+        new View(controller, getStage(), "Categories", "categories.fxml").render();
     }
 
     @FXML

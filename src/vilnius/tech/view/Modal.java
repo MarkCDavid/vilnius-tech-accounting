@@ -5,26 +5,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import vilnius.tech.controller.Controller;
+import vilnius.tech.controller.modal.ModalController;
 
 import java.io.IOException;
 
-public class Modal<T> {
-
+public class Modal<R> {
 
     protected final String title;
     protected final String path;
-    protected final Controller controller;
+    protected final ModalController<R> controller;
     protected final View owner;
 
-    public Modal(Controller controller, View owner, String title, String path) {
+    public Modal(ModalController<R> controller, View owner, String title, String path) {
         this.title = title;
         this.path = Constants.FXML_PATH + path;
         this.controller = controller;
         this.owner = owner;
+        this.controller.setModal(this);
     }
 
-    public T render() throws IOException {
+    public R render() throws IOException {
         Stage stage = new Stage();
         this.controller.setStage(stage);
 
@@ -36,7 +36,9 @@ public class Modal<T> {
         stage.setTitle(this.title);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(owner.getPrimaryStage().getOwner());
-        stage.show();
+        stage.showAndWait();
+
+        return this.controller.getModalResult();
     }
 
 

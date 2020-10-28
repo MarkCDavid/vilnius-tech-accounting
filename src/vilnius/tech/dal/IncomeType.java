@@ -29,4 +29,8 @@ public class IncomeType extends BaseOid implements Serializable {
     private String name;
     private String code;
 
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", name, code);
+    }
 }
