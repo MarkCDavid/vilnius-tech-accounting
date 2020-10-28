@@ -12,5 +12,6 @@
       <Button layoutX="63.0" layoutY="187.0" mnemonicParsing="false" onAction="#onManageExpenseTypes" text="Manage Expense Types" />
       <Button layoutX="322.0" layoutY="135.0" mnemonicParsing="false" onAction="#onManageTransactionCategories" text="Manage Transaction Categories" />
       <Label layoutX="351.0" layoutY="100.0" text="Transaction Management" />
+      <Button layoutX="484.0" layoutY="335.0" mnemonicParsing="false" onAction="#onLogOut" text="Log Out" />
    </children>
 </Pane>

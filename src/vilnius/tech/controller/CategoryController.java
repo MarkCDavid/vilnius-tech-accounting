@@ -34,6 +34,9 @@ public class CategoryController extends SessionController {
     @FXML
     public void initialize() {
         categoryTree.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(newValue == null)
+                return;
+
             var category = newValue.getValue();
             updateFields(category);
         });
@@ -176,7 +179,7 @@ public class CategoryController extends SessionController {
         if(selected == null)
             return;
 
-        var controller = new ExpenseCRUDListController(getView(), user, getSession());
+        var controller = new ExpenseCRUDListController(getView(), user,  selected, getSession());
         new View(controller, getStage(), "Responsible Users", "listcrud.fxml").render();
     }
 
@@ -185,7 +188,7 @@ public class CategoryController extends SessionController {
         if(selected == null)
             return;
 
-        var controller = new IncomeCRUDListController(getView(), user, getSession());
+        var controller = new IncomeCRUDListController(getView(), user, selected, getSession());
         new View(controller, getStage(), "Responsible Users", "listcrud.fxml").render();
     }
 

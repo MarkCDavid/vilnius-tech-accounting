@@ -50,5 +50,10 @@ public class Income extends BaseOid implements Serializable {
     private long sum;
     private ZonedDateTime dateTime;
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s - %s at %s", type, owner, sum, DATE_FORMAT.format(dateTime));
+    }
 }

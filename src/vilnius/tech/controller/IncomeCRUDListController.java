@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import vilnius.tech.controller.crud.IncomeCU;
 import vilnius.tech.controller.modal.IncomeModalController;
 import vilnius.tech.controller.modal.result.CashflowModalResult;
+import vilnius.tech.dal.FinancialCategory;
 import vilnius.tech.dal.Income;
 import vilnius.tech.dal.IncomeType;
 import vilnius.tech.dal.User;
@@ -16,13 +17,14 @@ import java.io.IOException;
 
 public class IncomeCRUDListController extends CRUDListController<Income> {
 
-    public IncomeCRUDListController(View previousView, User user, Session session) {
+    public IncomeCRUDListController(View previousView, User user, FinancialCategory category, Session session) {
         super(previousView, user, session);
+        this.category = category;
     }
 
     @Override
     protected ObservableList<Income> getDataSource() {
-        return FXCollections.observableArrayList(getSession().query(Income.class));
+        return FXCollections.observableArrayList(this.category.getIncomes());
     }
 
     @Override
@@ -32,7 +34,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         if(result == null)
             return;
 
-        IncomeCU.create(getSession(), result.getType(), getUser(), result.getSum());
+        this.category.getIncomes().add(IncomeCU.create(getSession(), result.getType(), getUser(), result.getSum()));
     }
 
     @Override
@@ -48,6 +50,12 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         IncomeCU.update(item, result.getType(), getUser(), result.getSum());
     }
 
+    @Override
+    protected void onDelete(Income item) throws IOException {
+        this.category.getIncomes().remove(item);
+        super.onDelete(item);
+    }
+
     private CashflowModalResult<IncomeType> getInitialResult(Income item) {
         if(item == null)
             return null;
@@ -57,4 +65,6 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         initialResult.setSum(item.getSum());
         return initialResult;
     }
+
+    private final FinancialCategory category;
 }

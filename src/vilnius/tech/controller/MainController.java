@@ -42,6 +42,11 @@ public class MainController extends SessionController {
         new View(controller, getStage(), "Categories", "categories.fxml").render();
     }
 
+    public void onLogOut() throws IOException {
+        var controller = new GatewayController(getSession());
+        new View(controller, getStage(), "Gateway", "gateway.fxml").render();
+    }
+
     @FXML
     Label labelLoggedInAs;
     private final User user;
