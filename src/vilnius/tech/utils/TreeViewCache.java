@@ -68,7 +68,7 @@ public class TreeViewCache<T> {
     }
 
 
-    private boolean rootExpanded = false;
+    private boolean rootExpanded = true;
     private T lastSelected = null;
 
     private final HashMap<T, Boolean> expansionCache = new HashMap<>();

@@ -26,6 +26,10 @@ public abstract class CRUDListController<T extends BaseOid> extends SessionContr
     protected abstract ObservableList<T> getDataSource();
     protected abstract void onAddNew() throws IOException;
     protected abstract void onUpdate(T item) throws IOException;
+    protected void onDelete(T item) throws IOException {
+        var baseOid = (BaseOid)item;
+        baseOid.delete();
+    }
 
     @FXML
     private void onAddNewCore() throws IOException {
@@ -41,13 +45,13 @@ public abstract class CRUDListController<T extends BaseOid> extends SessionContr
     }
 
     @FXML
-    public void onDeleteCore() {
-        var selectedItem = listCrud.getSelectionModel().getSelectedItem();
-        if(selectedItem == null)
+    public void onDeleteCore() throws IOException {
+        var item = listCrud.getSelectionModel().getSelectedItem();
+        if(item == null)
             return;
 
-        var baseOid = (BaseOid)selectedItem;
-        baseOid.delete();
+        onDelete(item);
+
         this.listCrud.setItems(getDataSource());
     }
 

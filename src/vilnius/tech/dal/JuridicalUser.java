@@ -38,4 +38,8 @@ public final class JuridicalUser extends User implements Serializable {
     private Address address;
     private PhysicalUser contactUser;
 
+    @Override
+    public String toString() {
+        return getUsername();
+    }
 }

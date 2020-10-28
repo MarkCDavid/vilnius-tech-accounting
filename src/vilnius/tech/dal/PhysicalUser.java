@@ -37,4 +37,9 @@ public final class PhysicalUser extends User implements Serializable {
     private String name;
     private String surname;
     private ContactInformation contactInformation;
+
+    @Override
+    public String toString() {
+        return getUsername();
+    }
 }
