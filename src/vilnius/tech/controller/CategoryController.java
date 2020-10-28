@@ -180,7 +180,7 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new ExpenseCRUDListController(getView(), user,  selected, getSession());
-        new View(controller, getStage(), "Responsible Users", "listcrud.fxml").render();
+        new View(controller, getStage(), "Expenses", "listcrud.fxml").render();
     }
 
     public void onIncome() throws IOException {
@@ -189,7 +189,7 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new IncomeCRUDListController(getView(), user, selected, getSession());
-        new View(controller, getStage(), "Responsible Users", "listcrud.fxml").render();
+        new View(controller, getStage(), "Incomes", "listcrud.fxml").render();
     }
 
     private final User user;

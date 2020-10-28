@@ -44,7 +44,7 @@ public class ExpenseTypeCRUDListController extends CRUDListController<ExpenseTyp
         if(item == null)
             return;
 
-        var modal = new Modal<>(new NameCodeModalController(getInitialResult(item)), getView(), "Update Income Type", "namecode.fxml");
+        var modal = new Modal<>(new NameCodeModalController(getInitialResult(item)), getView(), "Update Expense Type", "namecode.fxml");
         var result = modal.render();
         if(result == null)
             return;
