@@ -28,6 +28,10 @@ public abstract class BaseOid implements Serializable {
         this.oid = oid;
     }
 
+    public void delete() {
+        this.session.delete(this);
+    }
+
     private int oid;
     private final Session session;
 

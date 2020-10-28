@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="labelTemp" layoutX="282.0" layoutY="192.0" text="Label" />
+      <Label fx:id="labelLoggedInAs" layoutX="14.0" layoutY="14.0" text="Logged in as XXXXXXXXXXX" />
+      <Label layoutX="48.0" layoutY="100.0" text="Transaction Type Management" />
+      <Button layoutX="67.0" layoutY="135.0" mnemonicParsing="false" onAction="#onManageIncomeTypes" text="Manage Income Types" />
+      <Button layoutX="63.0" layoutY="187.0" mnemonicParsing="false" onAction="#onManageExpenseTypes" text="Manage Expense Types" />
+      <Button layoutX="322.0" layoutY="135.0" mnemonicParsing="false" onAction="#onManageTransactionCategories" text="Manage Transaction Categories" />
+      <Label layoutX="351.0" layoutY="100.0" text="Transaction Management" />
    </children>
 </Pane>

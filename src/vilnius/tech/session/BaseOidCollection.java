@@ -25,6 +25,14 @@ public class BaseOidCollection implements Serializable {
         return data.get(oid);
     }
 
+    public void delete(int oid) {
+        if(!data.containsKey(oid))
+            return;
+
+        data.remove(oid);
+    }
+
+
     public List<BaseOid> query(Predicate<BaseOid> predicate) {
         return data.values().stream().filter(predicate).collect(Collectors.toList());
     }

@@ -24,6 +24,11 @@ public class Session implements Serializable {
         data.get(value.getClassInfo()).put(value);
     }
 
+    public void delete(BaseOid value) {
+        ensureCollectionExists(value.getClassInfo());
+        data.get(value.getClassInfo()).delete(value.getOid());
+    }
+
     public <T extends BaseOid> T get(Class<T> classInfo, int oid) {
         ensureCollectionExists(classInfo);
 

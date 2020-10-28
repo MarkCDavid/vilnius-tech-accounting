@@ -10,21 +10,26 @@ import java.io.IOException;
 
 public class View {
 
-    protected static final String FXML_PATH = "/vilnius/tech/fxml/";
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     protected final Stage primaryStage;
     protected final String title;
     protected final Controller controller;
+    protected final String path;
 
-    public View(Controller controller, Stage stage, String title) {
+    public View(Controller controller, Stage stage, String title, String path) {
         this.primaryStage = stage;
         this.title = title;
+        this.path = Constants.FXML_PATH + path;
         this.controller = controller;
-        this.controller.setStage(stage);
+        this.controller.setStage(primaryStage);
+        this.controller.setView(this);
     }
 
-    public void render(String path) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_PATH + path));
-        System.out.println(FXML_PATH + path);
+    public void render() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(this.path));
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
 

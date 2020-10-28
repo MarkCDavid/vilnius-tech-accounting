@@ -56,7 +56,7 @@ public class DatabaseSelection extends Controller {
     }
 
     public void switchToLogin(Session session) throws IOException {
-        new View(new GatewayController(session), getStage(), "Gateway").render("gateway.fxml");
+        new View(new GatewayController(session), getStage(), "Gateway", "gateway.fxml").render();
 
     }
 

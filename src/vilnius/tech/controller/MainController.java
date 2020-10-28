@@ -4,22 +4,44 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import vilnius.tech.dal.User;
 import vilnius.tech.session.Session;
+import vilnius.tech.view.View;
+
+import java.io.IOException;
 
 public class MainController extends SessionController {
+    
+    private static final String LOGGED_IN_TEMPLATE = "Logged in as: %s";
 
     public MainController(User user, Session session) {
         super(session);
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+
     @FXML
     public void initialize() {
-        labelTemp.setText(user.getUsername());
+        labelLoggedInAs.setText(String.format(LOGGED_IN_TEMPLATE, user.getUsername()));
+    }
+
+    public void onManageExpenseTypes() throws IOException {
+        var controller = new ExpenseTypeCRUDListController(getView(), getUser(), getSession());
+        new View(controller, getStage(), "Expense Types", "listcrud.fxml").render();
+    }
+
+    public void onManageIncomeTypes() throws IOException {
+        var controller = new IncomeTypeCRUDListController(getView(), getUser(), getSession());
+        new View(controller, getStage(), "Income Types", "listcrud.fxml").render();
+    }
+
+    public void onManageTransactionCategories() {
+        System.out.println("CAT");
     }
 
     @FXML
-    Label labelTemp;
-
-
+    Label labelLoggedInAs;
     private final User user;
 }

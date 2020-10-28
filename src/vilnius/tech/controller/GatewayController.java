@@ -63,7 +63,7 @@ public class GatewayController extends SessionController {
         if(users.isEmpty())
             throw new IllegalStateException("No user fetched after validation!");
 
-        new View(new MainController(users.get(0), getSession()), getStage(), "Main").render("main.fxml");
+        new View(new MainController(users.get(0), getSession()), getStage(), "Main", "main.fxml").render();
 
     }
 
@@ -74,7 +74,7 @@ public class GatewayController extends SessionController {
 
         var user = createUser();
 
-        new View(new MainController(user, getSession()), getStage(), "Main").render("main.fxml");
+        new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml").render();
     }
 
     private User createUser() {

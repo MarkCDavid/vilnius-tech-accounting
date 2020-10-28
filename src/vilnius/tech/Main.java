@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        new View(new DatabaseSelection(), primaryStage, "Select Database").render("databaseSelection.fxml");
+        new View(new DatabaseSelection(), primaryStage, "Select Database", "databaseSelection.fxml").render();
     }
 
 
