@@ -11,21 +11,22 @@ public class CategorySeeder implements Seeder {
     @Override
     public void seed(Session session) {
         new UserSeeder().seed(session);
-        var user = session.query(User.class, u -> Objects.equals(u.getUsername(), "administrator")).get(0);
+        var administrator = session.query(User.class, u -> Objects.equals(u.getUsername(), "administrator")).get(0);
+        var aurimas = session.query(User.class, u -> Objects.equals(u.getUsername(), "Aurimas")).get(0);
 
-        var vehicles = createCategory(session, "Vehicles", user);
-        createVehicleCategories(session, vehicles, user, "AAA-000");
-        createVehicleCategories(session, vehicles, user, "BBB-001");
-        createVehicleCategories(session, vehicles, user, "AAA-002");
-        createVehicleCategories(session, vehicles, user, "AEF-023");
+        var vehicles = createCategory(session, "Vehicles", administrator);
+        createVehicleCategories(session, vehicles, administrator, "AAA-000");
+        createVehicleCategories(session, vehicles, administrator, "BBB-001");
+        createVehicleCategories(session, vehicles, administrator, "AAA-002");
+        createVehicleCategories(session, vehicles, administrator, "AEF-023");
 
-        var food = createCategory(session, "Food", user);
-        createCategory(session, "Delivery", user, food);
-        createCategory(session, "Eating Out", user, food);
+        var food = createCategory(session, "Food", administrator);
+        createCategory(session, "Delivery", aurimas, food);
+        createCategory(session, "Eating Out", aurimas, food);
 
-        var officeExpenses = createCategory(session, "Office expenses", user);
-        createCategory(session, "Paper", user, officeExpenses);
-        createCategory(session, "Electricity", user, officeExpenses);
+        var officeExpenses = createCategory(session, "Office expenses", administrator);
+        createCategory(session, "Paper", administrator, officeExpenses);
+        createCategory(session, "Electricity", aurimas, officeExpenses);
     }
 
     private void createVehicleCategories(Session session, FinancialCategory parent, User owner, String name) {

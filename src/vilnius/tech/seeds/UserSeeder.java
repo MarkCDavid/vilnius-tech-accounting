@@ -11,6 +11,11 @@ public class UserSeeder implements Seeder {
     @Override
     public void seed(Session session) {
         createPhysicalUser(session, "administrator", "administrator", "Admin", "Istrator");
+        createPhysicalUser(session, "Aurimas", "Aurimas", "Aurimas", "");
+        createPhysicalUser(session, "Jurgis", "Jurgis", "Jurgis", "");
+        createPhysicalUser(session, "Arminas", "Arminas", "Arminas", "");
+        createPhysicalUser(session, "Lietengis", "Lietengis", "Lietengis", "");
+        createPhysicalUser(session, "Vargis", "Vargis", "Vargis", "");
     }
 
 
