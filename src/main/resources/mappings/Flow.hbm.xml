@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.Flow" table = "FLOW">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
+
+        <property name = "sum" column = "sum" type = "long"/>
+        <property name = "dateTime" column = "dateTime" type = "date"/>
+
+        <many-to-one name = "category" column = "category" class="vilnius.tech.hibernate.FinancialCategory"  not-null="true"/>
+
+        <joined-subclass name = "vilnius.tech.hibernate.Income" table = "INCOME">
+            <key column="flow_id"/>
+            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.IncomeType" not-null="true"/>
+        </joined-subclass>
+
+
+        <joined-subclass name = "vilnius.tech.hibernate.Expense" table = "EXPENSE" >
+            <key column="flow_id"/>
+            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.ExpenseType" not-null="true"/>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

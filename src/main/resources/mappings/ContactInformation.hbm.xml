@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.ContactInformation" table = "CONTACT_INFORMATION">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address" not-null="true"/>
+
+        <property name = "email" column = "email" type = "string"/>
+        <property name = "phoneNumber" column = "phoneNumber" type = "string"/>
+
+        <set name = "physicalUsers" cascade="all">
+            <key column = "contactInformation"/>
+            <one-to-many class="vilnius.tech.hibernate.PhysicalUser"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>

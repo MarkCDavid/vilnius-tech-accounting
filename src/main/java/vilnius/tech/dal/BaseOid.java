@@ -2,9 +2,13 @@ package vilnius.tech.dal;
 
 import vilnius.tech.session.Session;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
+
 public abstract class BaseOid implements Serializable {
+
 
     public BaseOid(Session session, Class<? extends BaseOid> classInfo) {
         this.session = session;
@@ -33,6 +37,7 @@ public abstract class BaseOid implements Serializable {
     }
 
     private int oid;
+
     private final Session session;
 
     private final Class<? extends BaseOid> classInfo;

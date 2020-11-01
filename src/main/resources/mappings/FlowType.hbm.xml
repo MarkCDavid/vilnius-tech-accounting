@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.FlowType" table = "FLOW_TYPE">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+
+        <property name = "name" column = "name" type = "string"/>
+        <property name = "code" column = "code" type = "string"/>
+
+        <joined-subclass name = "vilnius.tech.hibernate.IncomeType" table = "INCOME_TYPE">
+            <key column="flowtype_id"/>
+            <set name = "incomes" cascade="all">
+                <key column = "type"/>
+                <one-to-many class="vilnius.tech.hibernate.Income"/>
+            </set>
+        </joined-subclass>
+
+        <joined-subclass name = "vilnius.tech.hibernate.ExpenseType" table = "EXPENSE_TYPE">
+            <key column="flowtype_id"/>
+            <set name = "expenses" cascade="all">
+                <key column = "type"/>
+                <one-to-many class="vilnius.tech.hibernate.Expense"/>
+            </set>
+        </joined-subclass>
+    </class>
+
+
+</hibernate-mapping>

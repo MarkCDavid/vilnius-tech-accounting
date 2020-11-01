@@ -1,0 +1,24 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.City" table = "CITY">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "name" column = "name" type = "string"/>
+
+        <many-to-one name = "country" column = "country" class="vilnius.tech.hibernate.Country" not-null="true"/>
+
+        <set name = "addresses" cascade="all">
+            <key column = "city"/>
+            <one-to-many class="vilnius.tech.hibernate.Address"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>

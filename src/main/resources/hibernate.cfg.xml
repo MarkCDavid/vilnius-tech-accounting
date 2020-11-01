@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.dialect">org.hibernate.dialect.MariaDB10Dialect</property>
+
+        <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
+
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/accounting</property>
+
+        <property name="hibernate.connection.username">aurimas</property>
+
+        <property name="hibernate.connection.password">aurimas</property>
+
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <property name="hibernate.connection.autocommit">true</property>
+
+        <mapping resource="mappings/Address.hbm.xml"/>
+        <mapping resource="mappings/City.hbm.xml"/>
+        <mapping resource="mappings/ContactInformation.hbm.xml"/>
+        <mapping resource="mappings/Country.hbm.xml"/>
+        <mapping resource="mappings/FlowType.hbm.xml"/>
+        <mapping resource="mappings/Flow.hbm.xml"/>
+        <mapping resource="mappings/User.hbm.xml"/>
+
+        <mapping resource="mappings/FinancialCategory.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

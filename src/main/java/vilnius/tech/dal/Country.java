@@ -2,6 +2,7 @@ package vilnius.tech.dal;
 
 import vilnius.tech.session.Session;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 public class Country extends BaseOid implements Serializable {

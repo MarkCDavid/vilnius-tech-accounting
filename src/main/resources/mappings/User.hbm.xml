@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.User" table = "USER">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "username" column = "username" type = "string"/>
+        <property name = "password" column = "password" type = "string"/>
+
+        <set name = "ownedCategories" cascade="all">
+            <key column = "owner"/>
+            <one-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
+        </set>
+
+        <set name = "responsibleForCategories" cascade="save-update" table="RESPONSIBLE_FOR_CATEGORY">
+            <key column = "user_id"/>
+            <many-to-many column = "category_id" class="vilnius.tech.hibernate.FinancialCategory"/>
+        </set>
+
+        <joined-subclass name = "vilnius.tech.hibernate.JuridicalUser" table = "JURIDICAL_USER">
+            <key column="user_id"/>
+            <property name = "name" column = "name" type = "string"/>
+            <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address" not-null="true"/>
+            <many-to-one name = "contactUser" column = "contactUser" class="vilnius.tech.hibernate.PhysicalUser" not-null="true"/>
+        </joined-subclass>
+
+        <joined-subclass name = "vilnius.tech.hibernate.PhysicalUser" table = "PHYSICAL_USER">
+            <key column="user_id"/>
+            <property name = "name" column = "name" type = "string"/>
+            <property name = "surname" column = "surname" type = "string"/>
+            <many-to-one name = "contactInformation" column = "contactInformation" class="vilnius.tech.hibernate.ContactInformation" not-null="true"/>
+
+            <set name = "juridicalContact" cascade="all">
+                <key column = "contactUser"/>
+                <one-to-many class="vilnius.tech.hibernate.JuridicalUser"/>
+            </set>
+        </joined-subclass>
+
+    </class>
+
+</hibernate-mapping>

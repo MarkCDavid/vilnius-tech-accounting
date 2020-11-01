@@ -1,0 +1,41 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "vilnius.tech.hibernate.FinancialCategory" table = "CATEGORY">
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name = "parent" column = "parent" class="vilnius.tech.hibernate.FinancialCategory"/>
+
+        <set name = "children" cascade="all">
+            <key column = "parent"/>
+            <one-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
+        </set>
+
+        <property name = "name" column = "name" type = "string"/>
+
+        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
+
+        <set name = "responsibleUsers" cascade="save-update" table="RESPONSIBLE_FOR_CATEGORY">
+            <key column = "category_id"/>
+            <many-to-many column = "user_id" class="vilnius.tech.hibernate.FinancialCategory"/>
+        </set>
+
+        <set name = "expenses" cascade="all">
+            <key column = "category"/>
+            <one-to-many class="vilnius.tech.hibernate.Expense"/>
+        </set>
+
+        <set name = "incomes" cascade="all">
+            <key column = "category"/>
+            <one-to-many class="vilnius.tech.hibernate.Income"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>
