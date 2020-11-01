@@ -1,7 +1,7 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PhysicalUser extends User {
 
@@ -9,17 +9,16 @@ public class PhysicalUser extends User {
     private String surname;
 
     private ContactInformation contactInformation;
-    private List<JuridicalUser> juridicalContact = new ArrayList<>();
+    private Set<JuridicalUser> juridicalContact = new HashSet<>();
 
     public PhysicalUser() {
     }
 
-    public PhysicalUser(Integer id, String username, String password, List<FinancialCategory> ownedCategories, List<FinancialCategory> responsibleForCategories, String name, String surname, ContactInformation contactInformation, List<JuridicalUser> juridicalContact) {
-        super(id, username, password, ownedCategories, responsibleForCategories);
+    public PhysicalUser(String username, String password, String name, String surname, ContactInformation contactInformation) {
+        super(username, password);
         this.name = name;
         this.surname = surname;
         this.contactInformation = contactInformation;
-        this.juridicalContact = juridicalContact;
     }
 
     public String getName() {
@@ -46,11 +45,11 @@ public class PhysicalUser extends User {
         this.contactInformation = contactInformation;
     }
 
-    public List<JuridicalUser> getJuridicalContact() {
+    public Set<JuridicalUser> getJuridicalContact() {
         return juridicalContact;
     }
 
-    public void setJuridicalContact(List<JuridicalUser> juridicalContact) {
+    public void setJuridicalContact(Set<JuridicalUser> juridicalContact) {
         this.juridicalContact = juridicalContact;
     }
 }

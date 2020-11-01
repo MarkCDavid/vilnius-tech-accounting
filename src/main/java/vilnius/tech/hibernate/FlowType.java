@@ -10,8 +10,7 @@ public class FlowType {
     public FlowType() {
     }
 
-    public FlowType(Integer id, String name, String code) {
-        this.id = id;
+    public FlowType(String name, String code) {
         this.name = name;
         this.code = code;
     }

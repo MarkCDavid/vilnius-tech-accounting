@@ -13,8 +13,7 @@ public class Flow {
     public Flow() {
     }
 
-    public Flow(Integer id, User owner, long sum, ZonedDateTime dateTime, FinancialCategory category) {
-        this.id = id;
+    public Flow(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category) {
         this.owner = owner;
         this.sum = sum;
         this.dateTime = dateTime;

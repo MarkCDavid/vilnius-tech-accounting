@@ -6,8 +6,8 @@ public class Income extends Flow {
 
     private IncomeType type;
 
-    public Income(Integer id, User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, IncomeType type) {
-        super(id, owner, sum, dateTime, category);
+    public Income(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, IncomeType type) {
+        super(owner, sum, dateTime, category);
         this.type = type;
     }
 

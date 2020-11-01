@@ -1,32 +1,27 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FinancialCategory {
 
     private Integer id;
 
     private FinancialCategory parent;
-    private List<FinancialCategory> children = new ArrayList<>();
+    private Set<FinancialCategory> children = new HashSet<>();
     private String name;
     private PhysicalUser owner;
-    private List<User> responsibleUsers = new ArrayList<>();
-    private List<Expense> expenses = new ArrayList<>();
-    private List<Income> incomes = new ArrayList<>();
+    private Set<User> responsibleUsers = new HashSet<>();
+    private Set<Expense> expenses = new HashSet<>();
+    private Set<Income> incomes = new HashSet<>();
 
     public FinancialCategory() {
     }
 
-    public FinancialCategory(Integer id, FinancialCategory parent, List<FinancialCategory> children, String name, PhysicalUser owner, List<User> responsibleUsers, List<Expense> expenses, List<Income> incomes) {
-        this.id = id;
+    public FinancialCategory(FinancialCategory parent, String name, PhysicalUser owner) {
         this.parent = parent;
-        this.children = children;
         this.name = name;
         this.owner = owner;
-        this.responsibleUsers = responsibleUsers;
-        this.expenses = expenses;
-        this.incomes = incomes;
     }
 
     public Integer getId() {
@@ -45,11 +40,11 @@ public class FinancialCategory {
         this.parent = parent;
     }
 
-    public List<FinancialCategory> getChildren() {
+    public Set<FinancialCategory> getChildren() {
         return children;
     }
 
-    public void setChildren(List<FinancialCategory> children) {
+    public void setChildren(Set<FinancialCategory> children) {
         this.children = children;
     }
 
@@ -69,27 +64,27 @@ public class FinancialCategory {
         this.owner = owner;
     }
 
-    public List<User> getResponsibleUsers() {
+    public Set<User> getResponsibleUsers() {
         return responsibleUsers;
     }
 
-    public void setResponsibleUsers(List<User> responsibleUsers) {
+    public void setResponsibleUsers(Set<User> responsibleUsers) {
         this.responsibleUsers = responsibleUsers;
     }
 
-    public List<Expense> getExpenses() {
+    public Set<Expense> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Expense> expenses) {
+    public void setExpenses(Set<Expense> expenses) {
         this.expenses = expenses;
     }
 
-    public List<Income> getIncomes() {
+    public Set<Income> getIncomes() {
         return incomes;
     }
 
-    public void setIncomes(List<Income> incomes) {
+    public void setIncomes(Set<Income> incomes) {
         this.incomes = incomes;
     }
 }

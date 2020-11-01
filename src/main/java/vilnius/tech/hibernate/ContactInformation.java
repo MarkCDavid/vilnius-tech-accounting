@@ -1,7 +1,7 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ContactInformation {
 
@@ -9,12 +9,12 @@ public class ContactInformation {
 
     private Address address;
 
-    public ContactInformation(Integer id, Address address, String email, String phoneNumber, List<PhysicalUser> physicalUsers) {
-        this.id = id;
+    private Set<PhysicalUser> physicalUsers = new HashSet<>();
+
+    public ContactInformation(Address address, String email, String phoneNumber) {
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.physicalUsers = physicalUsers;
     }
 
     public ContactInformation() {
@@ -56,13 +56,11 @@ public class ContactInformation {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<PhysicalUser> getPhysicalUsers() {
+    public Set<PhysicalUser> getPhysicalUsers() {
         return physicalUsers;
     }
 
-    public void setPhysicalUsers(List<PhysicalUser> physicalUsers) {
+    public void setPhysicalUsers(Set<PhysicalUser> physicalUsers) {
         this.physicalUsers = physicalUsers;
     }
-
-    private List<PhysicalUser> physicalUsers = new ArrayList<>();
 }

@@ -1,26 +1,25 @@
 package vilnius.tech.hibernate;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class IncomeType extends FlowType {
 
-    private List<Income> incomes = new ArrayList<>();
+    private Set<Income> incomes = new HashSet<>();
 
     public IncomeType() {
     }
 
-    public IncomeType(Integer id, String name, String code, List<Income> incomes) {
-        super(id, name, code);
-        this.incomes = incomes;
+    public IncomeType(String name, String code) {
+        super(name, code);
     }
 
-    public List<Income> getIncomes() {
+    public Set<Income> getIncomes() {
         return incomes;
     }
 
-    public void setIncomes(List<Income> incomes) {
+    public void setIncomes(Set<Income> incomes) {
         this.incomes = incomes;
     }
 

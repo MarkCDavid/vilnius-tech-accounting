@@ -1,25 +1,26 @@
 package vilnius.tech.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExpenseType extends FlowType {
 
-    private List<Expense> expenses = new ArrayList<>();
+    private Set<Expense> expenses = new HashSet<>();
 
     public ExpenseType() {
     }
 
-    public ExpenseType(Integer id, String name, String code, List<Expense> expenses) {
-        super(id, name, code);
-        this.expenses = expenses;
+    public ExpenseType(String name, String code) {
+        super(name, code);
     }
 
-    public List<Expense> getExpenses() {
+    public Set<Expense> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<Expense> expenses) {
+    public void setExpenses(Set<Expense> expenses) {
         this.expenses = expenses;
     }
 

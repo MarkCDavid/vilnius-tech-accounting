@@ -1,7 +1,7 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User {
 
@@ -10,18 +10,15 @@ public class User {
     private String username;
     private String password;
 
-    private List<FinancialCategory> ownedCategories = new ArrayList<>();
-    private List<FinancialCategory> responsibleForCategories = new ArrayList<>();
+    private Set<FinancialCategory> ownedCategories = new HashSet<>();
+    private Set<FinancialCategory> responsibleForCategories = new HashSet<>();
 
     public User() {
     }
 
-    public User(Integer id, String username, String password, List<FinancialCategory> ownedCategories, List<FinancialCategory> responsibleForCategories) {
-        this.id = id;
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.ownedCategories = ownedCategories;
-        this.responsibleForCategories = responsibleForCategories;
     }
 
     public Integer getId() {
@@ -48,19 +45,19 @@ public class User {
         this.password = password;
     }
 
-    public List<FinancialCategory> getOwnedCategories() {
+    public Set<FinancialCategory> getOwnedCategories() {
         return ownedCategories;
     }
 
-    public void setOwnedCategories(List<FinancialCategory> ownedCategories) {
+    public void setOwnedCategories(Set<FinancialCategory> ownedCategories) {
         this.ownedCategories = ownedCategories;
     }
 
-    public List<FinancialCategory> getResponsibleForCategories() {
+    public Set<FinancialCategory> getResponsibleForCategories() {
         return responsibleForCategories;
     }
 
-    public void setResponsibleForCategories(List<FinancialCategory> responsibleForCategories) {
+    public void setResponsibleForCategories(Set<FinancialCategory> responsibleForCategories) {
         this.responsibleForCategories = responsibleForCategories;
     }
 }

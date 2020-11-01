@@ -1,15 +1,13 @@
 package vilnius.tech.hibernate;
 
-import java.util.List;
-
 public class JuridicalUser extends User {
 
     private String name;
     private Address address;
     private PhysicalUser contactUser;
 
-    public JuridicalUser(Integer id, String username, String password, List<FinancialCategory> ownedCategories, List<FinancialCategory> responsibleForCategories, String name, Address address, PhysicalUser contactUser) {
-        super(id, username, password, ownedCategories, responsibleForCategories);
+    public JuridicalUser(String username, String password, String name, Address address, PhysicalUser contactUser) {
+        super( username, password);
         this.name = name;
         this.address = address;
         this.contactUser = contactUser;

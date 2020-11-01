@@ -1,10 +1,9 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Address {
-
 
     private Integer id;
 
@@ -12,16 +11,13 @@ public class Address {
 
     private String street;
     private String postal;
-    private List<ContactInformation> contactInformations = new ArrayList<>();
-    private List<JuridicalUser> juridicalUsersAtAddress = new ArrayList<>();
+    private Set<ContactInformation> contactInformations = new HashSet<>();
+    private Set<JuridicalUser> juridicalUsersAtAddress = new HashSet<>();
 
-    public Address(Integer id, City city, String street, String postal, List<ContactInformation> contactInformations, List<JuridicalUser> juridicalUsersAtAddress) {
-        this.id = id;
+    public Address(City city, String street, String postal) {
         this.city = city;
         this.street = street;
         this.postal = postal;
-        this.contactInformations = contactInformations;
-        this.juridicalUsersAtAddress = juridicalUsersAtAddress;
     }
 
     public Address() {
@@ -60,19 +56,19 @@ public class Address {
         this.postal = postal;
     }
 
-    public List<ContactInformation> getContactInformations() {
+    public Set<ContactInformation> getContactInformations() {
         return contactInformations;
     }
 
-    public void setContactInformations(List<ContactInformation> contactInformations) {
+    public void setContactInformations(Set<ContactInformation> contactInformations) {
         this.contactInformations = contactInformations;
     }
 
-    public List<JuridicalUser> getJuridicalUsersAtAddress() {
+    public Set<JuridicalUser> getJuridicalUsersAtAddress() {
         return juridicalUsersAtAddress;
     }
 
-    public void setJuridicalUsersAtAddress(List<JuridicalUser> juridicalUsersAtAddress) {
+    public void setJuridicalUsersAtAddress(Set<JuridicalUser> juridicalUsersAtAddress) {
         this.juridicalUsersAtAddress = juridicalUsersAtAddress;
     }
 

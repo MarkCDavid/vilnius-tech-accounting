@@ -1,7 +1,7 @@
 package vilnius.tech.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class City {
 
@@ -10,16 +10,14 @@ public class City {
     private String name;
 
     private Country country;
-    private List<Address> addresses = new ArrayList<>();
+    private Set<Address> addresses = new HashSet<>();
 
     public City() {
     }
 
-    public City(Integer id, String name, Country country, List<Address> addresses) {
-        this.id = id;
+    public City(String name, Country country) {
         this.name = name;
         this.country = country;
-        this.addresses = addresses;
     }
 
     public Integer getId() {
@@ -46,11 +44,11 @@ public class City {
         this.country = country;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 }
