@@ -16,6 +16,7 @@
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
           <factory-entry name="Accounting" value="7d24efea-6b76-4adf-8c79-119d7bc50112" />
+          <factory-entry name="vilnius-tech-accounting" />
         </datasource-mapping>
         <naming-strategy-map>
           <unit-entry name="Accounting" />
