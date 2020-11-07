@@ -2,7 +2,7 @@ package vilnius.tech.hibernate;
 
 import java.time.ZonedDateTime;
 
-public class Flow {
+public class Flow implements BaseEntity  {
 
     private Integer id;
     private User owner;

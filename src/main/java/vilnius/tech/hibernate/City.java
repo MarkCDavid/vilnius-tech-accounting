@@ -3,7 +3,7 @@ package vilnius.tech.hibernate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class City {
+public class City implements BaseEntity  {
 
     private Integer id;
 

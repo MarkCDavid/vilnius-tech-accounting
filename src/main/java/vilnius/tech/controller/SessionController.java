@@ -1,6 +1,6 @@
 package vilnius.tech.controller;
 
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
 
 public abstract class SessionController extends Controller {
 

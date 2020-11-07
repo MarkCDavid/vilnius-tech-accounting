@@ -4,14 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import vilnius.tech.controller.crud.JuridicalUserCU;
-import vilnius.tech.controller.crud.PhysicalUserCU;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
-import vilnius.tech.dal.User;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.City;
+import vilnius.tech.hibernate.Country;
+import vilnius.tech.hibernate.User;
+import vilnius.tech.hibernate.controller.*;
 import vilnius.tech.utils.ChoiceBoxUtils;
-import vilnius.tech.utils.UsersUtils;
 import vilnius.tech.utils.controls.CityCountryChoiceBoxPair;
 import vilnius.tech.validation.Validator;
 import vilnius.tech.validation.validators.ChoiceBoxNotNullValidation;
@@ -59,12 +57,15 @@ public class GatewayController extends SessionController {
         if(!signInValidator.validate())
             return;
 
-        var users = getSession().query(User.class, user -> UsersUtils.matchCredentials(user, sitfUsername.getText(), sipfPassword.getText()));
-        if(users.isEmpty())
+        var userController = new UserController(getSession());
+
+
+        var user = userController.find_UsernamePassword(sitfUsername.getText(), sipfPassword.getText());
+
+        if(user == null)
             throw new IllegalStateException("No user fetched after validation!");
 
-        new View(new MainController(users.get(0), getSession()), getStage(), "Main", "main.fxml").render();
-
+        new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml").render();
     }
 
     public void buttonSignUpAction(ActionEvent actionEvent) throws IOException {
@@ -79,16 +80,39 @@ public class GatewayController extends SessionController {
 
     private User createUser() {
         var userType = sucbUserType.getValue();
+
+        var addressController = new AddressController(getSession());
+        var contactInformationController = new ContactInformationController(getSession());
+        var physicalUserController = new PhysicalUserController(getSession());
+
+        var address = addressController.create(sucbCity.getValue(), signUpPhone.getText(), signUpEmail.getText());
+        var contactInformation = contactInformationController.create(
+                address, signUpEmail.getText(), signUpPhone.getText()
+        );
+
         if(Objects.equals(userType, PHYSICAL)) {
-            return PhysicalUserCU.create(getSession(), sutfUsername.getText(), supfPassword.getText(), sucbCity.getValue(),
-                    signUpStreet.getText(), signUpPostal.getText(), signUpPhone.getText(), signUpEmail.getText(),
-                    signUpName.getText(), signUpSurname.getText());
+            return physicalUserController.create(
+                    sutfUsername.getText(), supfPassword.getText(),
+                    signUpName.getText(), signUpSurname.getText(),
+                    contactInformation
+            );
         }
         else if (Objects.equals(userType, JURIDICAL)) {
-            return JuridicalUserCU.create(getSession(), sutfUsername.getText(), supfPassword.getText(), sucbCity.getValue(),
-                    signUpStreet.getText(), signUpPostal.getText(), signUpPhone.getText(), signUpEmail.getText(),
-                    signUpName.getText(), signUpSurname.getText(), signUpJuridicalName.getText(), sucbJuridicalCity.getValue(),
-                    signUpJuridicalStreet.getText(), signUpJuridicalPostal.getText());
+            var juridicalAddress = addressController.create(
+                    sucbJuridicalCity.getValue(), signUpJuridicalStreet.getText(), signUpJuridicalPostal.getText()
+            );
+
+            var physicalUser = physicalUserController.create(
+                    null, null,
+                    signUpName.getText(), signUpSurname.getText(),
+                    contactInformation
+            );
+
+            var juridicalUserController = new JuridicalUserController(getSession());
+            return juridicalUserController.create(
+                    sutfUsername.getText(), supfPassword.getText(), signUpJuridicalName.getText(),
+                    juridicalAddress, physicalUser
+            );
         }
         throw new IllegalStateException(String.format("The selected user type '%s' is not valid!", userType));
     }

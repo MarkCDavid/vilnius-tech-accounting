@@ -1,6 +1,6 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
 
 public interface Seeder {
 

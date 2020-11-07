@@ -3,14 +3,14 @@ package vilnius.tech.hibernate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FinancialCategory {
+public class FinancialCategory implements BaseEntity  {
 
     private Integer id;
 
     private FinancialCategory parent;
     private Set<FinancialCategory> children = new HashSet<>();
     private String name;
-    private PhysicalUser owner;
+    private User owner;
     private Set<User> responsibleUsers = new HashSet<>();
     private Set<Expense> expenses = new HashSet<>();
     private Set<Income> incomes = new HashSet<>();
@@ -18,7 +18,7 @@ public class FinancialCategory {
     public FinancialCategory() {
     }
 
-    public FinancialCategory(FinancialCategory parent, String name, PhysicalUser owner) {
+    public FinancialCategory(FinancialCategory parent, String name, User owner) {
         this.parent = parent;
         this.name = name;
         this.owner = owner;
@@ -56,11 +56,11 @@ public class FinancialCategory {
         this.name = name;
     }
 
-    public PhysicalUser getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(PhysicalUser owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 

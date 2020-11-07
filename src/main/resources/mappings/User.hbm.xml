@@ -26,15 +26,15 @@
         <joined-subclass name = "vilnius.tech.hibernate.JuridicalUser" table = "JURIDICAL_USER">
             <key column="user_id"/>
             <property name = "name" column = "name" type = "string"/>
-            <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address" not-null="true"/>
-            <many-to-one name = "contactUser" column = "contactUser" class="vilnius.tech.hibernate.PhysicalUser" not-null="true"/>
+            <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address"/>
+            <many-to-one name = "contactUser" column = "contactUser" class="vilnius.tech.hibernate.PhysicalUser"/>
         </joined-subclass>
 
         <joined-subclass name = "vilnius.tech.hibernate.PhysicalUser" table = "PHYSICAL_USER">
             <key column="user_id"/>
             <property name = "name" column = "name" type = "string"/>
             <property name = "surname" column = "surname" type = "string"/>
-            <many-to-one name = "contactInformation" column = "contactInformation" class="vilnius.tech.hibernate.ContactInformation" not-null="true"/>
+            <many-to-one name = "contactInformation" column = "contactInformation" class="vilnius.tech.hibernate.ContactInformation"/>
 
             <set name = "juridicalContact" cascade="all">
                 <key column = "contactUser"/>

@@ -1,8 +1,9 @@
 package vilnius.tech.validation.validators;
 
 import javafx.scene.control.TextInputControl;
+import org.hibernate.Session;
 import vilnius.tech.dal.User;
-import vilnius.tech.session.Session;
+import vilnius.tech.hibernate.controller.UserController;
 import vilnius.tech.utils.UsersUtils;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.ValidationResult;
@@ -15,15 +16,16 @@ public class UserValidValidation implements Validation {
         this.session = session;
         this.usernameControl = usernameControl;
         this.passwordControl = passwordControl;
+        this.userController = new UserController(session);
     }
 
     @Override
     public ValidationResult validate() {
-        String username = usernameControl.getText();
-        String password = passwordControl.getText();
-        List<User> users = session.query(User.class, user -> UsersUtils.matchCredentials(user, username, password));
+        var username = usernameControl.getText();
+        var password = passwordControl.getText();
+        var user = userController.find_UsernamePassword(username, password);
 
-        if(users.size() != 1) {
+        if(user == null) {
             return ValidationResult.BAD("Invalid username or password!");
         }
         return ValidationResult.OK();
@@ -32,4 +34,5 @@ public class UserValidValidation implements Validation {
     private final Session session;
     private final TextInputControl usernameControl;
     private final TextInputControl passwordControl;
+    private final UserController userController;
 }

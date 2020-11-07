@@ -1,6 +1,6 @@
 package vilnius.tech.hibernate;
 
-public class FlowType {
+public class FlowType implements BaseEntity {
 
     private Integer id;
 

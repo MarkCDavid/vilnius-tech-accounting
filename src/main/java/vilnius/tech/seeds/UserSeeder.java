@@ -1,16 +1,14 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.dal.Country;
-import vilnius.tech.dal.FinancialCategory;
-import vilnius.tech.dal.PhysicalUser;
-import vilnius.tech.dal.User;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.PhysicalUser;
+import vilnius.tech.hibernate.controller.PhysicalUserController;
 
 public class UserSeeder implements Seeder {
 
     @Override
     public void seed(Session session) {
-        createPhysicalUser(session, "administrator", "administrator", "Admin", "Istrator");
+        createPhysicalUser(session, "administrator", "administrator", "administrator", "");
         createPhysicalUser(session, "Aurimas", "Aurimas", "Aurimas", "");
         createPhysicalUser(session, "Jurgis", "Jurgis", "Jurgis", "");
         createPhysicalUser(session, "Arminas", "Arminas", "Arminas", "");
@@ -20,11 +18,7 @@ public class UserSeeder implements Seeder {
 
 
     private PhysicalUser createPhysicalUser(Session session, String username, String password, String name, String surname) {
-        PhysicalUser user = new PhysicalUser(session);
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setName(name);
-        user.setSurname(surname);
-        return user;
+        var controller = new PhysicalUserController(session);
+        return controller.create(username, password, name, surname, null);
     }
 }

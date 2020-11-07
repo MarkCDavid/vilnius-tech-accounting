@@ -1,8 +1,8 @@
 package vilnius.tech.validation.validators;
 
 import javafx.scene.control.ChoiceBox;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
+import vilnius.tech.hibernate.City;
+import vilnius.tech.hibernate.Country;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.ValidationResult;
 

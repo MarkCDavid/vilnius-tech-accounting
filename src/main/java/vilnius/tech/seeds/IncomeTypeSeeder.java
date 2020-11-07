@@ -1,7 +1,8 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.dal.IncomeType;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.IncomeType;
+import vilnius.tech.hibernate.controller.IncomeTypeController;
 
 public class IncomeTypeSeeder implements Seeder {
 
@@ -13,12 +14,8 @@ public class IncomeTypeSeeder implements Seeder {
         createType(session, "Sales", "SLS");
     }
 
-
-
     private IncomeType createType(Session session, String name, String code) {
-        IncomeType type = new IncomeType(session);
-        type.setName(name);
-        type.setCode(code);
-        return type;
+        var controller = new IncomeTypeController(session);
+        return controller.create(name, code);
     }
 }

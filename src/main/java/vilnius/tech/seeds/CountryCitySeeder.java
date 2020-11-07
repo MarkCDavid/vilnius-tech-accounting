@@ -1,8 +1,10 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.City;
+import vilnius.tech.hibernate.Country;
+import vilnius.tech.hibernate.controller.CityController;
+import vilnius.tech.hibernate.controller.CountryController;
 
 public class CountryCitySeeder implements Seeder {
 
@@ -47,16 +49,12 @@ public class CountryCitySeeder implements Seeder {
     }
 
     private Country createCountry(Session session, String name, String code) {
-        Country country = new Country(session);
-        country.setName(name);
-        country.setCode(code);
-        return country;
+        var controller = new CountryController(session);
+        return controller.create(name, code);
     }
 
     private City createCity(Session session, String name, Country country) {
-        City city = new City(session);
-        city.setName(name);
-        city.setCountry(country);
-        return city;
+        var controller = new CityController(session);
+        return controller.create(name, country);
     }
 }

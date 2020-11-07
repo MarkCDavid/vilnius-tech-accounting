@@ -19,6 +19,7 @@ public class View {
     protected final Controller controller;
     protected final String path;
 
+
     public View(Controller controller, Stage stage, String title, String path) {
         this.primaryStage = stage;
         this.title = title;

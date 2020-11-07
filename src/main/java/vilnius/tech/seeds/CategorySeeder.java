@@ -1,18 +1,21 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.dal.*;
-import vilnius.tech.session.Session;
-
-import java.util.Objects;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.FinancialCategory;
+import vilnius.tech.hibernate.User;
+import vilnius.tech.hibernate.controller.FinancialCategoryController;
+import vilnius.tech.hibernate.controller.UserController;
 
 public class CategorySeeder implements Seeder {
-
 
     @Override
     public void seed(Session session) {
         new UserSeeder().seed(session);
-        var administrator = session.query(User.class, u -> Objects.equals(u.getUsername(), "administrator")).get(0);
-        var aurimas = session.query(User.class, u -> Objects.equals(u.getUsername(), "Aurimas")).get(0);
+
+        var userController = new UserController(session);
+
+        var administrator = userController.find_Username("administrator");
+        var aurimas = userController.find_Username("Aurimas");
 
         var vehicles = createCategory(session, "Vehicles", administrator);
         createVehicleCategories(session, vehicles, administrator, "AAA-000");
@@ -37,11 +40,8 @@ public class CategorySeeder implements Seeder {
     }
 
     private FinancialCategory createCategory(Session session, String name, User user, FinancialCategory parent) {
-        FinancialCategory category = new FinancialCategory(session);
-        category.setName(name);
-        category.setOwner(user);
-        category.setParent(parent);
-        return category;
+        var controller = new FinancialCategoryController(session);
+        return controller.create(parent, name, user);
     }
 
     private FinancialCategory createCategory(Session session, String name, User user) {

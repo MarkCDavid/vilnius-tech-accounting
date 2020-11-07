@@ -2,9 +2,12 @@ package vilnius.tech.utils.controls;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
-import vilnius.tech.dal.City;
-import vilnius.tech.dal.Country;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.City;
+import vilnius.tech.hibernate.Country;
+import vilnius.tech.hibernate.controller.CityController;
+import vilnius.tech.hibernate.controller.CountryController;
+import vilnius.tech.session.QueryBuilder;
 import vilnius.tech.utils.ChoiceBoxUtils;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.Validator;
@@ -18,8 +21,11 @@ public class CityCountryChoiceBoxPair {
         this.cities = cities;
         this.validator = validator;
 
-        this.countries.setItems(FXCollections.observableArrayList(this.session.query(Country.class)));
-        this.cities.setItems(FXCollections.observableArrayList(this.session.query(City.class)));
+        this.countryController = new CountryController(session);
+        this.cityController = new CityController(session);
+
+        this.countries.setItems(FXCollections.observableArrayList(countryController.find()));
+        this.cities.setItems(FXCollections.observableArrayList(cityController.find()));
         ChoiceBoxUtils.OnSelectionChanged(countries, this::onCountryChanged);
         ChoiceBoxUtils.OnSelectionChanged(cities, this::onCityChanged);
 
@@ -63,8 +69,7 @@ public class CityCountryChoiceBoxPair {
     }
 
     private void updateAvailableCities(Country country, City previousCity) {
-        cities.setItems(FXCollections.observableArrayList(session.query(City.class, city -> city.getCountry() == country)));
-
+        cities.setItems(FXCollections.observableArrayList(cityController.find_Country(country)));
         if(cities.getItems().contains(previousCity))
         {
             suspend_onCityChanged = true;
@@ -81,4 +86,7 @@ public class CityCountryChoiceBoxPair {
     private final ChoiceBox<City> cities;
     private final ChoiceBox<Country> countries;
     private final Validator validator;
+
+    private final CityController cityController;
+    private final CountryController countryController;
 }

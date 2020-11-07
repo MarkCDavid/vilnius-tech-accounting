@@ -1,7 +1,8 @@
 package vilnius.tech.seeds;
 
-import vilnius.tech.dal.ExpenseType;
-import vilnius.tech.session.Session;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.ExpenseType;
+import vilnius.tech.hibernate.controller.ExpenseTypeController;
 
 public class ExpenseTypeSeeder implements Seeder {
 
@@ -14,9 +15,7 @@ public class ExpenseTypeSeeder implements Seeder {
     }
 
     private ExpenseType createType(Session session, String name, String code) {
-        ExpenseType type = new ExpenseType(session);
-        type.setName(name);
-        type.setCode(code);
-        return type;
+        var controller = new ExpenseTypeController(session);
+        return controller.create(name, code);
     }
 }
