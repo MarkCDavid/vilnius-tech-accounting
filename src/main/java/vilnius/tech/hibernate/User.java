@@ -1,5 +1,7 @@
 package vilnius.tech.hibernate;
 
+import vilnius.tech.utils.PasswordUtils;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,8 @@ public class User implements BaseEntity  {
 
     private String username;
     private String password;
+
+    private String salt;
 
     private Set<FinancialCategory> ownedCategories = new HashSet<>();
     private Set<FinancialCategory> responsibleForCategories = new HashSet<>();
@@ -43,6 +47,14 @@ public class User implements BaseEntity  {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public Set<FinancialCategory> getOwnedCategories() {

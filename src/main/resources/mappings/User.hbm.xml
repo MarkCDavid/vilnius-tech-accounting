@@ -12,6 +12,7 @@
 
         <property name = "username" column = "username" type = "string"/>
         <property name = "password" column = "password" type = "string"/>
+        <property name = "salt" column = "salt" type = "string"/>
 
         <set name = "ownedCategories" cascade="all">
             <key column = "owner"/>

@@ -2,24 +2,19 @@ package vilnius.tech;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.hibernate.Hibernate;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import vilnius.tech.controller.DatabaseSelection;
-import vilnius.tech.hibernate.*;
-import vilnius.tech.utils.Database;
+import vilnius.tech.view.controller.DatabaseSelection;
+import vilnius.tech.error.MessageBoxRouter;
 import vilnius.tech.view.View;
 
-import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
-import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        new View(new DatabaseSelection(), primaryStage, "Select Database", "databaseSelection.fxml").render();
+        var view = new View(new DatabaseSelection(), primaryStage, "Select Database", "databaseSelection.fxml");
+        view.setErrorRouter(new MessageBoxRouter());
+        view.render();
     }
 
     public static void main(String[] args) {

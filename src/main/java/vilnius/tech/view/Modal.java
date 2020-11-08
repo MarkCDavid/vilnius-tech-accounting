@@ -5,7 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import vilnius.tech.controller.modal.ModalController;
+import vilnius.tech.view.controller.modal.ModalController;
 
 import java.io.IOException;
 

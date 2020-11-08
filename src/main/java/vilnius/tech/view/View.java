@@ -4,7 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import vilnius.tech.controller.Controller;
+import vilnius.tech.view.controller.Controller;
+import vilnius.tech.error.ErrorRouter;
 
 import java.io.IOException;
 
@@ -19,6 +20,7 @@ public class View {
     protected final Controller controller;
     protected final String path;
 
+    private ErrorRouter errorRouter;
 
     public View(Controller controller, Stage stage, String title, String path) {
         this.primaryStage = stage;
@@ -38,5 +40,13 @@ public class View {
         primaryStage.setScene(new Scene(root));
         primaryStage.centerOnScreen();
         primaryStage.show();
+    }
+
+    public ErrorRouter getErrorRouter() {
+        return errorRouter;
+    }
+
+    public void setErrorRouter(ErrorRouter errorRouter) {
+        this.errorRouter = errorRouter;
     }
 }

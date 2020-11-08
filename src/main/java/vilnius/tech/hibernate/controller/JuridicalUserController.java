@@ -5,6 +5,7 @@ import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.JuridicalUser;
 import vilnius.tech.hibernate.PhysicalUser;
 import vilnius.tech.session.HibernateController;
+import vilnius.tech.utils.PasswordUtils;
 
 public class JuridicalUserController extends HibernateController<JuridicalUser> {
 
@@ -15,7 +16,8 @@ public class JuridicalUserController extends HibernateController<JuridicalUser> 
     public JuridicalUser create(String username, String password, String name, Address address, PhysicalUser contactUser) {
         var juridicalUser = new JuridicalUser();
         juridicalUser.setUsername(username);
-        juridicalUser.setPassword(password);
+        juridicalUser.setSalt(PasswordUtils.getSalt(128));
+        juridicalUser.setPassword(PasswordUtils.generateSecurePassword(password, juridicalUser.getSalt()));
         juridicalUser.setName(name);
         juridicalUser.setAddress(address);
         juridicalUser.setContactUser(contactUser);

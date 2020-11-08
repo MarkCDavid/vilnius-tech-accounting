@@ -5,6 +5,7 @@ import vilnius.tech.hibernate.ContactInformation;
 import vilnius.tech.hibernate.PhysicalUser;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.session.HibernateController;
+import vilnius.tech.utils.PasswordUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -29,24 +30,8 @@ public class UserController extends HibernateController<User> {
     public User find_Username(String username) {
         try (var entityManager = getEntityManager()) {
             var queryBuilder = getQueryBuilder().begin();
-
             var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
                     queryBuilder.getBuilder().like(queryBuilder.getRoot().get("username"), username)
-            ));
-            return query.getResultList().get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public User find_UsernamePassword(String username, String password) {
-        try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
-
-            var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
-                    queryBuilder.getBuilder().like(queryBuilder.getRoot().get("username"), username),
-                    queryBuilder.getBuilder().like(queryBuilder.getRoot().get("password"), password)
             ));
             return query.getResultList().get(0);
         } catch (Exception e) {
