@@ -2,7 +2,7 @@ package vilnius.tech.seeds;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.PhysicalUser;
-import vilnius.tech.hibernate.controller.PhysicalUserService;
+import vilnius.tech.hibernate.service.PhysicalUserService;
 
 public class UserSeeder implements Seeder {
 

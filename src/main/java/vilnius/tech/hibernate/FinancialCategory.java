@@ -12,8 +12,6 @@ public class FinancialCategory implements BaseEntity  {
     private String name;
     private User owner;
     private Set<User> responsibleUsers;
-    private Set<Expense> expenses;
-    private Set<Income> incomes;
 
     public FinancialCategory() {
     }
@@ -70,22 +68,6 @@ public class FinancialCategory implements BaseEntity  {
 
     public void setResponsibleUsers(Set<User> responsibleUsers) {
         this.responsibleUsers = responsibleUsers;
-    }
-
-    public Set<Expense> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(Set<Expense> expenses) {
-        this.expenses = expenses;
-    }
-
-    public Set<Income> getIncomes() {
-        return incomes;
-    }
-
-    public void setIncomes(Set<Income> incomes) {
-        this.incomes = incomes;
     }
 
     @Override

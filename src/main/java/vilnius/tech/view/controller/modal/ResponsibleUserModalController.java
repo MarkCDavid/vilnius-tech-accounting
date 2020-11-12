@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.UserService;
+import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.view.controller.modal.result.ChoiceBoxModalResult;
 
 public class ResponsibleUserModalController extends ChoiceBoxModalController<User> {

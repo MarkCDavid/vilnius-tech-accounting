@@ -1,4 +1,4 @@
-package vilnius.tech.hibernate.controller;
+package vilnius.tech.hibernate.service;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;

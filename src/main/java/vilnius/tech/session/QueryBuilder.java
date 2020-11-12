@@ -20,16 +20,8 @@ public class QueryBuilder<T> {
         criteriaQuery = criteriaBuilder.createQuery(type);
 
         root = criteriaQuery.from(type);
-        fetch(root);
         criteriaQuery = criteriaQuery.select(root);
         return this;
-    }
-
-    public void fetch(Root<T> root) {
-        var sets = ReflectionUtils.getFieldsOfType(type, Set.class);
-        for(var set: sets){
-            root.fetch(set.getName(), JoinType.LEFT);
-        }
     }
 
     public CriteriaBuilder getBuilder() {

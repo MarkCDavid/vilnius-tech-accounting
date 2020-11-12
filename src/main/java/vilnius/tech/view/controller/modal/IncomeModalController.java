@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.IncomeType;
-import vilnius.tech.hibernate.controller.IncomeTypeService;
+import vilnius.tech.hibernate.service.IncomeTypeService;
 import vilnius.tech.view.controller.modal.result.CashflowModalResult;
 
 

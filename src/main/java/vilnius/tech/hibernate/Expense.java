@@ -1,14 +1,13 @@
 package vilnius.tech.hibernate;
 
-import java.time.ZonedDateTime;
-
+import java.sql.Timestamp;
 
 public class Expense extends Flow {
 
     private ExpenseType type;
 
-    public Expense(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, ExpenseType type) {
-        super(owner, sum, dateTime, category);
+    public Expense(User owner, long sum, Timestamp timestamp, FinancialCategory category, ExpenseType type) {
+        super(owner, sum, timestamp, category);
         this.type = type;
     }
 

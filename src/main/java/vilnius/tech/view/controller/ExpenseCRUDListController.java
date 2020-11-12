@@ -7,8 +7,8 @@ import vilnius.tech.hibernate.Expense;
 import vilnius.tech.hibernate.ExpenseType;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.ExpenseService;
-import vilnius.tech.hibernate.controller.FinancialCategoryService;
+import vilnius.tech.hibernate.service.ExpenseService;
+import vilnius.tech.hibernate.service.FinancialCategoryService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.utils.TimeUtils;
 import vilnius.tech.view.controller.modal.ExpenseModalController;
@@ -22,14 +22,13 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
 
     public ExpenseCRUDListController(View previousView, User user, FinancialCategory category, Session session) {
         super(previousView, user, session);
-        this.financialCategoryController = new FinancialCategoryService(session);
         this.expenseController = new ExpenseService(session);
         this.category = category;
     }
 
     @Override
     protected ObservableList<Expense> getDataSource() {
-        return FXCollections.observableArrayList(category.getExpenses());
+        return FXCollections.observableArrayList(expenseController.find_Category(category));
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
         var table = getTableView();
         table.getColumns().add(GUIUtils.createColumn("Owner", "owner"));
         table.getColumns().add(GUIUtils.createColumn("Sum", "sum"));
-        table.getColumns().add(GUIUtils.createColumn("Date", "dateTime"));
+        table.getColumns().add(GUIUtils.createColumn("Date", "timestamp"));
         table.getColumns().add(GUIUtils.createColumn("Type", "type"));
     }
 
@@ -80,6 +79,5 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
     }
 
     private final FinancialCategory category;
-    private final FinancialCategoryService financialCategoryController;
     private final ExpenseService expenseController;
 }

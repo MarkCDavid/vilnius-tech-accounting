@@ -8,8 +8,8 @@ import javafx.scene.control.TreeView;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.FinancialCategoryService;
-import vilnius.tech.hibernate.controller.UserService;
+import vilnius.tech.hibernate.service.FinancialCategoryService;
+import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.view.controller.modal.CategoryModalController;
 import vilnius.tech.view.controller.modal.result.CategoryModalResult;
 import vilnius.tech.utils.ExpenseCalculator;
@@ -62,8 +62,8 @@ public class CategoryController extends SessionController {
 
         if(categoryAvailable) {
             labelOwner.setText(String.format("Owner: %s", userController.find(category.getOwner()).getUsername()));
-            labelExpenses.setText(String.format("Total expenses: %s", new ExpenseCalculator(category).getTotal()));
-            labelIncome.setText(String.format("Total income: %s", new IncomeCalculator(category).getTotal()));
+            labelExpenses.setText(String.format("Total expenses: %s", new ExpenseCalculator(category, getSession()).getTotal()));
+            labelIncome.setText(String.format("Total income: %s", new IncomeCalculator(category, getSession()).getTotal()));
         }
     }
 

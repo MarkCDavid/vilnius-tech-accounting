@@ -1,5 +1,6 @@
 package vilnius.tech.hibernate;
 
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 public class Flow implements BaseEntity  {
@@ -7,16 +8,16 @@ public class Flow implements BaseEntity  {
     private Integer id;
     private User owner;
     private long sum;
-    private ZonedDateTime dateTime;
+    private Timestamp timestamp;
     private FinancialCategory category;
 
     public Flow() {
     }
 
-    public Flow(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category) {
+    public Flow(User owner, long sum, Timestamp timestamp, FinancialCategory category) {
         this.owner = owner;
         this.sum = sum;
-        this.dateTime = dateTime;
+        this.timestamp = timestamp;
         this.category = category;
     }
 
@@ -44,12 +45,12 @@ public class Flow implements BaseEntity  {
         this.sum = sum;
     }
 
-    public ZonedDateTime getDateTime() {
-        return dateTime;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setDateTime(ZonedDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setTimestamp(Timestamp dateTime) {
+        this.timestamp = dateTime;
     }
 
     public FinancialCategory getCategory() {

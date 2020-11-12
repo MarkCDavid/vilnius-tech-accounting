@@ -72,4 +72,9 @@ public class User implements BaseEntity  {
     public void setResponsibleForCategories(Set<FinancialCategory> responsibleForCategories) {
         this.responsibleForCategories = responsibleForCategories;
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

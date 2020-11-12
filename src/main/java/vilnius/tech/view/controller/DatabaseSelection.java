@@ -1,5 +1,6 @@
 package vilnius.tech.view.controller;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -7,11 +8,13 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
+import vilnius.tech.Main;
 import vilnius.tech.error.DatabaseExceptionPolicy;
 import vilnius.tech.seeds.CategorySeeder;
 import vilnius.tech.seeds.CountryCitySeeder;
 import vilnius.tech.seeds.ExpenseTypeSeeder;
 import vilnius.tech.seeds.IncomeTypeSeeder;
+import vilnius.tech.utils.Parameters;
 import vilnius.tech.view.View;
 
 import java.io.IOException;
@@ -31,13 +34,17 @@ public class DatabaseSelection extends Controller {
                 cfg.setProperty("hibernate.connection.password", passwordFieldDatabasePassword.getText());
             }
 
+            cfg.setProperty("hibernate.hbm2ddl.auto", Parameters.getDropDatabase() ? "create-drop" : "update");
+
             var sessionFactory = cfg.buildSessionFactory();
             var session = sessionFactory.openSession();
 
-            new CountryCitySeeder().seed(session);
-            new CategorySeeder().seed(session);
-            new IncomeTypeSeeder().seed(session);
-            new ExpenseTypeSeeder().seed(session);
+            if(Parameters.getDropDatabase()) {
+                new CountryCitySeeder().seed(session);
+                new CategorySeeder().seed(session);
+                new IncomeTypeSeeder().seed(session);
+                new ExpenseTypeSeeder().seed(session);
+            }
 
             switchToLogin(session);
         }

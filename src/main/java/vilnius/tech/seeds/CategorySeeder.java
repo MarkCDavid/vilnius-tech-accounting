@@ -3,8 +3,8 @@ package vilnius.tech.seeds;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.FinancialCategoryService;
-import vilnius.tech.hibernate.controller.UserService;
+import vilnius.tech.hibernate.service.FinancialCategoryService;
+import vilnius.tech.hibernate.service.UserService;
 
 public class CategorySeeder implements Seeder {
 

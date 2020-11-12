@@ -2,7 +2,7 @@ package vilnius.tech.validation.validators;
 
 import javafx.scene.control.TextInputControl;
 import org.hibernate.Session;
-import vilnius.tech.hibernate.controller.UserService;
+import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.utils.PasswordUtils;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.ValidationResult;

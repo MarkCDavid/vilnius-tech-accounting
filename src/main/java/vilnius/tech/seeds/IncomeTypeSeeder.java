@@ -2,7 +2,7 @@ package vilnius.tech.seeds;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.IncomeType;
-import vilnius.tech.hibernate.controller.IncomeTypeService;
+import vilnius.tech.hibernate.service.IncomeTypeService;
 
 public class IncomeTypeSeeder implements Seeder {
 

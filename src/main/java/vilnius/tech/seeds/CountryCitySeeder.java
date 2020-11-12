@@ -3,8 +3,8 @@ package vilnius.tech.seeds;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.hibernate.controller.CityService;
-import vilnius.tech.hibernate.controller.CountryService;
+import vilnius.tech.hibernate.service.CityService;
+import vilnius.tech.hibernate.service.CountryService;
 
 public class CountryCitySeeder implements Seeder {
 

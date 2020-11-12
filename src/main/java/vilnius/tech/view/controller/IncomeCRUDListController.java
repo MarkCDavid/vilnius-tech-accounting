@@ -7,7 +7,8 @@ import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.Income;
 import vilnius.tech.hibernate.IncomeType;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.IncomeService;
+import vilnius.tech.hibernate.service.FinancialCategoryService;
+import vilnius.tech.hibernate.service.IncomeService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.utils.TimeUtils;
 import vilnius.tech.view.controller.modal.IncomeModalController;
@@ -21,13 +22,13 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
 
     public IncomeCRUDListController(View previousView, User user, FinancialCategory category, Session session) {
         super(previousView, user, session);
+        this.incomeService = new IncomeService(session);
         this.category = category;
-        this.controller = new IncomeService(session);
     }
 
     @Override
     protected ObservableList<Income> getDataSource() {
-        return FXCollections.observableArrayList(this.category.getIncomes());
+        return FXCollections.observableArrayList(incomeService.find_Category(category));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         if(result == null)
             return;
 
-        controller.create(getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        incomeService.create(getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
     }
 
     @Override
@@ -50,12 +51,12 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         if(result == null)
             return;
 
-        controller.update(item, getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        incomeService.update(item, getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
     }
 
     @Override
     protected void onDelete(Income item) {
-        controller.remove(item);
+        incomeService.remove(item);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         var table = getTableView();
         table.getColumns().add(GUIUtils.createColumn("Owner", "owner"));
         table.getColumns().add(GUIUtils.createColumn("Sum", "sum"));
-        table.getColumns().add(GUIUtils.createColumn("Date", "dateTime"));
+        table.getColumns().add(GUIUtils.createColumn("Date", "timestamp"));
         table.getColumns().add(GUIUtils.createColumn("Type", "type"));
     }
 
@@ -78,5 +79,5 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
     }
 
     private final FinancialCategory category;
-    private final IncomeService controller;
+    private final IncomeService incomeService;
 }

@@ -1,4 +1,4 @@
-package vilnius.tech.hibernate.controller;
+package vilnius.tech.hibernate.service;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
@@ -32,11 +32,31 @@ public class FinancialCategoryService extends HibernateService<FinancialCategory
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
+                    criteriaQuery.where(
+                            builder.or(
+                                    builder.equal(root.get("owner"), user)
+                            )
+                    ).orderBy(builder.asc(root.get("id"))).distinct(true)
+            );
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<FinancialCategory> find_Parent(FinancialCategory financialCategory) {
+        try (var entityManager = getEntityManager()) {
+            var queryBuilder = getQueryBuilder().begin();
+
+            var criteriaQuery = queryBuilder.getCriteriaQuery();
+            var root = queryBuilder.getRoot();
+            var builder = queryBuilder.getBuilder();
+
+            var query = entityManager.createQuery(
                 criteriaQuery.where(
-                    builder.or(
-                        builder.equal(root.get("owner"), user)
-                    )
-                ).orderBy(builder.asc(root.get("id"))).distinct(true)
+                    builder.equal(root.get("parent"), financialCategory)
+                ).distinct(true)
             );
             return query.getResultList();
         } catch (Exception e) {

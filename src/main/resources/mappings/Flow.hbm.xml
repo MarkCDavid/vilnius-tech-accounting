@@ -13,7 +13,7 @@
         <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
 
         <property name = "sum" column = "sum" type = "long"/>
-        <property name = "dateTime" column = "dateTime" type = "date"/>
+        <property name = "timestamp" column = "dateTime" type = "timestamp"/>
 
         <many-to-one name = "category" column = "category" class="vilnius.tech.hibernate.FinancialCategory"  not-null="true"/>
 

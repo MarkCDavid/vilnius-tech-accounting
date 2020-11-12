@@ -2,7 +2,7 @@ package vilnius.tech.seeds;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.ExpenseType;
-import vilnius.tech.hibernate.controller.ExpenseTypeService;
+import vilnius.tech.hibernate.service.ExpenseTypeService;
 
 public class ExpenseTypeSeeder implements Seeder {
 

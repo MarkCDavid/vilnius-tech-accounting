@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.*;
+import vilnius.tech.hibernate.service.*;
 import vilnius.tech.utils.ChoiceBoxUtils;
 import vilnius.tech.utils.PasswordUtils;
 import vilnius.tech.utils.controls.CityCountryChoiceBoxPair;
