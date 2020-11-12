@@ -12,7 +12,6 @@ import vilnius.tech.hibernate.controller.*;
 import vilnius.tech.utils.ChoiceBoxUtils;
 import vilnius.tech.utils.PasswordUtils;
 import vilnius.tech.utils.controls.CityCountryChoiceBoxPair;
-import vilnius.tech.validation.ValidationResult;
 import vilnius.tech.validation.Validator;
 import vilnius.tech.validation.validators.ChoiceBoxNotNullValidation;
 import vilnius.tech.validation.validators.TextLengthValidation;
@@ -58,7 +57,7 @@ public class GatewayController extends SessionController {
         if(!signInValidator.validate())
             return;
 
-        var userController = new UserController(getSession());
+        var userController = new UserService(getSession());
 
         var user = userController.find_Username(sitfUsername.getText());
         if(user == null)
@@ -84,9 +83,9 @@ public class GatewayController extends SessionController {
     private User createUser() {
         var userType = sucbUserType.getValue();
 
-        var addressController = new AddressController(getSession());
-        var contactInformationController = new ContactInformationController(getSession());
-        var physicalUserController = new PhysicalUserController(getSession());
+        var addressController = new AddressService(getSession());
+        var contactInformationController = new ContactInformationService(getSession());
+        var physicalUserController = new PhysicalUserService(getSession());
 
         var address = addressController.create(sucbCity.getValue(), signUpPhone.getText(), signUpEmail.getText());
         var contactInformation = contactInformationController.create(
@@ -111,7 +110,7 @@ public class GatewayController extends SessionController {
                     contactInformation
             );
 
-            var juridicalUserController = new JuridicalUserController(getSession());
+            var juridicalUserController = new JuridicalUserService(getSession());
             return juridicalUserController.create(
                     sutfUsername.getText(), supfPassword.getText(), signUpJuridicalName.getText(),
                     juridicalAddress, physicalUser

@@ -2,7 +2,7 @@ package vilnius.tech.seeds;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.IncomeType;
-import vilnius.tech.hibernate.controller.IncomeTypeController;
+import vilnius.tech.hibernate.controller.IncomeTypeService;
 
 public class IncomeTypeSeeder implements Seeder {
 
@@ -15,7 +15,7 @@ public class IncomeTypeSeeder implements Seeder {
     }
 
     private IncomeType createType(Session session, String name, String code) {
-        var controller = new IncomeTypeController(session);
+        var controller = new IncomeTypeService(session);
         return controller.create(name, code);
     }
 }

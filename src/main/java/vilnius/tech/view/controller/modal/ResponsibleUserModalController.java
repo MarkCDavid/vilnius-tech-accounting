@@ -2,10 +2,11 @@ package vilnius.tech.view.controller.modal;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.FinancialCategory;
+import vilnius.tech.hibernate.User;
+import vilnius.tech.hibernate.controller.UserService;
 import vilnius.tech.view.controller.modal.result.ChoiceBoxModalResult;
-import vilnius.tech.dal.FinancialCategory;
-import vilnius.tech.dal.User;
-import vilnius.tech.session.Session;
 
 public class ResponsibleUserModalController extends ChoiceBoxModalController<User> {
 
@@ -16,15 +17,15 @@ public class ResponsibleUserModalController extends ChoiceBoxModalController<Use
     public ResponsibleUserModalController(Session session, FinancialCategory category, ChoiceBoxModalResult<User> result) {
         super(session, result);
         this.category = category;
+        this.controller = new UserService(session);
     }
 
     @Override
     protected ObservableList<User> getDataSource() {
-        return FXCollections.observableArrayList(
-                getSession().query(User.class, user -> !category.getResponsibleUsers().contains(user))
-        );
+        return FXCollections.observableArrayList(controller.find_NotResponsibleFor(category));
     }
 
     private final FinancialCategory category;
+    private final UserService controller;
 
 }

@@ -1,13 +1,11 @@
 package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
-import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.session.HibernateController;
 
-public class CountryController extends HibernateController<Country> {
+public class CountryService extends HibernateService<Country> {
 
-    public CountryController(Session session) {
+    public CountryService(Session session) {
         super(Country.class, session);
     }
 

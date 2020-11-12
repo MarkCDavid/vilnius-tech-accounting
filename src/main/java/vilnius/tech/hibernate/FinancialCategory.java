@@ -8,12 +8,12 @@ public class FinancialCategory implements BaseEntity  {
     private Integer id;
 
     private FinancialCategory parent;
-    private Set<FinancialCategory> children = new HashSet<>();
+    private Set<FinancialCategory> children;
     private String name;
     private User owner;
-    private Set<User> responsibleUsers = new HashSet<>();
-    private Set<Expense> expenses = new HashSet<>();
-    private Set<Income> incomes = new HashSet<>();
+    private Set<User> responsibleUsers;
+    private Set<Expense> expenses;
+    private Set<Income> incomes;
 
     public FinancialCategory() {
     }
@@ -86,5 +86,10 @@ public class FinancialCategory implements BaseEntity  {
 
     public void setIncomes(Set<Income> incomes) {
         this.incomes = incomes;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

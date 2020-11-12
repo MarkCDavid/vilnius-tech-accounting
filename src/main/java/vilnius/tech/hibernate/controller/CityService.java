@@ -1,16 +1,14 @@
 package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
-import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.session.HibernateController;
 
 import java.util.List;
 
-public class CityController extends HibernateController<City> {
+public class CityService extends HibernateService<City> {
 
-    public CityController(Session session) {
+    public CityService(Session session) {
         super(City.class, session);
     }
 

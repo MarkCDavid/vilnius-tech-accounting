@@ -2,24 +2,28 @@ package vilnius.tech.view.controller.modal;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.Session;
+import vilnius.tech.hibernate.IncomeType;
+import vilnius.tech.hibernate.controller.IncomeTypeService;
 import vilnius.tech.view.controller.modal.result.CashflowModalResult;
-import vilnius.tech.dal.IncomeType;
-import vilnius.tech.session.Session;
 
 
 public class IncomeModalController extends CashflowModalController<IncomeType> {
 
 
     public IncomeModalController(Session session) {
-        super(session);
+        this(session, null);
     }
 
     public IncomeModalController(Session session, CashflowModalResult<IncomeType> result) {
         super(session, result);
+        this.controller = new IncomeTypeService(session);
     }
 
     @Override
     protected ObservableList<IncomeType> getTypes() {
-        return FXCollections.observableArrayList(getSession().query(IncomeType.class));
+        return FXCollections.observableArrayList(controller.find());
     }
+
+    private final IncomeTypeService controller;
 }

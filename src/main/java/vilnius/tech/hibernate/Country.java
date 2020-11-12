@@ -10,6 +10,7 @@ public class Country implements BaseEntity  {
     private String name;
 
     private String code;
+
     private Set<City> cities = new HashSet<>();
 
     public Country() {

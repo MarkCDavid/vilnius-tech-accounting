@@ -3,8 +3,8 @@ package vilnius.tech.view.controller.modal;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import org.hibernate.Session;
 import vilnius.tech.view.controller.modal.result.ChoiceBoxModalResult;
-import vilnius.tech.session.Session;
 
 
 public abstract class ChoiceBoxModalController<T> extends ModalController<ChoiceBoxModalResult<T>> {

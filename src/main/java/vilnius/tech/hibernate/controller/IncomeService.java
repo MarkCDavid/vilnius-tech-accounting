@@ -2,18 +2,21 @@ package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
-import vilnius.tech.session.HibernateController;
 
 import java.time.ZonedDateTime;
 
-public class IncomeController extends HibernateController<Income> {
+public class IncomeService extends HibernateService<Income> {
 
-    public IncomeController(Session session) {
+    public IncomeService(Session session) {
         super(Income.class, session);
     }
 
     public Income create(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, IncomeType type) {
-        var income = new Income();
+        return update(new Income(), owner, sum, dateTime, category, type);
+    }
+
+
+    public Income update(Income income, User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, IncomeType type) {
         income.setOwner(owner);
         income.setSum(sum);
         income.setDateTime(dateTime);

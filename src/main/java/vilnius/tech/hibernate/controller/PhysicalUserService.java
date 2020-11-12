@@ -1,16 +1,13 @@
 package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
-import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.ContactInformation;
 import vilnius.tech.hibernate.PhysicalUser;
-import vilnius.tech.hibernate.PhysicalUser;
-import vilnius.tech.session.HibernateController;
 import vilnius.tech.utils.PasswordUtils;
 
-public class PhysicalUserController extends HibernateController<PhysicalUser> {
+public class PhysicalUserService extends HibernateService<PhysicalUser> {
 
-    public PhysicalUserController(Session session) {
+    public PhysicalUserService(Session session) {
         super(PhysicalUser.class, session);
     }
 

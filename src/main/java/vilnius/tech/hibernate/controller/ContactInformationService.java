@@ -2,14 +2,11 @@ package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.Address;
-import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.ContactInformation;
-import vilnius.tech.hibernate.Country;
-import vilnius.tech.session.HibernateController;
 
-public class ContactInformationController extends HibernateController<ContactInformation> {
+public class ContactInformationService extends HibernateService<ContactInformation> {
 
-    public ContactInformationController(Session session) {
+    public ContactInformationService(Session session) {
         super(ContactInformation.class, session);
     }
 

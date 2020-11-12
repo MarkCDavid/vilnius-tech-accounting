@@ -2,7 +2,7 @@ package vilnius.tech.seeds;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.PhysicalUser;
-import vilnius.tech.hibernate.controller.PhysicalUserController;
+import vilnius.tech.hibernate.controller.PhysicalUserService;
 
 public class UserSeeder implements Seeder {
 
@@ -18,7 +18,7 @@ public class UserSeeder implements Seeder {
 
 
     private PhysicalUser createPhysicalUser(Session session, String username, String password, String name, String surname) {
-        var controller = new PhysicalUserController(session);
+        var controller = new PhysicalUserService(session);
         return controller.create(username, password, name, surname, null);
     }
 }

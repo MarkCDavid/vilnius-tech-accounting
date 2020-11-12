@@ -5,11 +5,9 @@ import javafx.scene.control.ChoiceBox;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.hibernate.controller.CityController;
-import vilnius.tech.hibernate.controller.CountryController;
-import vilnius.tech.session.QueryBuilder;
+import vilnius.tech.hibernate.controller.CityService;
+import vilnius.tech.hibernate.controller.CountryService;
 import vilnius.tech.utils.ChoiceBoxUtils;
-import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.Validator;
 import vilnius.tech.validation.validators.CountryCityValidation;
 
@@ -21,8 +19,8 @@ public class CityCountryChoiceBoxPair {
         this.cities = cities;
         this.validator = validator;
 
-        this.countryController = new CountryController(session);
-        this.cityController = new CityController(session);
+        this.countryController = new CountryService(session);
+        this.cityController = new CityService(session);
 
         this.countries.setItems(FXCollections.observableArrayList(countryController.find()));
         this.cities.setItems(FXCollections.observableArrayList(cityController.find()));
@@ -87,6 +85,6 @@ public class CityCountryChoiceBoxPair {
     private final ChoiceBox<Country> countries;
     private final Validator validator;
 
-    private final CityController cityController;
-    private final CountryController countryController;
+    private final CityService cityController;
+    private final CountryService countryController;
 }

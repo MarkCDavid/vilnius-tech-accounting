@@ -1,14 +1,16 @@
-package vilnius.tech.session;
+package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.BaseEntity;
+import vilnius.tech.session.EntityManagerAutoClosable;
+import vilnius.tech.session.QueryBuilder;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public abstract class HibernateController<T extends BaseEntity> {
+public abstract class HibernateService<T extends BaseEntity> {
 
-    public HibernateController(Class<T> type, Session session) {
+    public HibernateService(Class<T> type, Session session) {
         this.type = type;
         this.session = session;
         this.entityManagerFactory = session.getEntityManagerFactory();
@@ -33,10 +35,29 @@ public abstract class HibernateController<T extends BaseEntity> {
         }
     }
 
+    public T find(T item) {
+        try (var entityManager = getEntityManager()) {
+            var queryBuilder = getQueryBuilder().begin();
+
+            var criteriaQuery = queryBuilder.getCriteriaQuery();
+            var root = queryBuilder.getRoot();
+            var builder = queryBuilder.getBuilder();
+
+            var query = entityManager.createQuery(criteriaQuery.where(
+                    builder.equal(root.get("id"), item.getId())
+            ).distinct(true));
+
+            return query.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<T> find() {
         try (var entityManager = getEntityManager()) {
             var queryBuilder = getQueryBuilder();
-            var query = entityManager.createQuery(queryBuilder.begin().getCriteriaQuery());
+            var query = entityManager.createQuery(queryBuilder.begin().getCriteriaQuery().distinct(true));
 
             return query.getResultList();
         } catch (Exception e) {
@@ -48,7 +69,7 @@ public abstract class HibernateController<T extends BaseEntity> {
     public List<T> find(int take, int skip) {
         try (var entityManager = getEntityManager()) {
             var queryBuilder = getQueryBuilder();
-            var query = entityManager.createQuery(queryBuilder.begin().getCriteriaQuery());
+            var query = entityManager.createQuery(queryBuilder.begin().getCriteriaQuery().distinct(true));
 
             query.setMaxResults(take);
             query.setFirstResult(skip);

@@ -3,11 +3,10 @@ package vilnius.tech.hibernate.controller;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.City;
-import vilnius.tech.session.HibernateController;
 
-public class AddressController extends HibernateController<Address> {
+public class AddressService extends HibernateService<Address> {
 
-    public AddressController(Session session) {
+    public AddressService(Session session) {
         super(Address.class, session);
     }
 
@@ -18,5 +17,4 @@ public class AddressController extends HibernateController<Address> {
         address.setPostal(postal);
         return update(address);
     }
-
 }

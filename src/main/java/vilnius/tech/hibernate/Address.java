@@ -1,5 +1,7 @@
 package vilnius.tech.hibernate;
 
+import org.hibernate.collection.internal.PersistentSet;
+
 import java.util.HashSet;
 import java.util.Set;
 

@@ -2,21 +2,17 @@ package vilnius.tech.validation.validators;
 
 import javafx.scene.control.TextInputControl;
 import org.hibernate.Session;
-import vilnius.tech.dal.User;
-import vilnius.tech.hibernate.controller.UserController;
+import vilnius.tech.hibernate.controller.UserService;
 import vilnius.tech.utils.PasswordUtils;
-import vilnius.tech.utils.UsersUtils;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.ValidationResult;
-
-import java.util.List;
 
 public class UserValidValidation implements Validation {
 
     public UserValidValidation(Session session, TextInputControl usernameControl, TextInputControl passwordControl) {
         this.usernameControl = usernameControl;
         this.passwordControl = passwordControl;
-        this.userController = new UserController(session);
+        this.userController = new UserService(session);
     }
 
     @Override
@@ -39,5 +35,5 @@ public class UserValidValidation implements Validation {
 
     private final TextInputControl usernameControl;
     private final TextInputControl passwordControl;
-    private final UserController userController;
+    private final UserService userController;
 }

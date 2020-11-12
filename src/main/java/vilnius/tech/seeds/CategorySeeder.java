@@ -3,8 +3,8 @@ package vilnius.tech.seeds;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.controller.FinancialCategoryController;
-import vilnius.tech.hibernate.controller.UserController;
+import vilnius.tech.hibernate.controller.FinancialCategoryService;
+import vilnius.tech.hibernate.controller.UserService;
 
 public class CategorySeeder implements Seeder {
 
@@ -12,7 +12,7 @@ public class CategorySeeder implements Seeder {
     public void seed(Session session) {
         new UserSeeder().seed(session);
 
-        var userController = new UserController(session);
+        var userController = new UserService(session);
 
         var administrator = userController.find_Username("administrator");
         var aurimas = userController.find_Username("Aurimas");
@@ -40,7 +40,7 @@ public class CategorySeeder implements Seeder {
     }
 
     private FinancialCategory createCategory(Session session, String name, User user, FinancialCategory parent) {
-        var controller = new FinancialCategoryController(session);
+        var controller = new FinancialCategoryService(session);
         return controller.create(parent, name, user);
     }
 

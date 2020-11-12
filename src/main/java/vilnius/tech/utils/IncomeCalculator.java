@@ -1,6 +1,6 @@
 package vilnius.tech.utils;
 
-import vilnius.tech.dal.FinancialCategory;
+import vilnius.tech.hibernate.FinancialCategory;
 
 public class IncomeCalculator {
 
@@ -11,13 +11,11 @@ public class IncomeCalculator {
     public long getTotal() {
         long total = 0;
 
-        var childCategories = category.getSession().query(FinancialCategory.class, category -> category.getParent() == this.category);
-
         for(var income : category.getIncomes()) {
             total += income.getSum();
         }
 
-        for(var childCategory : childCategories) {
+        for(var childCategory : category.getChildren()) {
             total += new IncomeCalculator(childCategory).getTotal();
         }
 

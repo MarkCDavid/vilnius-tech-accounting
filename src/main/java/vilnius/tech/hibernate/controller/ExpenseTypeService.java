@@ -2,21 +2,23 @@ package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
-import vilnius.tech.session.HibernateController;
 
-import java.time.ZonedDateTime;
+public class ExpenseTypeService extends HibernateService<ExpenseType> {
 
-public class ExpenseTypeController extends HibernateController<ExpenseType> {
-
-    public ExpenseTypeController(Session session) {
+    public ExpenseTypeService(Session session) {
         super(ExpenseType.class, session);
     }
 
     public ExpenseType create(String name, String code) {
-        var expenseType = new ExpenseType();
+        return update(new ExpenseType(), name, code);
+    }
+
+    public ExpenseType update(ExpenseType expenseType, String name, String code) {
         expenseType.setName(name);
         expenseType.setCode(code);
         return update(expenseType);
     }
+
+
 
 }

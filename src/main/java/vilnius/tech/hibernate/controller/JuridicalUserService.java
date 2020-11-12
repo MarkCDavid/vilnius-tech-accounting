@@ -4,12 +4,11 @@ import org.hibernate.Session;
 import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.JuridicalUser;
 import vilnius.tech.hibernate.PhysicalUser;
-import vilnius.tech.session.HibernateController;
 import vilnius.tech.utils.PasswordUtils;
 
-public class JuridicalUserController extends HibernateController<JuridicalUser> {
+public class JuridicalUserService extends HibernateService<JuridicalUser> {
 
-    public JuridicalUserController(Session session) {
+    public JuridicalUserService(Session session) {
         super(JuridicalUser.class, session);
     }
 

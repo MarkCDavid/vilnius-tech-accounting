@@ -1,10 +1,12 @@
 package vilnius.tech.session;
 
 import org.hibernate.Session;
+import vilnius.tech.utils.ReflectionUtils;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Set;
 
 public class QueryBuilder<T> {
 
@@ -16,9 +18,18 @@ public class QueryBuilder<T> {
     public QueryBuilder<T> begin() {
         criteriaBuilder = session.getCriteriaBuilder();
         criteriaQuery = criteriaBuilder.createQuery(type);
+
         root = criteriaQuery.from(type);
+        fetch(root);
         criteriaQuery = criteriaQuery.select(root);
         return this;
+    }
+
+    public void fetch(Root<T> root) {
+        var sets = ReflectionUtils.getFieldsOfType(type, Set.class);
+        for(var set: sets){
+            root.fetch(set.getName(), JoinType.LEFT);
+        }
     }
 
     public CriteriaBuilder getBuilder() {

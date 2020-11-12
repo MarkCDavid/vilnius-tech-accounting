@@ -3,8 +3,8 @@ package vilnius.tech.seeds;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.hibernate.controller.CityController;
-import vilnius.tech.hibernate.controller.CountryController;
+import vilnius.tech.hibernate.controller.CityService;
+import vilnius.tech.hibernate.controller.CountryService;
 
 public class CountryCitySeeder implements Seeder {
 
@@ -49,12 +49,12 @@ public class CountryCitySeeder implements Seeder {
     }
 
     private Country createCountry(Session session, String name, String code) {
-        var controller = new CountryController(session);
+        var controller = new CountryService(session);
         return controller.create(name, code);
     }
 
     private City createCity(Session session, String name, Country country) {
-        var controller = new CityController(session);
+        var controller = new CityService(session);
         return controller.create(name, country);
     }
 }

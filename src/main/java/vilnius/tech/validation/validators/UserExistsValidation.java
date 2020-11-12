@@ -2,20 +2,16 @@ package vilnius.tech.validation.validators;
 
 import javafx.scene.control.TextInputControl;
 import org.hibernate.Session;
-import vilnius.tech.dal.User;
-import vilnius.tech.hibernate.controller.UserController;
-import vilnius.tech.utils.UsersUtils;
+import vilnius.tech.hibernate.controller.UserService;
 import vilnius.tech.validation.Validation;
 import vilnius.tech.validation.ValidationResult;
-
-import java.util.List;
 
 public class UserExistsValidation implements Validation {
 
     public UserExistsValidation(Session session, TextInputControl usernameControl) {
         this.session = session;
         this.usernameControl = usernameControl;
-        this.userController = new UserController(session);
+        this.userController = new UserService(session);
     }
 
     @Override
@@ -31,5 +27,5 @@ public class UserExistsValidation implements Validation {
 
     private final Session session;
     private final TextInputControl usernameControl;
-    private final UserController userController;
+    private final UserService userController;
 }

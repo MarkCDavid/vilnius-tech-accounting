@@ -2,18 +2,20 @@ package vilnius.tech.hibernate.controller;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
-import vilnius.tech.session.HibernateController;
 
 import java.time.ZonedDateTime;
 
-public class ExpenseController extends HibernateController<Expense> {
+public class ExpenseService extends HibernateService<Expense> {
 
-    public ExpenseController(Session session) {
+    public ExpenseService(Session session) {
         super(Expense.class, session);
     }
 
     public Expense create(User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, ExpenseType type) {
-        var expense = new Expense();
+        return update(new Expense(), owner, sum, dateTime, category, type);
+    }
+
+    public Expense update(Expense expense, User owner, long sum, ZonedDateTime dateTime, FinancialCategory category, ExpenseType type) {
         expense.setOwner(owner);
         expense.setSum(sum);
         expense.setDateTime(dateTime);
