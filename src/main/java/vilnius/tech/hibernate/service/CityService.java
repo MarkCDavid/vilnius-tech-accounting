@@ -21,7 +21,7 @@ public class CityService extends HibernateService<City> {
 
     public List<City> find_Country(Country country) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
                     queryBuilder.getBuilder().equal(queryBuilder.getRoot().get("country"), country)

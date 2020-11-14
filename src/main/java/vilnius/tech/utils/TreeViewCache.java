@@ -2,22 +2,38 @@ package vilnius.tech.utils;
 
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import vilnius.tech.hibernate.BaseEntity;
 
 import java.util.HashMap;
 
-public class TreeViewCache<T> {
+public class TreeViewCache<T extends BaseEntity> implements AutoCloseable {
+
+    public TreeViewCache() {
+        this(null);
+    }
+
+    public TreeViewCache(TreeView<T> treeView) {
+        this.treeView = treeView;
+        if(this.treeView != null)
+            save(this.treeView);
+    }
+
+    @Override
+    public void close() {
+        if(this.treeView != null)
+            restore(this.treeView);
+    }
 
     public void save(TreeView<T> treeView) {
         expansionCache.clear();
 
-        rootExpanded = treeView.getRoot().isExpanded();
         saveCore(treeView.getRoot());
         saveLastSelected(treeView);
     }
 
     private void saveCore(TreeItem<T> item) {
         if(item.getValue() != null)
-            expansionCache.put(item.getValue(), item.isExpanded());
+            expansionCache.put(getKey(item), item.isExpanded());
 
         for(var child: item.getChildren()){
             saveCore(child);
@@ -26,14 +42,14 @@ public class TreeViewCache<T> {
 
 
     public void restore(TreeView<T> treeView) {
-        treeView.getRoot().setExpanded(rootExpanded);
+        treeView.getRoot().setExpanded(true);
         restoreCore(treeView.getRoot());
         restoreLastSelected(treeView);
     }
 
     private void restoreCore(TreeItem<T> item) {
-        if(expansionCache.containsKey(item.getValue()))
-            item.setExpanded(expansionCache.get(item.getValue()));
+        if(expansionCache.containsKey(getKey(item)))
+            item.setExpanded(expansionCache.get(getKey(item)));
 
         for(var child: item.getChildren()){
             restoreCore(child);
@@ -68,8 +84,22 @@ public class TreeViewCache<T> {
     }
 
 
-    private boolean rootExpanded = true;
-    private T lastSelected = null;
+    public void setLastSelected(T lastSelected) {
+        this.lastSelected = lastSelected;
+    }
 
-    private final HashMap<T, Boolean> expansionCache = new HashMap<>();
+    private String getKey(T item) {
+        if(item == null)
+            return "";
+        return String.format("%s%s", item.getClass().getName(), item.getId());
+    }
+
+    private String getKey(TreeItem<T> item) {
+        return getKey(item.getValue());
+    }
+
+
+    private T lastSelected = null;
+    private final TreeView<T> treeView;
+    private final HashMap<String, Boolean> expansionCache = new HashMap<>();
 }

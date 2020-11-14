@@ -1,7 +1,5 @@
 package vilnius.tech.hibernate;
 
-import org.hibernate.collection.internal.PersistentSet;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +11,7 @@ public class Address implements BaseEntity {
 
     private String street;
     private String postal;
+
     private Set<ContactInformation> contactInformations = new HashSet<>();
     private Set<JuridicalUser> juridicalUsersAtAddress = new HashSet<>();
 

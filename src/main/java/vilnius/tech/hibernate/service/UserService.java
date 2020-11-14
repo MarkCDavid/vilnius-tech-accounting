@@ -5,6 +5,11 @@ import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.utils.PasswordUtils;
 
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserService extends HibernateService<User> {
 
     public UserService(Session session) {
@@ -21,7 +26,7 @@ public class UserService extends HibernateService<User> {
 
     public User find_Username(String username) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
             var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
                     queryBuilder.getBuilder().like(queryBuilder.getRoot().get("username"), username)
             ));
@@ -36,18 +41,13 @@ public class UserService extends HibernateService<User> {
         }
     }
 
-    public User find_NotResponsibleFor(FinancialCategory category) {
+    public List<User> find_NotResponsibleFor(FinancialCategory category) {
+        return find();
+    }
+
+    public List<User> find_ResponsibleFor(FinancialCategory category) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
-
-            var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = queryBuilder.getRoot();
-            var builder = queryBuilder.getBuilder();
-
-            var query = entityManager.createQuery(criteriaQuery.where(
-                    builder.not(builder.in(root.get("responsibleForCategories")).value(category))
-            ));
-            return query.getResultList().get(0);
+            return find().stream().filter(user -> user.getResponsibleForCategories().contains(category)).collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

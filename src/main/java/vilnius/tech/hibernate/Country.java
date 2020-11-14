@@ -52,4 +52,9 @@ public class Country implements BaseEntity  {
     public void setCities(Set<City> cities) {
         this.cities = cities;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

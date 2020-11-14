@@ -8,7 +8,6 @@ import vilnius.tech.hibernate.ExpenseType;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.hibernate.service.ExpenseService;
-import vilnius.tech.hibernate.service.FinancialCategoryService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.utils.TimeUtils;
 import vilnius.tech.view.controller.modal.ExpenseModalController;
@@ -22,13 +21,14 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
 
     public ExpenseCRUDListController(View previousView, User user, FinancialCategory category, Session session) {
         super(previousView, user, session);
-        this.expenseController = new ExpenseService(session);
         this.category = category;
+        this.expenseService = new ExpenseService(session);
     }
 
     @Override
     protected ObservableList<Expense> getDataSource() {
-        return FXCollections.observableArrayList(expenseController.find_Category(category));
+        expenseService.fetch("type", "owner", "category");
+        return FXCollections.observableArrayList(expenseService.find_Category(category));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
         if(result == null)
             return;
 
-        expenseController.create(getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        expenseService.create(getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
     }
 
     @Override
@@ -51,12 +51,12 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
         if(result == null)
             return;
 
-        expenseController.update(item, getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        expenseService.update(item, getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
     }
 
     @Override
     protected void onDelete(Expense item) {
-        expenseController.remove(item);
+        expenseService.remove(item);
     }
 
     @Override
@@ -79,5 +79,5 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
     }
 
     private final FinancialCategory category;
-    private final ExpenseService expenseController;
+    private final ExpenseService expenseService;
 }

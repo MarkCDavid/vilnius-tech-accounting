@@ -19,7 +19,6 @@ public class EntityManagerAutoClosable implements EntityManager, AutoCloseable {
     @Override
     public void close() {
         this.entityManager.getTransaction().commit();
-        this.entityManager.close();
     }
 
     @Override

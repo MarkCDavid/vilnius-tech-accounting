@@ -2,6 +2,7 @@ package vilnius.tech.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ReflectionUtils {
@@ -21,9 +22,6 @@ public class ReflectionUtils {
         }
         return null;
     }
-
-
-
 
     public static List<Field> getFieldsOfType(Class<?> searchIn, Class<?> searchFor) {
         var result = new ArrayList<Field>();

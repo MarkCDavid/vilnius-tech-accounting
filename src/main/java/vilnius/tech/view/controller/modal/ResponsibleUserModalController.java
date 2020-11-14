@@ -17,15 +17,15 @@ public class ResponsibleUserModalController extends ChoiceBoxModalController<Use
     public ResponsibleUserModalController(Session session, FinancialCategory category, ChoiceBoxModalResult<User> result) {
         super(session, result);
         this.category = category;
-        this.controller = new UserService(session);
+        this.service = new UserService(session);
     }
 
     @Override
     protected ObservableList<User> getDataSource() {
-        return FXCollections.observableArrayList(controller.find_NotResponsibleFor(category));
+        return FXCollections.observableArrayList(service.find_NotResponsibleFor(category));
     }
 
     private final FinancialCategory category;
-    private final UserService controller;
+    private final UserService service;
 
 }

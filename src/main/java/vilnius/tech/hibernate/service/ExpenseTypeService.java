@@ -18,7 +18,4 @@ public class ExpenseTypeService extends HibernateService<ExpenseType> {
         expenseType.setCode(code);
         return update(expenseType);
     }
-
-
-
 }

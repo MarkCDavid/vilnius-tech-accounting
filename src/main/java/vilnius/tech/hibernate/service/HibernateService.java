@@ -4,11 +4,12 @@ import org.hibernate.Session;
 import vilnius.tech.hibernate.BaseEntity;
 import vilnius.tech.session.EntityManagerAutoClosable;
 import vilnius.tech.session.QueryBuilder;
-import vilnius.tech.utils.ReflectionUtils;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,11 @@ public abstract class HibernateService<T extends BaseEntity> {
         this.type = type;
         this.session = session;
         this.entityManagerFactory = session.getEntityManagerFactory();
+        this.toFetch = new HashSet<>();
+    }
+
+    public void fetch(String... fields) {
+        Collections.addAll(toFetch, fields);
     }
 
     public T update(T item) {
@@ -41,10 +47,10 @@ public abstract class HibernateService<T extends BaseEntity> {
 
     public T find(T item) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = fetch(queryBuilder.getRoot());
+            var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
@@ -62,10 +68,10 @@ public abstract class HibernateService<T extends BaseEntity> {
 
     public List<T> find() {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = fetch(queryBuilder.getRoot());
+            var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
@@ -81,10 +87,10 @@ public abstract class HibernateService<T extends BaseEntity> {
 
     public List<T> find(int take, int skip) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = fetch(queryBuilder.getRoot());
+            var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
@@ -101,16 +107,23 @@ public abstract class HibernateService<T extends BaseEntity> {
         }
     }
 
-    public Root<T> fetch(Root<T> root) {
-        return root;
-    }
-
     protected EntityManagerAutoClosable getEntityManager() {
         return new EntityManagerAutoClosable(entityManagerFactory.createEntityManager());
     }
 
-    protected QueryBuilder<T> getQueryBuilder() {
-        return new QueryBuilder<>(getType(), getSession());
+    protected QueryBuilder<T> constructQueryBuilder() {
+        var queryBuilder = new QueryBuilder<>(getType(), getSession());
+        fetch(queryBuilder.getRoot());
+        return queryBuilder;
+    }
+
+    protected Root<T> fetch(Root<T> root) {
+        for(var field: toFetch) {
+            root.fetch(field, JoinType.LEFT);
+        }
+        toFetch.clear();
+
+        return root;
     }
 
     protected Session getSession() {
@@ -124,5 +137,7 @@ public abstract class HibernateService<T extends BaseEntity> {
     private final Class<T> type;
     private final Session session;
     private final EntityManagerFactory entityManagerFactory;
+
+    private final Set<String> toFetch;
 }
 

@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.City;
 
+import javax.persistence.criteria.Root;
+
 public class AddressService extends HibernateService<Address> {
 
     public AddressService(Session session) {

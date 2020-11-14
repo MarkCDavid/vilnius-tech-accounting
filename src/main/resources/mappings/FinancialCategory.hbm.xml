@@ -23,7 +23,17 @@
 
         <set name = "responsibleUsers" cascade="save-update" table="RESPONSIBLE_FOR_CATEGORY">
             <key column = "category_id"/>
-            <many-to-many column = "user_id" class="vilnius.tech.hibernate.FinancialCategory"/>
+            <many-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
+        </set>
+
+        <set name = "expenses" cascade="all">
+            <key column = "category"/>
+            <one-to-many class="vilnius.tech.hibernate.Expense"/>
+        </set>
+
+        <set name = "incomes" cascade="all">
+            <key column = "category"/>
+            <one-to-many class="vilnius.tech.hibernate.Income"/>
         </set>
 
     </class>

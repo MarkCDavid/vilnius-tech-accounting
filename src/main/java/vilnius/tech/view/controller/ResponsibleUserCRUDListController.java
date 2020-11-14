@@ -5,6 +5,9 @@ import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
+import vilnius.tech.hibernate.service.FinancialCategoryService;
+import vilnius.tech.hibernate.service.SetService;
+import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.view.controller.modal.ResponsibleUserModalController;
 import vilnius.tech.view.Modal;
@@ -12,12 +15,20 @@ import vilnius.tech.view.View;
 import vilnius.tech.view.controller.modal.result.ChoiceBoxModalResult;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Set;
 
 public class ResponsibleUserCRUDListController extends CRUDListController<User> {
 
+    private final FinancialCategoryService financialCategoryService;
+    private final SetService<FinancialCategory, User> setService;
+
+
     public ResponsibleUserCRUDListController(View previousView, FinancialCategory category, User user, Session session) {
         super(previousView, user, session);
-        this.category = category;
+        this.financialCategoryService = new FinancialCategoryService(session);
+        this.category = financialCategoryService.find(category);
+        this.setService = new SetService<>(this.category, this.category.getResponsibleUsers(), session);
     }
 
     @Override
@@ -32,7 +43,7 @@ public class ResponsibleUserCRUDListController extends CRUDListController<User> 
         if(result == null)
             return;
 
-        category.getResponsibleUsers().add(result.getSelectedItem());
+        setService.add(result.getSelectedItem());
     }
 
     @Override
@@ -45,13 +56,13 @@ public class ResponsibleUserCRUDListController extends CRUDListController<User> 
         if(result == null)
             return;
 
-        category.getResponsibleUsers().remove(item);
-        category.getResponsibleUsers().add(result.getSelectedItem());
+        setService.remove(item);
+        setService.add(result.getSelectedItem());
     }
 
     @Override
     protected void onDelete(User item) {
-        category.getResponsibleUsers().remove(item);
+        setService.remove(item);
     }
 
     @Override

@@ -11,17 +11,12 @@ import java.util.Set;
 public class QueryBuilder<T> {
 
     public QueryBuilder(Class<T> type, Session session) {
-        this.session = session;
-        this.type = type;
-    }
 
-    public QueryBuilder<T> begin() {
         criteriaBuilder = session.getCriteriaBuilder();
         criteriaQuery = criteriaBuilder.createQuery(type);
 
         root = criteriaQuery.from(type);
         criteriaQuery = criteriaQuery.select(root);
-        return this;
     }
 
     public CriteriaBuilder getBuilder() {
@@ -36,11 +31,8 @@ public class QueryBuilder<T> {
         return criteriaQuery;
     }
 
-    private final Session session;
-    private final Class<T> type;
-
-    private CriteriaBuilder criteriaBuilder;
-
     private CriteriaQuery<T> criteriaQuery;
-    private Root<T> root;
+
+    private final CriteriaBuilder criteriaBuilder;
+    private final Root<T> root;
 }

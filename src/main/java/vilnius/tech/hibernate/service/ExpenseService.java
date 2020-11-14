@@ -26,17 +26,9 @@ public class ExpenseService extends HibernateService<Expense> {
         return update(expense);
     }
 
-    @Override
-    public Root<Expense> fetch(Root<Expense> root) {
-        root.fetch("category");
-        root.fetch("owner");
-        root.fetch("type");
-        return root;
-    }
-
     public List<Expense> find_Category(FinancialCategory category) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
             var root = fetch(queryBuilder.getRoot());

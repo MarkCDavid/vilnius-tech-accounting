@@ -3,6 +3,8 @@ package vilnius.tech.hibernate.service;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
 
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class FinancialCategoryService extends HibernateService<FinancialCategory> {
@@ -25,10 +27,10 @@ public class FinancialCategoryService extends HibernateService<FinancialCategory
 
     public List<FinancialCategory> find_User(User user) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = queryBuilder.getRoot();
+            var root = fetch(queryBuilder.getRoot());
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
@@ -47,7 +49,7 @@ public class FinancialCategoryService extends HibernateService<FinancialCategory
 
     public List<FinancialCategory> find_Parent(FinancialCategory financialCategory) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
             var root = queryBuilder.getRoot();

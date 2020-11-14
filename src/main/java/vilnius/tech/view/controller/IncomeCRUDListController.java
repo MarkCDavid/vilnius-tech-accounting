@@ -28,6 +28,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
 
     @Override
     protected ObservableList<Income> getDataSource() {
+        incomeService.fetch("type", "owner", "category");
         return FXCollections.observableArrayList(incomeService.find_Category(category));
     }
 

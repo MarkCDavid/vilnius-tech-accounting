@@ -14,10 +14,11 @@ public class User implements BaseEntity  {
 
     private String salt;
 
-    private Set<FinancialCategory> ownedCategories = new HashSet<>();
-    private Set<FinancialCategory> responsibleForCategories = new HashSet<>();
+    private Set<FinancialCategory> ownedCategories;
+    private Set<FinancialCategory> responsibleForCategories;
 
     public User() {
+
     }
 
     public User(String username, String password) {

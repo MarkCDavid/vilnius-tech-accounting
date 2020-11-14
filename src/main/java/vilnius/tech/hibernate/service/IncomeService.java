@@ -3,7 +3,6 @@ package vilnius.tech.hibernate.service;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.*;
 
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.sql.Timestamp;
 import java.util.List;
@@ -26,17 +25,9 @@ public class IncomeService extends HibernateService<Income> {
         return update(income);
     }
 
-    @Override
-    public Root<Income> fetch(Root<Income> root) {
-        root.fetch("category");
-        root.fetch("owner");
-        root.fetch("type");
-        return root;
-    }
-
     public List<Income> find_Category(FinancialCategory category) {
         try (var entityManager = getEntityManager()) {
-            var queryBuilder = getQueryBuilder().begin();
+            var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
             var root = fetch(queryBuilder.getRoot());

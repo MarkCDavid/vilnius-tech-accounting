@@ -80,8 +80,13 @@ public class CategoryController extends SessionController {
         if(result == null)
             return;
 
-        financialCategoryController.create(parentCategory, result.getName(), user);
-        updateTree();
+
+        try (var cache = new TreeViewCache<>(categoryTree)) {
+            var category = financialCategoryController.create(parentCategory, result.getName(), user);
+            cache.setLastSelected(category);
+            updateTree();
+        }
+
     }
 
 
@@ -97,8 +102,10 @@ public class CategoryController extends SessionController {
         if(result == null)
             return;
 
-        financialCategoryController.update(category, category.getParent(), result.getName(), user);
-        updateTree();
+        try (var cache = new TreeViewCache<>(categoryTree)) {
+            financialCategoryController.update(category, category.getParent(), result.getName(), user);
+            updateTree();
+        }
     }
 
     @FXML
@@ -108,8 +115,11 @@ public class CategoryController extends SessionController {
             return;
 
         var category = selectedNode.getValue();
-        financialCategoryController.remove(category);
-        updateTree();
+
+        try (var cache = new TreeViewCache<>(categoryTree)) {
+            financialCategoryController.remove(category);
+            updateTree();
+        }
     }
 
     @FXML
@@ -117,12 +127,31 @@ public class CategoryController extends SessionController {
         this.previousView.render();
     }
 
+    @FXML
+    public void onExpand() {
+        setExpansion(treeRoot, true);
+    }
+
+    @FXML
+    public void onContract() {
+        setExpansion(treeRoot, false);
+    }
+
+    private void setExpansion(TreeItem<FinancialCategory> item, boolean isExpanded) {
+        if(item == null)
+            return;
+
+        if(item.getParent() != null)
+            item.setExpanded(isExpanded);
+
+        for(var child: item.getChildren()){
+            setExpansion(child, isExpanded);
+        }
+    }
+
     private void updateTree() {
         var categoryMap = new HashMap<Integer, TreeItem<FinancialCategory>>();
         var categories = financialCategoryController.find_User(user);
-
-        var expansionCache = new TreeViewCache<FinancialCategory>();
-        expansionCache.save(categoryTree);
 
         treeRoot.getChildren().clear();
 
@@ -139,7 +168,6 @@ public class CategoryController extends SessionController {
             categoryMap.put(category.getId(), categoryNode);
         }
 
-        expansionCache.restore(categoryTree);
     }
 
 
