@@ -10,8 +10,6 @@ public class CategorySeeder implements Seeder {
 
     @Override
     public void seed(Session session) {
-        new UserSeeder().seed(session);
-
         var userController = new UserService(session);
 
         var administrator = userController.find_Username("admin");

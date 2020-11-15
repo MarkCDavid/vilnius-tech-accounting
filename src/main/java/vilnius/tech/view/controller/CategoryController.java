@@ -10,11 +10,8 @@ import vilnius.tech.error.DatabaseExceptionPolicy;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.hibernate.service.FinancialCategoryService;
-import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.view.controller.modal.CategoryModalController;
 import vilnius.tech.view.controller.modal.result.CategoryModalResult;
-import vilnius.tech.utils.ExpenseCalculator;
-import vilnius.tech.utils.IncomeCalculator;
 import vilnius.tech.utils.TreeViewCache;
 import vilnius.tech.view.Modal;
 import vilnius.tech.view.View;
@@ -54,16 +51,12 @@ public class CategoryController extends SessionController {
         var categoryAvailable = category != null;
 
         labelOwner.setVisible(categoryAvailable);
-        labelExpenses.setVisible(categoryAvailable);
-        labelIncome.setVisible(categoryAvailable);
         buttonResponsible.setVisible(categoryAvailable);
         buttonExpense.setVisible(categoryAvailable);
         buttonIncome.setVisible(categoryAvailable);
 
         if(categoryAvailable) {
             labelOwner.setText(String.format("Owner: %s", category.getOwner().getUsername()));
-            labelExpenses.setText(String.format("Total expenses: %s", new ExpenseCalculator(category, getSession()).getTotal()));
-            labelIncome.setText(String.format("Total income: %s", new IncomeCalculator(category, getSession()).getTotal()));
         }
     }
 
@@ -226,7 +219,7 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new ExpenseCRUDListController(getView(), user,  selected, getSession());
-        var view = new View(controller, getStage(), "Expenses", "listcrud.fxml");
+        var view = new View(controller, getStage(), "Expenses", "flowcrud.fxml");
         view.setErrorRouter(getView().getErrorRouter());
         view.render();
     }
@@ -237,7 +230,7 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new IncomeCRUDListController(getView(), user, selected, getSession());
-        var view = new View(controller, getStage(), "Incomes", "listcrud.fxml");
+        var view = new View(controller, getStage(), "Incomes", "flowcrud.fxml");
         view.setErrorRouter(getView().getErrorRouter());
         view.render();
     }
@@ -252,12 +245,6 @@ public class CategoryController extends SessionController {
 
     @FXML
     private Label labelOwner;
-
-    @FXML
-    private Label labelExpenses;
-
-    @FXML
-    private Label labelIncome;
 
     @FXML
     private Button buttonResponsible;

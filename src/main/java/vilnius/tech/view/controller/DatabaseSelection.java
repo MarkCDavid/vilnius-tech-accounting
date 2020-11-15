@@ -10,10 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import vilnius.tech.Main;
 import vilnius.tech.error.DatabaseExceptionPolicy;
-import vilnius.tech.seeds.CategorySeeder;
-import vilnius.tech.seeds.CountryCitySeeder;
-import vilnius.tech.seeds.ExpenseTypeSeeder;
-import vilnius.tech.seeds.IncomeTypeSeeder;
+import vilnius.tech.seeds.*;
 import vilnius.tech.utils.Parameters;
 import vilnius.tech.view.View;
 
@@ -44,9 +41,11 @@ public class DatabaseSelection extends Controller {
 
             if(Parameters.getDropDatabase()) {
                 new CountryCitySeeder().seed(session);
+                new UserSeeder().seed(session);
                 new CategorySeeder().seed(session);
                 new IncomeTypeSeeder().seed(session);
                 new ExpenseTypeSeeder().seed(session);
+                new FlowSeeder().seed(session);
             }
 
             switchToLogin(session);

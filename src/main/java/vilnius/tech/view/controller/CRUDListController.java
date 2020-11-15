@@ -46,8 +46,7 @@ public abstract class CRUDListController<T extends BaseEntity> extends SessionCo
             getView().getErrorRouter().route(error);
         }
 
-        this.tableView.setItems(getDataSource());
-        GUIUtils.autoResizeColumns(tableView);
+        updateTable();
     }
 
 
@@ -64,6 +63,10 @@ public abstract class CRUDListController<T extends BaseEntity> extends SessionCo
         }
 
 
+        updateTable();
+    }
+
+    protected void updateTable() {
         this.tableView.setItems(getDataSource());
         GUIUtils.autoResizeColumns(tableView);
     }
@@ -84,15 +87,13 @@ public abstract class CRUDListController<T extends BaseEntity> extends SessionCo
             getView().getErrorRouter().route(error);
         }
 
-        this.tableView.setItems(getDataSource());
-        GUIUtils.autoResizeColumns(tableView);
+        updateTable();
     }
 
     @FXML
     public void initialize() {
-        this.initializeColumns();
-        this.tableView.setItems(getDataSource());
-        GUIUtils.autoResizeColumns(tableView);
+        initializeColumns();
+        updateTable();
     }
 
     @FXML

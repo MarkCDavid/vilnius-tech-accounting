@@ -1,7 +1,11 @@
 package vilnius.tech.view.controller;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.Income;
@@ -9,6 +13,8 @@ import vilnius.tech.hibernate.IncomeType;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.hibernate.service.IncomeService;
 import vilnius.tech.utils.GUIUtils;
+import vilnius.tech.utils.IncomeCalculator;
+import vilnius.tech.utils.Suspender;
 import vilnius.tech.utils.TimeUtils;
 import vilnius.tech.view.controller.modal.IncomeModalController;
 import vilnius.tech.view.controller.modal.result.CashflowModalResult;
@@ -16,6 +22,9 @@ import vilnius.tech.view.Modal;
 import vilnius.tech.view.View;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
 
 public class IncomeCRUDListController extends CRUDListController<Income> {
 
@@ -27,7 +36,13 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
 
     @Override
     protected ObservableList<Income> getDataSource() {
-        return FXCollections.observableArrayList(incomeService.find_Category(category));
+        return FXCollections.observableArrayList(
+                incomeService.find_Category(
+                        category,
+                        TimeUtils.of(datePickerFrom, Instant.MIN),
+                        TimeUtils.of(datePickerTo, Instant.MAX)
+                )
+        );
     }
 
     @Override
@@ -38,6 +53,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
             return;
 
         incomeService.create(getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        handleUpdatedValues();
     }
 
     @Override
@@ -51,6 +67,20 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
             return;
 
         incomeService.update(item, getUser(), result.getSum(), TimeUtils.now(), category, result.getType());
+        handleUpdatedValues();
+    }
+
+    void handleUpdatedValues() {
+        labelTotal.setText(
+                String.format("Total: %s",
+                        new IncomeCalculator(category, getSession())
+                                .getTotal(
+                                        TimeUtils.of(datePickerFrom, Instant.MIN),
+                                        TimeUtils.of(datePickerTo, Instant.MAX)
+                                )
+                )
+        );
+        updateTable();
     }
 
     @Override
@@ -77,6 +107,59 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         return initialResult;
     }
 
+    @Override
+    public void initialize() {
+        super.initialize();
+
+        datePickerFrom.setValue(TimeUtils.monthStart());
+        datePickerTo.setValue(TimeUtils.monthEnd());
+
+        datePickerFrom.valueProperty().addListener(this::datePickerFromChanged);
+        datePickerTo.valueProperty().addListener(this::datePickerToChanged);
+
+        handleUpdatedValues();
+    }
+
+    private final Suspender suspender_datePickerToChanged = new Suspender();
+    private void datePickerToChanged(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+
+        if(suspender_datePickerToChanged.isSuspended())
+            return;
+
+        if (datePickerFrom.getValue() == null || datePickerFrom.getValue().isAfter(newValue)) {
+            try (var suspend = suspender_datePickedFromChanged.suspend()) {
+                datePickerFrom.setValue(newValue.minusMonths(1));
+            }
+        }
+
+        handleUpdatedValues();
+    }
+
+
+    private final Suspender suspender_datePickedFromChanged = new Suspender();
+    private void datePickerFromChanged(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+
+        if(suspender_datePickedFromChanged.isSuspended())
+            return;
+
+        if (datePickerTo.getValue() == null || datePickerTo.getValue().isBefore(newValue)) {
+            try (var suspend = suspender_datePickerToChanged.suspend()) {
+                datePickerTo.setValue(newValue.plusMonths(1));
+            }
+        }
+
+        handleUpdatedValues();
+    }
+
     private final FinancialCategory category;
     private final IncomeService incomeService;
+
+    @FXML
+    private DatePicker datePickerFrom;
+
+    @FXML
+    private DatePicker datePickerTo;
+
+    @FXML
+    private Label labelTotal;
 }

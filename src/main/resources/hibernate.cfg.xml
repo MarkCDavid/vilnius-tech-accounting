@@ -18,6 +18,8 @@
 
         <property name="hibernate.connection.autocommit">true</property>
 
+        <property name="connection.pool_size">25</property>
+
         <mapping resource="mappings/Address.hbm.xml"/>
         <mapping resource="mappings/City.hbm.xml"/>
         <mapping resource="mappings/ContactInformation.hbm.xml"/>

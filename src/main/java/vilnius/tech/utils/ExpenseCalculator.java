@@ -5,6 +5,8 @@ import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.service.ExpenseService;
 import vilnius.tech.hibernate.service.FinancialCategoryService;
 
+import java.sql.Timestamp;
+
 public class ExpenseCalculator {
 
     private final Session session;
@@ -18,15 +20,21 @@ public class ExpenseCalculator {
         this.financialCategoryService = new FinancialCategoryService(session);
     }
 
+
+
     public long getTotal() {
+        return getTotal(null, null);
+    }
+
+    public long getTotal(Timestamp from, Timestamp to) {
         long total = 0;
 
-        for(var expense : expensesService.find_Category(category)) {
+        for(var expense : expensesService.find_Category(category, from, to)) {
             total += expense.getSum();
         }
 
         for(var childCategory : financialCategoryService.find_Parent(category)) {
-            total += new ExpenseCalculator(childCategory, session).getTotal();
+            total += new ExpenseCalculator(childCategory, session).getTotal(from, to);
         }
 
         return total;

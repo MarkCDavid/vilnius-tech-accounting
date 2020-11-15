@@ -48,10 +48,16 @@ public class FinancialCategoryService extends HibernateService<FinancialCategory
             var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
+            var join = root.join("responsibleUsers", JoinType.LEFT);
+            join.on(
+                    builder.equal(join.get("id"), user.getId())
+            );
+
             var query = entityManager.createQuery(
                     criteriaQuery.where(
                             builder.or(
-                                    builder.equal(root.get("owner"), user)
+                                    builder.equal(root.get("owner"), user),
+                                    builder.equal(join.get("id"), user.getId())
                             )
                     ).orderBy(builder.asc(root.get("id"))).distinct(true)
             );
