@@ -27,9 +27,6 @@ public class CityService extends HibernateService<City> {
                     queryBuilder.getBuilder().equal(queryBuilder.getRoot().get("country"), country)
             ));
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

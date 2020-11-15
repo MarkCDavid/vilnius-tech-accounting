@@ -27,7 +27,6 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
 
     @Override
     protected ObservableList<Expense> getDataSource() {
-        expenseService.fetch("type", "owner", "category");
         return FXCollections.observableArrayList(expenseService.find_Category(category));
     }
 
@@ -62,10 +61,10 @@ public class ExpenseCRUDListController extends CRUDListController<Expense> {
     @Override
     protected void initializeColumns() {
         var table = getTableView();
-        table.getColumns().add(GUIUtils.createColumn("Owner", "owner"));
-        table.getColumns().add(GUIUtils.createColumn("Sum", "sum"));
-        table.getColumns().add(GUIUtils.createColumn("Date", "timestamp"));
-        table.getColumns().add(GUIUtils.createColumn("Type", "type"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Owner", "getOwner"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Sum", "getSum"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Date", "getTimestamp"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Type", "getType"));
     }
 
     private CashflowModalResult<ExpenseType> getInitialResult(Expense item) {

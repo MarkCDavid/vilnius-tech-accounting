@@ -29,22 +29,30 @@ public class MainController extends SessionController {
 
     public void onManageExpenseTypes() throws IOException {
         var controller = new ExpenseTypeCRUDListController(getView(), getUser(), getSession());
-        new View(controller, getStage(), "Expense Types", "listcrud.fxml").render();
+        var view = new View(controller, getStage(), "Expense Types", "listcrud.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void onManageIncomeTypes() throws IOException {
         var controller = new IncomeTypeCRUDListController(getView(), getUser(), getSession());
-        new View(controller, getStage(), "Income Types", "listcrud.fxml").render();
+        var view = new View(controller, getStage(), "Income Types", "listcrud.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void onManageTransactionCategories() throws IOException {
         var controller = new CategoryController(getView(), getUser(), getSession());
-        new View(controller, getStage(), "Categories", "categories.fxml").render();
+        var view = new View(controller, getStage(), "Categories", "categories.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void onLogOut() throws IOException {
         var controller = new GatewayController(getSession());
-        new View(controller, getStage(), "Gateway", "gateway.fxml").render();
+        var view = new View(controller, getStage(), "Gateway", "gateway.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     @FXML

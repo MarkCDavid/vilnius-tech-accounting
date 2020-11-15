@@ -19,9 +19,9 @@
             <one-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
         </set>
 
-        <set name = "responsibleForCategories" cascade="save-update" table="RESPONSIBLE_FOR_CATEGORY">
+        <set name = "responsibleForCategories" cascade="all" table="RESPONSIBLE_FOR_CATEGORY">
             <key column = "user_id"/>
-            <many-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
+            <many-to-many column="category_id" class="vilnius.tech.hibernate.FinancialCategory"/>
         </set>
 
         <joined-subclass name = "vilnius.tech.hibernate.JuridicalUser" table = "JURIDICAL_USER">

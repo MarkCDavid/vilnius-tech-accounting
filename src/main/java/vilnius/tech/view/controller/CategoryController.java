@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import org.hibernate.Session;
+import vilnius.tech.error.DatabaseExceptionPolicy;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.hibernate.service.FinancialCategoryService;
@@ -30,7 +31,6 @@ public class CategoryController extends SessionController {
         this.previousView = previousView;
         this.treeRoot = new TreeItem<>();
         this.financialCategoryController = new FinancialCategoryService(session);
-        this.userController = new UserService(session);
     }
 
     @FXML
@@ -61,7 +61,7 @@ public class CategoryController extends SessionController {
         buttonIncome.setVisible(categoryAvailable);
 
         if(categoryAvailable) {
-            labelOwner.setText(String.format("Owner: %s", userController.find(category.getOwner()).getUsername()));
+            labelOwner.setText(String.format("Owner: %s", category.getOwner().getUsername()));
             labelExpenses.setText(String.format("Total expenses: %s", new ExpenseCalculator(category, getSession()).getTotal()));
             labelIncome.setText(String.format("Total income: %s", new IncomeCalculator(category, getSession()).getTotal()));
         }
@@ -80,10 +80,16 @@ public class CategoryController extends SessionController {
         if(result == null)
             return;
 
-
-        try (var cache = new TreeViewCache<>(categoryTree)) {
+        try (var cache = new TreeViewCache<>(categoryTree); cache) {
             var category = financialCategoryController.create(parentCategory, result.getName(), user);
             cache.setLastSelected(category);
+        } catch (Exception e) {
+            var error = DatabaseExceptionPolicy.apply(e);
+            if (error == null)
+                throw e;
+
+            getView().getErrorRouter().route(error);
+        } finally {
             updateTree();
         }
 
@@ -118,6 +124,14 @@ public class CategoryController extends SessionController {
 
         try (var cache = new TreeViewCache<>(categoryTree)) {
             financialCategoryController.remove(category);
+            updateTree();
+        } catch (Exception e) {
+            var error = DatabaseExceptionPolicy.apply(e);
+            if (error == null)
+                throw e;
+
+            getView().getErrorRouter().route(error);
+        } finally {
             updateTree();
         }
     }
@@ -201,7 +215,9 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new ResponsibleUserCRUDListController(getView(), selected, user, getSession());
-        new View(controller, getStage(), "Responsible Users", "listcrud.fxml").render();
+        var view = new View(controller, getStage(), "Responsible Users", "listcrud.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void onExpense() throws IOException {
@@ -210,7 +226,9 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new ExpenseCRUDListController(getView(), user,  selected, getSession());
-        new View(controller, getStage(), "Expenses", "listcrud.fxml").render();
+        var view = new View(controller, getStage(), "Expenses", "listcrud.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void onIncome() throws IOException {
@@ -219,14 +237,15 @@ public class CategoryController extends SessionController {
             return;
 
         var controller = new IncomeCRUDListController(getView(), user, selected, getSession());
-        new View(controller, getStage(), "Incomes", "listcrud.fxml").render();
+        var view = new View(controller, getStage(), "Incomes", "listcrud.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     private final User user;
     private final View previousView;
     private final TreeItem<FinancialCategory> treeRoot;
     private final FinancialCategoryService financialCategoryController;
-    private final UserService userController;
 
     @FXML
     private TreeView<FinancialCategory> categoryTree;

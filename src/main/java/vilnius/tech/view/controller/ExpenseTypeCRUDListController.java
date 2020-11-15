@@ -58,8 +58,8 @@ public class ExpenseTypeCRUDListController extends CRUDListController<ExpenseTyp
     @Override
     protected void initializeColumns() {
         var table = getTableView();
-        table.getColumns().add(GUIUtils.createColumn("Name", "name"));
-        table.getColumns().add(GUIUtils.createColumn("Code", "code"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Name", "getName"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Code", "getCode"));
     }
 
 

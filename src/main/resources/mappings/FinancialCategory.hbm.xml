@@ -21,9 +21,9 @@
 
         <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
 
-        <set name = "responsibleUsers" cascade="save-update" table="RESPONSIBLE_FOR_CATEGORY">
+        <set name = "responsibleUsers" cascade="all" table="RESPONSIBLE_FOR_CATEGORY">
             <key column = "category_id"/>
-            <many-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
+            <many-to-many column="user_id" class="vilnius.tech.hibernate.User"/>
         </set>
 
         <set name = "expenses" cascade="all">

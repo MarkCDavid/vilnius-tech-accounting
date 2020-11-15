@@ -30,7 +30,7 @@ public class IncomeService extends HibernateService<Income> {
             var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = fetch(queryBuilder.getRoot());
+            var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(criteriaQuery.where(
@@ -38,9 +38,6 @@ public class IncomeService extends HibernateService<Income> {
             ).distinct(true));
 
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

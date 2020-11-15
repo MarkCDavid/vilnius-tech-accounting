@@ -57,8 +57,8 @@ public class IncomeTypeCRUDListController extends CRUDListController<IncomeType>
     @Override
     protected void initializeColumns() {
         var table = getTableView();
-        table.getColumns().add(GUIUtils.createColumn("Name", "name"));
-        table.getColumns().add(GUIUtils.createColumn("Code", "code"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Name", "getName"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Code", "getCode"));
     }
 
     private NameCodeModalResult getInitialResult(IncomeType item) {

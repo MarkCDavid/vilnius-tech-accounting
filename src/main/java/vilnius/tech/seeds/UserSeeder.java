@@ -8,7 +8,7 @@ public class UserSeeder implements Seeder {
 
     @Override
     public void seed(Session session) {
-        createPhysicalUser(session, "administrator", "administrator", "administrator", "");
+        createPhysicalUser(session, "admin", "admin", "admin", "");
         createPhysicalUser(session, "Aurimas", "Aurimas", "Aurimas", "");
         createPhysicalUser(session, "Jurgis", "Jurgis", "Jurgis", "");
         createPhysicalUser(session, "Arminas", "Arminas", "Arminas", "");

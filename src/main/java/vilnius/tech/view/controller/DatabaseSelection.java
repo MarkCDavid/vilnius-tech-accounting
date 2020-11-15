@@ -22,7 +22,10 @@ import java.io.IOException;
 public class DatabaseSelection extends Controller {
 
     public void buttonConnectToDatabase(ActionEvent actionEvent) throws IOException {
+        connectToDatabase();
+    }
 
+    private void connectToDatabase() throws IOException {
         try {
             progressIndicator.setVisible(true);
 
@@ -77,7 +80,7 @@ public class DatabaseSelection extends Controller {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         progressIndicator.setVisible(false);
     }
 

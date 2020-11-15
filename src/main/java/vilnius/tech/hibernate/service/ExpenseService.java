@@ -31,7 +31,7 @@ public class ExpenseService extends HibernateService<Expense> {
             var queryBuilder = constructQueryBuilder();
 
             var criteriaQuery = queryBuilder.getCriteriaQuery();
-            var root = fetch(queryBuilder.getRoot());
+            var root = queryBuilder.getRoot();
             var builder = queryBuilder.getBuilder();
 
 
@@ -41,9 +41,6 @@ public class ExpenseService extends HibernateService<Expense> {
             ).distinct(true));
 
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

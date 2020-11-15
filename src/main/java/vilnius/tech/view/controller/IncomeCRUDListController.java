@@ -7,7 +7,6 @@ import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.Income;
 import vilnius.tech.hibernate.IncomeType;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.service.FinancialCategoryService;
 import vilnius.tech.hibernate.service.IncomeService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.utils.TimeUtils;
@@ -28,7 +27,6 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
 
     @Override
     protected ObservableList<Income> getDataSource() {
-        incomeService.fetch("type", "owner", "category");
         return FXCollections.observableArrayList(incomeService.find_Category(category));
     }
 
@@ -63,10 +61,10 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
     @Override
     protected void initializeColumns() {
         var table = getTableView();
-        table.getColumns().add(GUIUtils.createColumn("Owner", "owner"));
-        table.getColumns().add(GUIUtils.createColumn("Sum", "sum"));
-        table.getColumns().add(GUIUtils.createColumn("Date", "timestamp"));
-        table.getColumns().add(GUIUtils.createColumn("Type", "type"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Owner", "getOwner"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Sum", "getSum"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Date", "getTimestamp"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Type", "getType"));
     }
 
     private CashflowModalResult<IncomeType> getInitialResult(Income item) {

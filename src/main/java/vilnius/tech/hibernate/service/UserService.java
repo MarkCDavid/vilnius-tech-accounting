@@ -31,26 +31,34 @@ public class UserService extends HibernateService<User> {
                     queryBuilder.getBuilder().like(queryBuilder.getRoot().get("username"), username)
             ));
             var results = query.getResultList();
-            if(results.isEmpty())
+            if (results.isEmpty())
                 return null;
 
             return results.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
     public List<User> find_NotResponsibleFor(FinancialCategory category) {
-        return find();
-    }
-
-    public List<User> find_ResponsibleFor(FinancialCategory category) {
         try (var entityManager = getEntityManager()) {
-            return find().stream().filter(user -> user.getResponsibleForCategories().contains(category)).collect(Collectors.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            var queryBuilder = constructQueryBuilder();
+
+            var criteriaQuery = queryBuilder.getCriteriaQuery();
+            var root = queryBuilder.getRoot();
+            var builder = queryBuilder.getBuilder();
+
+            var join = root.join("responsibleForCategories", JoinType.LEFT);
+            join.on(
+                    builder.equal(join.get("id"), category.getId())
+            );
+
+            var query = entityManager.createQuery(
+                    criteriaQuery
+                            .select(root)
+                            .where(builder.isNull(join.get("id")))
+                            .distinct(true)
+            );
+
+            return query.getResultList();
         }
     }
 }

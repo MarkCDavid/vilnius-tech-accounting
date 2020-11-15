@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.hibernate.Session;
+import vilnius.tech.error.MessageBoxRouter;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
 import vilnius.tech.hibernate.User;
@@ -54,20 +55,22 @@ public class GatewayController extends SessionController {
     }
 
     public void buttonSignInAction(ActionEvent actionEvent) throws IOException {
-        if(!signInValidator.validate())
+        if (!signInValidator.validate())
             return;
 
         var userController = new UserService(getSession());
 
         var user = userController.find_Username(sitfUsername.getText());
-        if(user == null)
+        if (user == null)
             throw new IllegalStateException("No user fetched after validation!");
 
         var valid = PasswordUtils.verifyUserPassword(sipfPassword.getText(), user.getPassword(), user.getSalt());
-        if(!valid)
+        if (!valid)
             throw new IllegalStateException("Password invalid after validation!");
 
-        new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml").render();
+        var view = new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     public void buttonSignUpAction(ActionEvent actionEvent) throws IOException {
@@ -77,7 +80,9 @@ public class GatewayController extends SessionController {
 
         var user = createUser();
 
-        new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml").render();
+        var view = new View(new MainController(user, getSession()), getStage(), "Main", "main.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
     private User createUser() {
@@ -117,6 +122,14 @@ public class GatewayController extends SessionController {
             );
         }
         throw new IllegalStateException(String.format("The selected user type '%s' is not valid!", userType));
+    }
+
+    @FXML
+    private void onDisconnect() throws IOException {
+        getSession().close();
+        var view = new View(new DatabaseSelection(), getStage(), "Select Database", "databaseSelection.fxml");
+        view.setErrorRouter(getView().getErrorRouter());
+        view.render();
     }
 
 

@@ -1,12 +1,8 @@
-package vilnius.tech.session;
+package vilnius.tech.hibernate.utils;
 
 import org.hibernate.Session;
-import vilnius.tech.utils.ReflectionUtils;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.util.List;
-import java.util.Set;
 
 public class QueryBuilder<T> {
 

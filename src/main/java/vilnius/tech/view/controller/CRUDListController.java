@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import org.hibernate.Session;
+import vilnius.tech.error.DatabaseExceptionPolicy;
 import vilnius.tech.hibernate.BaseEntity;
 import vilnius.tech.hibernate.User;
 import vilnius.tech.utils.GUIUtils;
@@ -35,26 +36,56 @@ public abstract class CRUDListController<T extends BaseEntity> extends SessionCo
 
     @FXML
     private void onAddNewCore() throws IOException {
-        onAddNew();
+        try {
+            onAddNew();
+        } catch (Exception e) {
+            var error = DatabaseExceptionPolicy.apply(e);
+            if(error == null)
+                throw e;
+
+            getView().getErrorRouter().route(error);
+        }
+
         this.tableView.setItems(getDataSource());
+        GUIUtils.autoResizeColumns(tableView);
     }
 
 
     @FXML
     private void onUpdateCore() throws IOException {
-        onUpdate(tableView.getSelectionModel().getSelectedItem());
+        try {
+            onUpdate(tableView.getSelectionModel().getSelectedItem());
+        } catch (Exception e) {
+            var error = DatabaseExceptionPolicy.apply(e);
+            if(error == null)
+                throw e;
+
+            getView().getErrorRouter().route(error);
+        }
+
+
         this.tableView.setItems(getDataSource());
+        GUIUtils.autoResizeColumns(tableView);
     }
 
     @FXML
-    public void onDeleteCore() throws IOException {
+    public void onDeleteCore() {
         var item = tableView.getSelectionModel().getSelectedItem();
         if(item == null)
             return;
 
-        onDelete(item);
+        try {
+            onDelete(item);
+        } catch (Exception e) {
+            var error = DatabaseExceptionPolicy.apply(e);
+            if(error == null)
+                throw e;
+
+            getView().getErrorRouter().route(error);
+        }
 
         this.tableView.setItems(getDataSource());
+        GUIUtils.autoResizeColumns(tableView);
     }
 
     @FXML

@@ -1,4 +1,4 @@
-package vilnius.tech.session;
+package vilnius.tech.hibernate.utils;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;

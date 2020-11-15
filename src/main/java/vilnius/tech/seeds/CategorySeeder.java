@@ -14,7 +14,7 @@ public class CategorySeeder implements Seeder {
 
         var userController = new UserService(session);
 
-        var administrator = userController.find_Username("administrator");
+        var administrator = userController.find_Username("admin");
         var aurimas = userController.find_Username("Aurimas");
 
         var vehicles = createCategory(session, "Vehicles", administrator);

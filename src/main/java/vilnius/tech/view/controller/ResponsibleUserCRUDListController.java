@@ -5,9 +5,8 @@ import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
+import vilnius.tech.hibernate.service.CRUDService;
 import vilnius.tech.hibernate.service.FinancialCategoryService;
-import vilnius.tech.hibernate.service.SetService;
-import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.view.controller.modal.ResponsibleUserModalController;
 import vilnius.tech.view.Modal;
@@ -15,20 +14,20 @@ import vilnius.tech.view.View;
 import vilnius.tech.view.controller.modal.result.ChoiceBoxModalResult;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Set;
+
 
 public class ResponsibleUserCRUDListController extends CRUDListController<User> {
 
-    private final FinancialCategoryService financialCategoryService;
-    private final SetService<FinancialCategory, User> setService;
 
+    private final CRUDService crudService;
+    private final FinancialCategoryService financialCategoryService;
 
     public ResponsibleUserCRUDListController(View previousView, FinancialCategory category, User user, Session session) {
         super(previousView, user, session);
+
+        this.crudService = new CRUDService(session);
         this.financialCategoryService = new FinancialCategoryService(session);
-        this.category = financialCategoryService.find(category);
-        this.setService = new SetService<>(this.category, this.category.getResponsibleUsers(), session);
+        this.category = this.financialCategoryService.find(category);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class ResponsibleUserCRUDListController extends CRUDListController<User> 
         if(result == null)
             return;
 
-        setService.add(result.getSelectedItem());
+        category = financialCategoryService.add_ResponsibleUser(category, result.getSelectedItem());
     }
 
     @Override
@@ -56,19 +55,19 @@ public class ResponsibleUserCRUDListController extends CRUDListController<User> 
         if(result == null)
             return;
 
-        setService.remove(item);
-        setService.add(result.getSelectedItem());
+        category = financialCategoryService.remove_ResponsibleUser(category, item);
+        category = financialCategoryService.add_ResponsibleUser(category, result.getSelectedItem());
     }
 
     @Override
     protected void onDelete(User item) {
-        setService.remove(item);
+        category = financialCategoryService.remove_ResponsibleUser(category, item);
     }
 
     @Override
     protected void initializeColumns() {
         var table = getTableView();
-        table.getColumns().add(GUIUtils.createColumn("Username", "username"));
+        table.getColumns().add(GUIUtils.createColumn_Getter("Username", "getUsername"));
     }
 
     private ChoiceBoxModalResult<User> getInitialResult(User item) {
@@ -80,5 +79,5 @@ public class ResponsibleUserCRUDListController extends CRUDListController<User> 
         return initialResult;
     }
 
-    private final FinancialCategory category;
+    private FinancialCategory category;
 }

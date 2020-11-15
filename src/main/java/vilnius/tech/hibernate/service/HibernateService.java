@@ -2,47 +2,29 @@ package vilnius.tech.hibernate.service;
 
 import org.hibernate.Session;
 import vilnius.tech.hibernate.BaseEntity;
-import vilnius.tech.session.EntityManagerAutoClosable;
-import vilnius.tech.session.QueryBuilder;
+import vilnius.tech.hibernate.utils.EntityManagerAutoClosable;
+import vilnius.tech.hibernate.utils.QueryBuilder;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class HibernateService<T extends BaseEntity> {
 
     public HibernateService(Class<T> type, Session session) {
         this.type = type;
         this.session = session;
-        this.entityManagerFactory = session.getEntityManagerFactory();
-        this.toFetch = new HashSet<>();
+        this.crudService = new CRUDService(session);
     }
 
-    public void fetch(String... fields) {
-        Collections.addAll(toFetch, fields);
+    public CRUDService getCrudService() {
+        return crudService;
     }
 
     public T update(T item) {
-        try (var entityManager = getEntityManager()) {
-            T merged = entityManager.merge(item);
-            entityManager.persist(merged);
-            return merged;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return crudService.update(item);
     }
 
     public void remove(T item) {
-        try (var entityManager = getEntityManager()) {
-            entityManager.remove(item);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        crudService.remove(item);
     }
 
     public T find(T item) {
@@ -60,9 +42,6 @@ public abstract class HibernateService<T extends BaseEntity> {
             );
 
             return query.getSingleResult();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -79,9 +58,6 @@ public abstract class HibernateService<T extends BaseEntity> {
             );
 
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -101,29 +77,15 @@ public abstract class HibernateService<T extends BaseEntity> {
             query.setFirstResult(skip);
 
             return query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
     protected EntityManagerAutoClosable getEntityManager() {
-        return new EntityManagerAutoClosable(entityManagerFactory.createEntityManager());
+        return crudService.getEntityManager();
     }
 
     protected QueryBuilder<T> constructQueryBuilder() {
-        var queryBuilder = new QueryBuilder<>(getType(), getSession());
-        fetch(queryBuilder.getRoot());
-        return queryBuilder;
-    }
-
-    protected Root<T> fetch(Root<T> root) {
-        for(var field: toFetch) {
-            root.fetch(field, JoinType.LEFT);
-        }
-        toFetch.clear();
-
-        return root;
+        return new QueryBuilder<>(getType(), getSession());
     }
 
     protected Session getSession() {
@@ -136,8 +98,7 @@ public abstract class HibernateService<T extends BaseEntity> {
 
     private final Class<T> type;
     private final Session session;
-    private final EntityManagerFactory entityManagerFactory;
 
-    private final Set<String> toFetch;
+    private final CRUDService crudService;
 }
 

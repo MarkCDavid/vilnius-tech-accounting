@@ -29,7 +29,23 @@ public class GUIUtils {
         });
     }
 
-    public static <T> TableColumn<T, String> createColumn(String header, String fieldName) {
+
+    public static <T> TableColumn<T, String> createColumn_Getter(String header, String getterName) {
+        var tableColumn = new TableColumn<T, String>();
+        tableColumn.setText(header);
+        tableColumn.setCellValueFactory(row -> {
+            var value = row.getValue();
+            var method = ReflectionUtils.extractGetter(value, getterName);
+            if(method == null) {
+                return new ReadOnlyStringWrapper("");
+            }
+
+            return new ReadOnlyStringWrapper(ReflectionUtils.extractString(value, method));
+        });
+        return tableColumn;
+    }
+
+    public static <T> TableColumn<T, String> createColumn_Field(String header, String fieldName) {
         var tableColumn = new TableColumn<T, String>();
         tableColumn.setText(header);
         tableColumn.setCellValueFactory(row -> {
