@@ -1,12 +1,16 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class ContactInformation implements BaseEntity  {
 
+    @Expose
     private Integer id;
 
+    @Expose
     private Address address;
 
     private Set<PhysicalUser> physicalUsers = new HashSet<>();

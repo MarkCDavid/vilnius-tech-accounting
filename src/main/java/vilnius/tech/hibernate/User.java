@@ -1,5 +1,6 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
 import vilnius.tech.utils.PasswordUtils;
 
 import java.util.HashSet;
@@ -7,9 +8,12 @@ import java.util.Set;
 
 public class User implements BaseEntity  {
 
+    @Expose
     private Integer id;
 
+    @Expose
     private String username;
+
     private String password;
 
     private String salt;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:annotation-driven/>
+
+    <bean name="address" class="vilnius.tech.web.controller.AddressController"/>
+    <bean name="country" class="vilnius.tech.web.controller.CountryController"/>
+    <bean name="contactInformation" class="vilnius.tech.web.controller.ContactInformationController"/>
+    <bean name="city" class="vilnius.tech.web.controller.CityController"/>
+    <bean name="expense" class="vilnius.tech.web.controller.ExpenseController"/>
+    <bean name="expenseType" class="vilnius.tech.web.controller.ExpenseTypeController"/>
+    <bean name="financialCategory" class="vilnius.tech.web.controller.FinancialCategoryController"/>
+    <bean name="income" class="vilnius.tech.web.controller.IncomeController"/>
+    <bean name="incomeType" class="vilnius.tech.web.controller.IncomeTypeController"/>
+    <bean name="juridicalUser" class="vilnius.tech.web.controller.JuridicalUserController"/>
+    <bean name="physicalUser" class="vilnius.tech.web.controller.PhysicalUserController"/>
+    <bean name="user" class="vilnius.tech.web.controller.UserController"/>
+</beans>

@@ -28,6 +28,10 @@ public abstract class HibernateService<T extends BaseEntity> {
     }
 
     public T find(T item) {
+        return find(item.getId());
+    }
+
+    public T find(Integer id) {
         try (var entityManager = getEntityManager()) {
             var queryBuilder = constructQueryBuilder();
 
@@ -36,12 +40,13 @@ public abstract class HibernateService<T extends BaseEntity> {
             var builder = queryBuilder.getBuilder();
 
             var query = entityManager.createQuery(
-                criteriaQuery.where(
-                    builder.equal(root.get("id"), item.getId())
-                ).distinct(true)
+                    criteriaQuery.where(
+                            builder.equal(root.get("id"), id)
+                    ).distinct(true)
             );
 
-            return query.getSingleResult();
+            var results = query.getResultList();
+            return results.size() == 1 ? results.get(0) : null;
         }
     }
 

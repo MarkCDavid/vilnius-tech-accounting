@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.hibernate.Session;
-import vilnius.tech.error.MessageBoxRouter;
 import vilnius.tech.hibernate.City;
 import vilnius.tech.hibernate.Country;
 import vilnius.tech.hibernate.User;

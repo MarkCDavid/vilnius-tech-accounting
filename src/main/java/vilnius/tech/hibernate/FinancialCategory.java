@@ -1,17 +1,28 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class FinancialCategory implements BaseEntity  {
 
+
+    @Expose
     private Integer id;
 
+    @Expose
     private FinancialCategory parent;
-    private Set<FinancialCategory> children;
+
+    @Expose
     private String name;
+
+    @Expose
     private User owner;
+
     private Set<User> responsibleUsers;
+
+    private Set<FinancialCategory> children;
     private Set<Expense> expenses;
     private Set<Income> incomes;
 

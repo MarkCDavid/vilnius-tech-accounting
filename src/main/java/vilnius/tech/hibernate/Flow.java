@@ -1,14 +1,26 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 public class Flow implements BaseEntity  {
 
+
+    @Expose
     private Integer id;
+
+    @Expose
     private User owner;
+
+    @Expose
     private long sum;
+
+    @Expose
     private Timestamp timestamp;
+
+    @Expose
     private FinancialCategory category;
 
     public Flow() {

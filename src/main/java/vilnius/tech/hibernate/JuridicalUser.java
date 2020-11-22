@@ -1,9 +1,16 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 public class JuridicalUser extends User {
 
+    @Expose
     private String name;
+
+    @Expose
     private Address address;
+
+    @Expose
     private PhysicalUser contactUser;
 
     public JuridicalUser(String username, String password, String name, Address address, PhysicalUser contactUser) {

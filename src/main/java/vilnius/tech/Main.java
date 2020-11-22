@@ -3,9 +3,8 @@ package vilnius.tech;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import vilnius.tech.view.controller.DatabaseSelection;
-import vilnius.tech.error.MessageBoxRouter;
+import vilnius.tech.error.router.MessageBoxRouter;
 import vilnius.tech.view.View;
-import vilnius.tech.utils.Parameters;
 
 import java.io.IOException;
 

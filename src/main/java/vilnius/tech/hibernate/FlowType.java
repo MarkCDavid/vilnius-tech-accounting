@@ -1,13 +1,20 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 public class FlowType implements BaseEntity {
 
+    @Expose
     private Integer id;
 
+    @Expose
     private String name;
+
+    @Expose
     private String code;
 
     public FlowType() {
+
     }
 
     public FlowType(String name, String code) {

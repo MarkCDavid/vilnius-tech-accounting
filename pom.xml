@@ -11,6 +11,6 @@
         <java.version>15</java.version>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
+        <start-class>vilnius.tech.web.WebEntry</start-class>
     </properties>
-
 </project>

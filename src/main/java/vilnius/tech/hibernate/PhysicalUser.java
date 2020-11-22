@@ -1,15 +1,22 @@
 package vilnius.tech.hibernate;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class PhysicalUser extends User {
 
+    @Expose
     private String name;
+
+    @Expose
     private String surname;
 
+    @Expose
     private ContactInformation contactInformation;
-    private Set<JuridicalUser> juridicalContact = new HashSet<>();
+
+    private transient Set<JuridicalUser> juridicalContact = new HashSet<>();
 
     public PhysicalUser() {
     }

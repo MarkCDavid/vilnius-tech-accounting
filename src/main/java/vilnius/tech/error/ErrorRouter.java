@@ -2,7 +2,7 @@ package vilnius.tech.error;
 
 import vilnius.tech.error.ApplicationError;
 
-public interface ErrorRouter {
+public interface ErrorRouter<T> {
 
-    void route(ApplicationError error);
+    T route(ApplicationError error);
 }
