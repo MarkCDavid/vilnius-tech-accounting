@@ -13,7 +13,10 @@ public class CityService extends HibernateService<City> {
     }
 
     public City create(String name, Country country) {
-        var city = new City();
+        return update(new City(), name, country);
+    }
+
+    public City update(City city, String name, Country country) {
         city.setName(name);
         city.setCountry(country);
         return update(city);
@@ -26,6 +29,31 @@ public class CityService extends HibernateService<City> {
             var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
                     queryBuilder.getBuilder().equal(queryBuilder.getRoot().get("country"), country)
             ));
+            return query.getResultList();
+        }
+    }
+    public List<City> find_Name(String name) {
+        if(name == null || name.isBlank())
+            return find();
+
+        try (var entityManager = getEntityManager()) {
+            var queryBuilder = constructQueryBuilder();
+
+            var criteriaQuery = queryBuilder.getCriteriaQuery();
+            var root = queryBuilder.getRoot();
+            var builder = queryBuilder.getBuilder();
+
+            var query = entityManager.createQuery(
+                    criteriaQuery
+                            .where(
+                                    builder.equal(
+                                            root.get("name"),
+                                            name
+                                    )
+                            )
+                            .distinct(true)
+            );
+
             return query.getResultList();
         }
     }

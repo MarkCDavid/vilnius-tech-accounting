@@ -5,12 +5,13 @@ import vilnius.tech.hibernate.Country;
 import vilnius.tech.hibernate.service.CountryService;
 import vilnius.tech.web.controller.utils.HibernateUtils;
 import vilnius.tech.web.controller.utils.JsonResponseUtils;
+import vilnius.tech.web.controller.utils.Messages;
 
 public class CountryProxy extends AbstractProxy<Country, CountryService> {
     @Override
     public ResponseEntity<String> post(Country country) {
-        if(!validPost(country))
-            return JsonResponseUtils.BAD("Data invalid to create the object.");
+        if(post_Invalid(country))
+            return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
         return JsonResponseUtils.OK(createService().create(
                 country.getName(),
@@ -20,29 +21,39 @@ public class CountryProxy extends AbstractProxy<Country, CountryService> {
 
     @Override
     public ResponseEntity<String> put(Country country) {
-        if(!validPut(country))
-            return JsonResponseUtils.BAD("Data invalid to update the object.");
+        if(put_Invalid(country))
+            return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        return JsonResponseUtils.OK(createService().create(
-                country.getName(),
-                country.getCode()
-        ));
+        var service = createService();
+
+        var databaseCountry = service.find(country.getId());
+        if(databaseCountry == null)
+            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), country.getId()));
+
+        databaseCountry.setName(country.getName());
+        databaseCountry.setCode(country.getCode());
+
+        return JsonResponseUtils.OK(service.update(databaseCountry));
     }
 
-    private boolean validPost(Country country) {
-        var name = country.getName();
-        var code = country.getCode();
-        return name != null && !name.isBlank() && code != null && !code.isBlank();
+    private boolean post_Invalid(Country country) {
+        return country.getName() == null || country.getName().isBlank() ||
+                country.getCode() == null || country.getCode().isBlank();
     }
 
-    private boolean validPut(Country country) {
-        var name = country.getName();
-        var code = country.getCode();
-        return country.getId() != null &&  name != null && !name.isBlank() && code != null && !code.isBlank();
+    private boolean put_Invalid(Country country) {
+        return country.getId() == null ||
+                country.getName() == null || country.getName().isBlank() ||
+                country.getCode() == null ||  country.getCode().isBlank();
     }
 
     @Override
-    public CountryService createService() {
+    protected CountryService createService() {
         return new CountryService(HibernateUtils.getSession());
+    }
+
+    @Override
+    protected String getEntityName() {
+        return "Country";
     }
 }

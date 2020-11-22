@@ -13,7 +13,11 @@ public class AddressService extends HibernateService<Address> {
     }
 
     public Address create(City city, String street, String postal) {
-        var address = new Address();
+        return update(new Address(), city, street, postal);
+    }
+
+
+    public Address update(Address address, City city, String street, String postal) {
         address.setCity(city);
         address.setStreet(street);
         address.setPostal(postal);

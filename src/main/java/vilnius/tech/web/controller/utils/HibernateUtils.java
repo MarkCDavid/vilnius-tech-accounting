@@ -15,6 +15,9 @@ public class HibernateUtils {
         if(configuration == null) {
             configuration = new Configuration().configure("hibernate.cfg.xml");
             configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        }
+
+        if(sessionFactory == null) {
             sessionFactory = configuration.buildSessionFactory();
         }
 

@@ -12,7 +12,10 @@ public class CountryService extends HibernateService<Country> {
     }
 
     public Country create(String name, String code) {
-        var country = new Country();
+        return update(new Country(), name, code);
+    }
+
+    public Country update(Country country, String name, String code) {
         country.setName(name);
         country.setCode(code);
         return update(country);
@@ -43,7 +46,4 @@ public class CountryService extends HibernateService<Country> {
             return query.getResultList();
         }
     }
-
-
-
 }

@@ -18,7 +18,7 @@ public abstract class WebApiCRUDController<T extends BaseEntity>
         try {
             return proxy.getAll(take, skip);
         } catch (Exception ex) {
-            var error = DatabaseExceptionPolicy.apply(ex);
+             var error = DatabaseExceptionPolicy.apply(ex);
             if(error == null)
                 throw ex;
 

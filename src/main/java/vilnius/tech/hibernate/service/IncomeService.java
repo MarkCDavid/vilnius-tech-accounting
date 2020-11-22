@@ -18,6 +18,7 @@ public class IncomeService extends HibernateService<Income> {
     public Income create(User owner, long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
         return update(new Income(), owner, sum, timestamp, category, type);
     }
+
     public Income update(Income income, User owner, long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
         income.setOwner(owner);
         income.setSum(sum);
