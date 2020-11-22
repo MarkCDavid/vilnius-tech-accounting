@@ -69,7 +69,7 @@ public class IncomeProxy extends AbstractControllerProxy<Income, IncomeService> 
 
         // TODO
         if(category == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound("Financial Category", id));
+            return JsonResponseUtils.BAD(Messages.itemNotFound(FinancialCategoryProxy.ENTITY_NAME, id));
 
         return JsonResponseUtils.OK( createService().find_Category(category));
     }
