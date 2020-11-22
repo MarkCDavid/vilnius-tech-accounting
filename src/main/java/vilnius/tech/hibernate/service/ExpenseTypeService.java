@@ -18,4 +18,19 @@ public class ExpenseTypeService extends HibernateService<ExpenseType> {
         expenseType.setCode(code);
         return update(expenseType);
     }
+
+    public ExpenseType find_Code(String code) {
+        try (var entityManager = getEntityManager()) {
+            var queryBuilder = constructQueryBuilder();
+            var query = entityManager.createQuery(queryBuilder.getCriteriaQuery().where(
+                    queryBuilder.getBuilder().like(queryBuilder.getRoot().get("code"), code)
+            ));
+
+            var results = query.getResultList();
+            if (results.isEmpty())
+                return null;
+
+            return results.get(0);
+        }
+    }
 }

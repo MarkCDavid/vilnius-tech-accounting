@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vilnius.tech.error.router.JsonMessageRouter;
 import vilnius.tech.hibernate.Country;
-import vilnius.tech.web.controller.proxy.CountryProxy;
+import vilnius.tech.web.controller.proxy.controller.CountryProxy;
 
 @RestController
-public class CountryController extends WebApiCRUDController<Country> {
+public class CountryController extends WebApiCRUDController<Country, CountryProxy> {
 
     protected CountryController() {
         super(new CountryProxy(), new JsonMessageRouter());

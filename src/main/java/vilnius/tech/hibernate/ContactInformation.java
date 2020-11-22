@@ -13,6 +13,12 @@ public class ContactInformation implements BaseEntity  {
     @Expose
     private Address address;
 
+    @Expose
+    private String email;
+
+    @Expose
+    private String phoneNumber;
+
     private Set<PhysicalUser> physicalUsers = new HashSet<>();
 
     public ContactInformation(Address address, String email, String phoneNumber) {
@@ -23,11 +29,6 @@ public class ContactInformation implements BaseEntity  {
 
     public ContactInformation() {
     }
-
-    private String email;
-
-    private String phoneNumber;
-
     public Integer getId() {
         return id;
     }

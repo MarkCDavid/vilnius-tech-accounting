@@ -7,7 +7,6 @@ import java.time.ZonedDateTime;
 
 public class Flow implements BaseEntity  {
 
-
     @Expose
     private Integer id;
 
@@ -15,18 +14,17 @@ public class Flow implements BaseEntity  {
     private User owner;
 
     @Expose
-    private long sum;
+    private Long sum;
 
     @Expose
     private Timestamp timestamp;
 
-    @Expose
     private FinancialCategory category;
 
     public Flow() {
     }
 
-    public Flow(User owner, long sum, Timestamp timestamp, FinancialCategory category) {
+    public Flow(User owner, Long sum, Timestamp timestamp, FinancialCategory category) {
         this.owner = owner;
         this.sum = sum;
         this.timestamp = timestamp;
@@ -49,11 +47,11 @@ public class Flow implements BaseEntity  {
         this.owner = owner;
     }
 
-    public long getSum() {
+    public Long getSum() {
         return sum;
     }
 
-    public void setSum(long sum) {
+    public void setSum(Long sum) {
         this.sum = sum;
     }
 

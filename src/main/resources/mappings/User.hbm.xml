@@ -10,7 +10,7 @@
             <generator class="native"/>
         </id>
 
-        <property name = "username" column = "username" type = "string"/>
+        <property name = "username" column = "username" type = "string" unique="true"/>
         <property name = "password" column = "password" type = "string"/>
         <property name = "salt" column = "salt" type = "string"/>
 

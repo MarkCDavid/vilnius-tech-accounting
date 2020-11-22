@@ -18,6 +18,9 @@ public class Messages {
         return String.format("Data for item of type '%s' is invalid!", type);
     }
 
+    public static String invalidUsernameOrPassword() {
+        return "Invalid username or password.";
+    }
 
     private Messages() { }
 }

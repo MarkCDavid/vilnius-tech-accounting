@@ -24,6 +24,12 @@ public class UserService extends HibernateService<User> {
         return update(user);
     }
 
+    public User update(User user, String password) {
+        user.setSalt(PasswordUtils.getSalt(128));
+        user.setPassword(PasswordUtils.generateSecurePassword(password, user.getSalt()));
+        return update(user);
+    }
+
     public User find_Username(String username) {
         try (var entityManager = getEntityManager()) {
             var queryBuilder = constructQueryBuilder();

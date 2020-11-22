@@ -67,7 +67,7 @@ public class FlowSeeder implements Seeder {
         for(int i = 0; i < incomes; i++) {
             incomeService.create(
                     users.get(random(users.size())),
-                    random(10, 2000),
+                    random_long(10, 2000),
                     randomDateAroundNow(365, 12, 2),
                     category,
                     incomeTypes.get(random(incomeTypes.size()))
@@ -77,6 +77,10 @@ public class FlowSeeder implements Seeder {
 
     private int random(int from, int to) {
         return prng.nextInt(to - from) + from;
+    }
+
+    private Long random_long(int from, int to) {
+        return (long) (prng.nextInt(to - from) + from);
     }
 
     private int random(int to) {

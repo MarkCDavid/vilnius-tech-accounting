@@ -15,11 +15,11 @@ public class IncomeService extends HibernateService<Income> {
         super(Income.class, session);
     }
 
-    public Income create(User owner, long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
+    public Income create(User owner, Long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
         return update(new Income(), owner, sum, timestamp, category, type);
     }
 
-    public Income update(Income income, User owner, long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
+    public Income update(Income income, User owner, Long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
         income.setOwner(owner);
         income.setSum(sum);
         income.setTimestamp(timestamp);

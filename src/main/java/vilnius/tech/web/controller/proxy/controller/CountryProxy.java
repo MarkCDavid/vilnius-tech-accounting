@@ -1,4 +1,4 @@
-package vilnius.tech.web.controller.proxy;
+package vilnius.tech.web.controller.proxy.controller;
 
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.hibernate.Country;
@@ -7,7 +7,7 @@ import vilnius.tech.web.controller.utils.HibernateUtils;
 import vilnius.tech.web.controller.utils.JsonResponseUtils;
 import vilnius.tech.web.controller.utils.Messages;
 
-public class CountryProxy extends AbstractProxy<Country, CountryService> {
+public class CountryProxy extends AbstractControllerProxy<Country, CountryService> {
     @Override
     public ResponseEntity<String> post(Country country) {
         if(post_Invalid(country))
@@ -54,6 +54,8 @@ public class CountryProxy extends AbstractProxy<Country, CountryService> {
 
     @Override
     protected String getEntityName() {
-        return "Country";
+        return ENTITY_NAME;
     }
+
+    public final static String ENTITY_NAME = "Country";
 }

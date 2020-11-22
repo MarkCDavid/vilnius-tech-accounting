@@ -5,12 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vilnius.tech.error.router.JsonMessageRouter;
 import vilnius.tech.hibernate.Address;
-import vilnius.tech.hibernate.City;
-import vilnius.tech.web.controller.proxy.AddressProxy;
-import vilnius.tech.web.controller.proxy.CityProxy;
+import vilnius.tech.web.controller.proxy.controller.AddressProxy;
 
 @RestController
-public class AddressController extends WebApiCRUDController<Address> {
+public class AddressController extends WebApiCRUDController<Address, AddressProxy> {
 
     protected AddressController() {
         super(new AddressProxy(), new JsonMessageRouter());

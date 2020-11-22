@@ -1,4 +1,4 @@
-package vilnius.tech.web.controller.proxy;
+package vilnius.tech.web.controller.proxy.controller;
 
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.hibernate.City;
@@ -9,7 +9,7 @@ import vilnius.tech.web.controller.utils.HibernateUtils;
 import vilnius.tech.web.controller.utils.JsonResponseUtils;
 import vilnius.tech.web.controller.utils.Messages;
 
-public class CityProxy extends AbstractProxy<City, CityService> {
+public class CityProxy extends AbstractControllerProxy<City, CityService> {
     @Override
     public ResponseEntity<String> post(City city) {
         if(post_Invalid(city))
@@ -84,6 +84,8 @@ public class CityProxy extends AbstractProxy<City, CityService> {
 
     @Override
     protected String getEntityName() {
-        return "City";
+        return ENTITY_NAME;
     }
+
+    public final static String ENTITY_NAME = "City";
 }

@@ -11,10 +11,8 @@
         </id>
 
         <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
-
-        <property name = "sum" column = "sum" type = "long"/>
-        <property name = "timestamp" column = "dateTime" type = "timestamp"/>
-
+        <property name = "sum" column = "sum" type = "long" not-null="true"/>
+        <property name = "timestamp" column = "dateTime" type = "timestamp" not-null="true"/>
         <many-to-one name = "category" column = "category" class="vilnius.tech.hibernate.FinancialCategory"  not-null="true"/>
 
         <joined-subclass name = "vilnius.tech.hibernate.Income" table = "INCOME">

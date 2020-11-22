@@ -3,19 +3,12 @@ package vilnius.tech.web.controller;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vilnius.tech.error.ErrorRouter;
 import vilnius.tech.error.router.JsonMessageRouter;
 import vilnius.tech.hibernate.City;
-import vilnius.tech.hibernate.Country;
-import vilnius.tech.hibernate.service.CityService;
-import vilnius.tech.web.controller.proxy.CityProxy;
-import vilnius.tech.web.controller.proxy.Proxy;
-import vilnius.tech.web.controller.utils.GsonUtils;
-import vilnius.tech.web.controller.utils.HibernateUtils;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
+import vilnius.tech.web.controller.proxy.controller.CityProxy;
 
 @RestController
-public class CityController extends WebApiCRUDController<City> {
+public class CityController extends WebApiCRUDController<City, CityProxy> {
 
     protected CityController() {
         super(new CityProxy(), new JsonMessageRouter());

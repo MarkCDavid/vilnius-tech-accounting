@@ -4,13 +4,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vilnius.tech.error.router.JsonMessageRouter;
-import vilnius.tech.hibernate.Address;
 import vilnius.tech.hibernate.ContactInformation;
-import vilnius.tech.web.controller.proxy.AddressProxy;
-import vilnius.tech.web.controller.proxy.ContactInformationProxy;
+import vilnius.tech.web.controller.proxy.controller.ContactInformationProxy;
 
 @RestController
-public class ContactInformationController extends WebApiCRUDController<ContactInformation> {
+public class ContactInformationController extends WebApiCRUDController<ContactInformation, ContactInformationProxy> {
 
     protected ContactInformationController() {
         super(new ContactInformationProxy(), new JsonMessageRouter());

@@ -1,9 +1,9 @@
-package vilnius.tech.web.controller.proxy;
+package vilnius.tech.web.controller.proxy.controller;
 
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.hibernate.BaseEntity;
 
-public interface Proxy<T extends BaseEntity> {
+public interface ControllerProxy<T extends BaseEntity> {
 
     ResponseEntity<String> getAll(Integer take, Integer skip);
     ResponseEntity<String> get(Integer id);

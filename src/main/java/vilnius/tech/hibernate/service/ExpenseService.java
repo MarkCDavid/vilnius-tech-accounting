@@ -19,7 +19,7 @@ public class ExpenseService extends HibernateService<Expense> {
         return update(new Expense(), owner, sum, timestamp, category, type);
     }
 
-    public Expense update(Expense expense, User owner, long sum, Timestamp timestamp, FinancialCategory category, ExpenseType type) {
+    public Expense update(Expense expense, User owner, Long sum, Timestamp timestamp, FinancialCategory category, ExpenseType type) {
         expense.setOwner(owner);
         expense.setSum(sum);
         expense.setTimestamp(timestamp);

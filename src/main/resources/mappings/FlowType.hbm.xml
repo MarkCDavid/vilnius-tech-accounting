@@ -10,9 +10,8 @@
             <generator class="native"/>
         </id>
 
-
-        <property name = "name" column = "name" type = "string"/>
-        <property name = "code" column = "code" type = "string"/>
+        <property name = "name" column = "name" type = "string" not-null="true"/>
+        <property name = "code" column = "code" type = "string" unique="true" not-null="true"/>
 
         <joined-subclass name = "vilnius.tech.hibernate.IncomeType" table = "INCOME_TYPE">
             <key column="flowtype_id"/>
