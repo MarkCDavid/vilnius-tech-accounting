@@ -10,9 +10,9 @@ import vilnius.tech.hibernate.service.ExpenseService;
 import vilnius.tech.hibernate.service.ExpenseTypeService;
 import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.utils.TimeUtils;
-import vilnius.tech.web.controller.utils.HibernateUtils;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
-import vilnius.tech.web.controller.utils.Messages;
+import vilnius.tech.web.utils.HibernateUtils;
+import vilnius.tech.web.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.Messages;
 
 public class ExpenseProxy extends AbstractControllerProxy<Expense, ExpenseService> {
     @Override

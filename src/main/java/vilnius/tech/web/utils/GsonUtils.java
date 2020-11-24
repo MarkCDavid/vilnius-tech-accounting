@@ -1,4 +1,4 @@
-package vilnius.tech.web.controller.utils;
+package vilnius.tech.web.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

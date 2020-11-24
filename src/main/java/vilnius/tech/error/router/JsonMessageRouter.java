@@ -3,7 +3,7 @@ package vilnius.tech.error.router;
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.error.ApplicationError;
 import vilnius.tech.error.ErrorRouter;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.JsonResponseUtils;
 
 public class JsonMessageRouter implements ErrorRouter<ResponseEntity<String>> {
 

@@ -6,9 +6,9 @@ import vilnius.tech.hibernate.Income;
 import vilnius.tech.hibernate.service.*;
 import vilnius.tech.hibernate.service.IncomeService;
 import vilnius.tech.utils.TimeUtils;
-import vilnius.tech.web.controller.utils.HibernateUtils;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
-import vilnius.tech.web.controller.utils.Messages;
+import vilnius.tech.web.utils.HibernateUtils;
+import vilnius.tech.web.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.Messages;
 
 public class IncomeProxy extends AbstractControllerProxy<Income, IncomeService> {
     @Override

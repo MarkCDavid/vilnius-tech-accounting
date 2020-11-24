@@ -3,9 +3,9 @@ package vilnius.tech.web.controller.proxy.controller;
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.hibernate.Country;
 import vilnius.tech.hibernate.service.CountryService;
-import vilnius.tech.web.controller.utils.HibernateUtils;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
-import vilnius.tech.web.controller.utils.Messages;
+import vilnius.tech.web.utils.HibernateUtils;
+import vilnius.tech.web.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.Messages;
 
 public class CountryProxy extends AbstractControllerProxy<Country, CountryService> {
     @Override

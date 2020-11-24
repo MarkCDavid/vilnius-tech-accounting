@@ -3,14 +3,15 @@ package vilnius.tech.web.controller.proxy.controller;
 import org.springframework.http.ResponseEntity;
 import vilnius.tech.hibernate.BaseEntity;
 import vilnius.tech.hibernate.service.HibernateService;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
-import vilnius.tech.web.controller.utils.Message;
-import vilnius.tech.web.controller.utils.Messages;
+import vilnius.tech.web.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.Message;
+import vilnius.tech.web.utils.Messages;
 
 public abstract class AbstractControllerProxy<T extends BaseEntity, S extends HibernateService<T>> implements ControllerProxy<T> {
 
     @Override
     public ResponseEntity<String> getAll(Integer take, Integer skip) {
+
         return JsonResponseUtils.OK(createService().find(take, skip));
     }
 

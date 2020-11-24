@@ -5,9 +5,9 @@ import vilnius.tech.hibernate.ContactInformation;
 import vilnius.tech.hibernate.PhysicalUser;
 import vilnius.tech.hibernate.service.ContactInformationService;
 import vilnius.tech.hibernate.service.PhysicalUserService;
-import vilnius.tech.web.controller.utils.HibernateUtils;
-import vilnius.tech.web.controller.utils.JsonResponseUtils;
-import vilnius.tech.web.controller.utils.Messages;
+import vilnius.tech.web.utils.HibernateUtils;
+import vilnius.tech.web.utils.JsonResponseUtils;
+import vilnius.tech.web.utils.Messages;
 
 public class PhysicalUserProxy extends AbstractControllerProxy<PhysicalUser, PhysicalUserService> {
     @Override

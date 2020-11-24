@@ -3,14 +3,12 @@ package vilnius.tech.web.controller;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vilnius.tech.hibernate.PhysicalUser;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.service.PhysicalUserService;
 import vilnius.tech.hibernate.service.UserService;
 import vilnius.tech.utils.PasswordUtils;
 import vilnius.tech.web.controller.proxy.model.ChangePasswordContext;
 import vilnius.tech.web.controller.proxy.model.UserLoginContext;
-import vilnius.tech.web.controller.utils.*;
+import vilnius.tech.web.utils.*;
 
 import java.util.Objects;
 

@@ -1,9 +1,8 @@
-package vilnius.tech.web.controller.utils;
+package vilnius.tech.web.utils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import vilnius.tech.seeds.*;
 
 public class HibernateUtils {
 

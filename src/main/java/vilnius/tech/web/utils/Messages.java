@@ -1,4 +1,4 @@
-package vilnius.tech.web.controller.utils;
+package vilnius.tech.web.utils;
 
 public class Messages {
 

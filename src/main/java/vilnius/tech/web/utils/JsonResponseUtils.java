@@ -1,4 +1,4 @@
-package vilnius.tech.web.controller.utils;
+package vilnius.tech.web.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
