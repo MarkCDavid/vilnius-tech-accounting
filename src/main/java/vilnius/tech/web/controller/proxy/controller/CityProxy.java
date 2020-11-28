@@ -19,10 +19,12 @@ public class CityProxy extends AbstractControllerProxy<City, CityService> {
         if(country == null)
             return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", city.getCountry().getCode()));
 
-        return JsonResponseUtils.OK(createService().create(
-                city.getName(),
-                country
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    city.getName(),
+                    country
+            ));
+        }
     }
 
     @Override
@@ -30,25 +32,26 @@ public class CityProxy extends AbstractControllerProxy<City, CityService> {
         if(put_Invalid(city))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseCity = service.find(city.getId());
-        if(databaseCity == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), city.getId()));
+            var databaseCity = service.find(city.getId());
+            if (databaseCity == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), city.getId()));
 
-        if(cityNamePresent(city)) {
-            databaseCity.setName(city.getName());
+            if (cityNamePresent(city)) {
+                databaseCity.setName(city.getName());
+            }
+
+            if (countryPresent(city)) {
+                var country = getCountry(city);
+                if (country == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", city.getCountry().getCode()));
+
+                databaseCity.setCountry(country);
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseCity));
         }
-
-        if(countryPresent(city)) {
-            var country = getCountry(city);
-            if(country == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", city.getCountry().getCode()));
-
-            databaseCity.setCountry(country);
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseCity));
     }
 
     private boolean post_Invalid(City city) {
@@ -72,9 +75,10 @@ public class CityProxy extends AbstractControllerProxy<City, CityService> {
     }
 
     private Country getCountry(City city) {
-        var countryService = new CountryService(HibernateUtils.getSession());
-        var countries = countryService.find_Code(city.getCountry().getCode());
-        return countries.size() == 1 ? countries.get(0) : null;
+        try(var countryService = new CountryService(HibernateUtils.getSession())) {
+            var countries = countryService.find_Code(city.getCountry().getCode());
+            return countries.size() == 1 ? countries.get(0) : null;
+        }
     }
 
     @Override

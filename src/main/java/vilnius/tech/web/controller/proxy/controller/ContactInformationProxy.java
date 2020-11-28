@@ -19,11 +19,13 @@ public class ContactInformationProxy extends AbstractControllerProxy<ContactInfo
         if(address == null)
             return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, contactInformation.getAddress().getId()));
 
-        return JsonResponseUtils.OK(createService().create(
-                address,
-                contactInformation.getEmail(),
-                contactInformation.getPhoneNumber()
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    address,
+                    contactInformation.getEmail(),
+                    contactInformation.getPhoneNumber()
+            ));
+        }
     }
 
     @Override
@@ -31,28 +33,29 @@ public class ContactInformationProxy extends AbstractControllerProxy<ContactInfo
         if(put_Invalid(contactInformation))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseContactInformation = service.find(contactInformation.getId());
-        if(databaseContactInformation == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), contactInformation.getId()));
+            var databaseContactInformation = service.find(contactInformation.getId());
+            if (databaseContactInformation == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), contactInformation.getId()));
 
-        if(addressPresent(contactInformation)) {
-            var address = getAddress(contactInformation);
-            if(address == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, contactInformation.getAddress().getId()));
-            databaseContactInformation.setAddress(address);
+            if (addressPresent(contactInformation)) {
+                var address = getAddress(contactInformation);
+                if (address == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, contactInformation.getAddress().getId()));
+                databaseContactInformation.setAddress(address);
+            }
+
+            if (contactInformationEmailPresent(contactInformation)) {
+                databaseContactInformation.setEmail(contactInformation.getEmail());
+            }
+
+            if (contactInformationPhonePresent(contactInformation)) {
+                databaseContactInformation.setPhoneNumber(contactInformation.getPhoneNumber());
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseContactInformation));
         }
-
-        if(contactInformationEmailPresent(contactInformation)) {
-            databaseContactInformation.setEmail(contactInformation.getEmail());
-        }
-
-        if(contactInformationPhonePresent(contactInformation)) {
-            databaseContactInformation.setPhoneNumber(contactInformation.getPhoneNumber());
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseContactInformation));
     }
 
     private boolean post_Invalid(ContactInformation contactInformation) {
@@ -84,8 +87,9 @@ public class ContactInformationProxy extends AbstractControllerProxy<ContactInfo
     }
 
     private Address getAddress(ContactInformation contactInformation) {
-        var addressService = new AddressService(HibernateUtils.getSession());
-        return addressService.find(contactInformation.getAddress().getId());
+        try(var addressService = new AddressService(HibernateUtils.getSession())) {
+            return addressService.find(contactInformation.getAddress().getId());
+        }
     }
 
     @Override

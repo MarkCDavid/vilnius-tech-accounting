@@ -1,5 +1,7 @@
 package vilnius.tech.hibernate.utils;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;

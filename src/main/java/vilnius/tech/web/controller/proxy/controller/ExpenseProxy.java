@@ -32,13 +32,15 @@ public class ExpenseProxy extends AbstractControllerProxy<Expense, ExpenseServic
         if(financialCategory == null)
             return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), expense.getCategory().getId()));
 
-        return JsonResponseUtils.OK(createService().create(
-                owner,
-                expense.getSum(),
-                TimeUtils.now(),
-                financialCategory,
-                expenseType
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    owner,
+                    expense.getSum(),
+                    TimeUtils.now(),
+                    financialCategory,
+                    expenseType
+            ));
+        }
     }
 
     @Override
@@ -46,36 +48,37 @@ public class ExpenseProxy extends AbstractControllerProxy<Expense, ExpenseServic
         if(put_Invalid(expense))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseExpense = service.find(expense.getId());
-        if(databaseExpense == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), expense.getId()));
+            var databaseExpense = service.find(expense.getId());
+            if (databaseExpense == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), expense.getId()));
 
-        if(sumPresent(expense)) {
-            databaseExpense.setSum(expense.getSum());
+            if (sumPresent(expense)) {
+                databaseExpense.setSum(expense.getSum());
+            }
+
+            if (expenseTypePresent(expense)) {
+                var expenseType = getExpenseType(expense);
+                if (expenseType == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", expense.getType().getCode()));
+                databaseExpense.setType(expenseType);
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseExpense));
         }
-
-        if(expenseTypePresent(expense)) {
-            var expenseType = getExpenseType(expense);
-            if(expenseType == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", expense.getType().getCode()));
-            databaseExpense.setType(expenseType);
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseExpense));
     }
 
     public ResponseEntity<String> get_Category(Integer id) {
+        try(var service = createService();
+            var categoryService = new FinancialCategoryService(HibernateUtils.getSession())) {
+            var category = categoryService.find(id);
 
-        var categoryService = new FinancialCategoryService(HibernateUtils.getSession());
-        var category = categoryService.find(id);
+            if (category == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(FinancialCategoryProxy.ENTITY_NAME, id));
 
-        // TODO
-        if(category == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(FinancialCategoryProxy.ENTITY_NAME, id));
-
-        return JsonResponseUtils.OK( createService().find_Category(category));
+            return JsonResponseUtils.OK(service.find_Category(category));
+        }
     }
 
 
@@ -118,30 +121,33 @@ public class ExpenseProxy extends AbstractControllerProxy<Expense, ExpenseServic
 
 
     private User getOwner(Expense expense) {
-        var userService = new UserService(HibernateUtils.getSession());
+        try(var userService = new UserService(HibernateUtils.getSession())) {
 
-        if(!ownerPresent(expense))
-            return null;
+            if (!ownerPresent(expense))
+                return null;
 
-        return userService.find_Username(expense.getOwner().getUsername());
+            return userService.find_Username(expense.getOwner().getUsername());
+        }
     }
 
     private FinancialCategory getFinancialCategory(Expense expense) {
-        var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession());
+        try(var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession())) {
 
-        if(!financialCategoryPresent(expense))
-            return null;
+            if (!financialCategoryPresent(expense))
+                return null;
 
-        return financialCategoryService.find(expense.getCategory().getId());
+            return financialCategoryService.find(expense.getCategory().getId());
+        }
     }
 
     private ExpenseType getExpenseType(Expense expense) {
-        var typeService = new ExpenseTypeService(HibernateUtils.getSession());
+        try(var typeService = new ExpenseTypeService(HibernateUtils.getSession())) {
 
-        if(!expenseTypePresent(expense))
-            return null;
+            if (!expenseTypePresent(expense))
+                return null;
 
-        return typeService.find_Code(expense.getType().getCode());
+            return typeService.find_Code(expense.getType().getCode());
+        }
     }
 
     @Override

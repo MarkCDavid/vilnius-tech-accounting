@@ -66,6 +66,24 @@ public class FinancialCategoryController extends WebApiCRUDController<FinancialC
         }
     }
 
+
+
+    @GetMapping(path = "/financialCategory/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> get_ResponsibleFor(@PathVariable(name = "id") Integer id) {
+        try {
+            return getControllerProxy().get_ResponsibleFor(id);
+        } catch (Exception ex) {
+            var error = DatabaseExceptionPolicy.apply(ex);
+            if(error == null)
+                throw ex;
+
+            if(getErrorRouter() == null)
+                throw ex;
+
+            return getErrorRouter().route(error);
+        }
+    }
+
     @PutMapping(path = "/financialCategory/{id}/responsibleUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> put_ResponsibleUser(@PathVariable(name = "id") Integer id, @RequestBody User user) {
         try {

@@ -13,10 +13,12 @@ public class CountryProxy extends AbstractControllerProxy<Country, CountryServic
         if(post_Invalid(country))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        return JsonResponseUtils.OK(createService().create(
-                country.getName(),
-                country.getCode()
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    country.getName(),
+                    country.getCode()
+            ));
+        }
     }
 
     @Override
@@ -24,16 +26,17 @@ public class CountryProxy extends AbstractControllerProxy<Country, CountryServic
         if(put_Invalid(country))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseCountry = service.find(country.getId());
-        if(databaseCountry == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), country.getId()));
+            var databaseCountry = service.find(country.getId());
+            if (databaseCountry == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), country.getId()));
 
-        databaseCountry.setName(country.getName());
-        databaseCountry.setCode(country.getCode());
+            databaseCountry.setName(country.getName());
+            databaseCountry.setCode(country.getCode());
 
-        return JsonResponseUtils.OK(service.update(databaseCountry));
+            return JsonResponseUtils.OK(service.update(databaseCountry));
+        }
     }
 
     private boolean post_Invalid(Country country) {

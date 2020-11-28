@@ -22,7 +22,6 @@ import vilnius.tech.view.Modal;
 import vilnius.tech.view.View;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -74,7 +73,7 @@ public class IncomeCRUDListController extends CRUDListController<Income> {
         labelTotal.setText(
                 String.format("Total: %s",
                         new IncomeCalculator(category, getSession())
-                                .getTotal(
+                                .getTotal_IncludeChildren(
                                         TimeUtils.of(datePickerFrom, Instant.MIN),
                                         TimeUtils.of(datePickerTo, Instant.MAX)
                                 )

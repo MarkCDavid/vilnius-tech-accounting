@@ -31,28 +31,29 @@ public class AddressProxy extends AbstractControllerProxy<Address, AddressServic
         if(put_Invalid(address))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseAddress = service.find(address.getId());
-        if(databaseAddress == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), address.getId()));
+            var databaseAddress = service.find(address.getId());
+            if (databaseAddress == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), address.getId()));
 
-        if(cityPresent(address)) {
-            var city = getCity(address);
-            if(city == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "name", address.getCity().getName()));
-            databaseAddress.setCity(city);
+            if (cityPresent(address)) {
+                var city = getCity(address);
+                if (city == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "name", address.getCity().getName()));
+                databaseAddress.setCity(city);
+            }
+
+            if (addressStreetPresent(address)) {
+                databaseAddress.setStreet(address.getStreet());
+            }
+
+            if (addressPostalPresent(address)) {
+                databaseAddress.setPostal(address.getPostal());
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseAddress));
         }
-
-        if(addressStreetPresent(address)) {
-            databaseAddress.setStreet(address.getStreet());
-        }
-
-        if(addressPostalPresent(address)) {
-            databaseAddress.setPostal(address.getPostal());
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseAddress));
     }
 
     private boolean post_Invalid(Address address) {
@@ -84,9 +85,10 @@ public class AddressProxy extends AbstractControllerProxy<Address, AddressServic
 
 
     private City getCity(Address address) {
-        var cityService = new CityService(HibernateUtils.getSession());
-        var cities = cityService.find_Name(address.getCity().getName());
-        return cities.size() == 1 ? cities.get(0) : null;
+        try(var service = new CityService(HibernateUtils.getSession())) {
+            var cities = service.find_Name(address.getCity().getName());
+            return cities.size() == 1 ? cities.get(0) : null;
+        }
     }
 
     @Override

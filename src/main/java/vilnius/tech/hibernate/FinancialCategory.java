@@ -11,6 +11,7 @@ public class FinancialCategory implements BaseEntity  {
     @Expose
     private Integer id;
 
+    @Expose
     private FinancialCategory parent;
 
     @Expose

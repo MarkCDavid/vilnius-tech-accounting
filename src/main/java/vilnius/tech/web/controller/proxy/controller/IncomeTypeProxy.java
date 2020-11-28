@@ -12,11 +12,12 @@ public class IncomeTypeProxy extends AbstractControllerProxy<IncomeType, IncomeT
     public ResponseEntity<String> post(IncomeType incomeType) {
         if(post_Invalid(incomeType))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
-
-        return JsonResponseUtils.OK(createService().create(
-                incomeType.getName(),
-                incomeType.getCode()
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    incomeType.getName(),
+                    incomeType.getCode()
+            ));
+        }
     }
 
     @Override
@@ -24,19 +25,20 @@ public class IncomeTypeProxy extends AbstractControllerProxy<IncomeType, IncomeT
         if(put_Invalid(incomeType))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseIncomeType = service.find(incomeType.getId());
-        if(databaseIncomeType == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), incomeType.getId()));
+            var databaseIncomeType = service.find(incomeType.getId());
+            if (databaseIncomeType == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), incomeType.getId()));
 
-        if(namePresent(incomeType))
-            databaseIncomeType.setName(incomeType.getName());
+            if (namePresent(incomeType))
+                databaseIncomeType.setName(incomeType.getName());
 
-        if(codePresent(incomeType))
-            databaseIncomeType.setCode(incomeType.getCode());
+            if (codePresent(incomeType))
+                databaseIncomeType.setCode(incomeType.getCode());
 
-        return JsonResponseUtils.OK(service.update(databaseIncomeType));
+            return JsonResponseUtils.OK(service.update(databaseIncomeType));
+        }
     }
 
     private boolean post_Invalid(IncomeType incomeType) {

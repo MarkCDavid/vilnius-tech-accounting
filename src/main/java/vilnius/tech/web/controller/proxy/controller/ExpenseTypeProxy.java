@@ -12,11 +12,12 @@ public class ExpenseTypeProxy extends AbstractControllerProxy<ExpenseType, Expen
     public ResponseEntity<String> post(ExpenseType expenseType) {
         if(post_Invalid(expenseType))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
-
-        return JsonResponseUtils.OK(createService().create(
-                expenseType.getName(),
-                expenseType.getCode()
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    expenseType.getName(),
+                    expenseType.getCode()
+            ));
+        }
     }
 
     @Override
@@ -24,16 +25,17 @@ public class ExpenseTypeProxy extends AbstractControllerProxy<ExpenseType, Expen
         if(put_Invalid(expenseType))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseExpenseType = service.find(expenseType.getId());
-        if(databaseExpenseType == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), expenseType.getId()));
+            var databaseExpenseType = service.find(expenseType.getId());
+            if (databaseExpenseType == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), expenseType.getId()));
 
-        databaseExpenseType.setName(expenseType.getName());
-        databaseExpenseType.setCode(expenseType.getCode());
+            databaseExpenseType.setName(expenseType.getName());
+            databaseExpenseType.setCode(expenseType.getCode());
 
-        return JsonResponseUtils.OK(service.update(databaseExpenseType));
+            return JsonResponseUtils.OK(service.update(databaseExpenseType));
+        }
     }
 
     private boolean post_Invalid(ExpenseType expenseType) {

@@ -22,12 +22,13 @@ public class FinancialCategoryProxy extends AbstractControllerProxy<FinancialCat
         var owner = getOwner(financialCategory);
         if(owner == null)
             return JsonResponseUtils.BAD(Messages.itemNotFound_Field("User", "username", financialCategory.getOwner().getUsername()));
-
-        return JsonResponseUtils.OK(createService().create(
-                parent,
-                financialCategory.getName(),
-                owner
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    parent,
+                    financialCategory.getName(),
+                    owner
+            ));
+        }
     }
 
     @Override
@@ -35,60 +36,76 @@ public class FinancialCategoryProxy extends AbstractControllerProxy<FinancialCat
         if(put_Invalid(financialCategory))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseFinancialCategory = service.find(financialCategory.getId());
-        if(databaseFinancialCategory == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), financialCategory.getId()));
+            var databaseFinancialCategory = service.find(financialCategory.getId());
+            if (databaseFinancialCategory == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), financialCategory.getId()));
 
-        if(namePresent(financialCategory)) {
-            databaseFinancialCategory.setName(financialCategory.getName());
+            if (namePresent(financialCategory)) {
+                databaseFinancialCategory.setName(financialCategory.getName());
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseFinancialCategory));
         }
-
-        return JsonResponseUtils.OK(service.update(databaseFinancialCategory));
     }
 
     public ResponseEntity<String> get_ResponsibleUser(Integer id) {
         if(id == null)
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
-        var databaseFinancialCategory = service.find(id);
+        try(var service = createService()) {
+            var databaseFinancialCategory = service.find(id);
 
-        if(databaseFinancialCategory == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
+            if (databaseFinancialCategory == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
 
-        return JsonResponseUtils.OK(databaseFinancialCategory.getResponsibleUsers());
+            return JsonResponseUtils.OK(databaseFinancialCategory.getResponsibleUsers());
+        }
+    }
+
+    public ResponseEntity<String> get_ResponsibleFor(Integer id) {
+        if(id == null)
+            return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
+
+        try(var userService = new UserService(HibernateUtils.getSession())) {
+            var user = userService.find(id);
+            if (user == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound("User", id));
+
+            return JsonResponseUtils.OK(createService().find_User(user));
+        }
     }
 
     public ResponseEntity<String> put_ResponsibleUser(Integer id, User user) {
         if(!rest_ResponsibleUserValid(id, user))
             return JsonResponseUtils.BAD(Messages.invalidData("User"));
 
-        var service = createService();
-        var databaseFinancialCategory = service.find(id);
+        try(var service = createService();
+            var userService = new UserService(HibernateUtils.getSession())) {
+            var databaseFinancialCategory = service.find(id);
 
-        if(databaseFinancialCategory == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
+            if (databaseFinancialCategory == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
 
-        var userService = new UserService(HibernateUtils.getSession());
-        var databaseUser = userService.find_Username(user.getUsername());
+            var databaseUser = userService.find_Username(user.getUsername());
 
-        if(databaseUser == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound_Field("User", "username", user.getUsername()));
+            if (databaseUser == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound_Field("User", "username", user.getUsername()));
 
-        var alreadyPresent = databaseFinancialCategory.getResponsibleUsers().stream().anyMatch(ru -> Objects.equals(ru.getId(), databaseUser.getId()));
-        if(alreadyPresent) {
-            return JsonResponseUtils.BAD(
-                    String.format("User '%s' is already responsible for category '%s'.",
-                        databaseUser.getUsername(),
-                        databaseFinancialCategory.getName()
-                    )
-            );
+            var alreadyPresent = databaseFinancialCategory.getResponsibleUsers().stream().anyMatch(ru -> Objects.equals(ru.getId(), databaseUser.getId()));
+            if (alreadyPresent) {
+                return JsonResponseUtils.BAD(
+                        String.format("User '%s' is already responsible for category '%s'.",
+                                databaseUser.getUsername(),
+                                databaseFinancialCategory.getName()
+                        )
+                );
+            }
+
+            return JsonResponseUtils.OK(service.add_ResponsibleUser(databaseFinancialCategory, databaseUser)
+                    .getResponsibleUsers());
         }
-
-        return JsonResponseUtils.OK(service.add_ResponsibleUser(databaseFinancialCategory, databaseUser)
-                .getResponsibleUsers());
     }
 
 
@@ -97,30 +114,31 @@ public class FinancialCategoryProxy extends AbstractControllerProxy<FinancialCat
         if(!rest_ResponsibleUserValid(id, user))
             return JsonResponseUtils.BAD(Messages.invalidData("User"));
 
-        var service = createService();
-        var databaseFinancialCategory = service.find(id);
+        try(var service = createService();
+            var userService = new UserService(HibernateUtils.getSession())) {
+            var databaseFinancialCategory = service.find(id);
 
-        if(databaseFinancialCategory == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
+            if (databaseFinancialCategory == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), id));
 
-        var userService = new UserService(HibernateUtils.getSession());
-        var databaseUser = userService.find_Username(user.getUsername());
+            var databaseUser = userService.find_Username(user.getUsername());
 
-        if(databaseUser == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound_Field("User", "username", user.getUsername()));
+            if (databaseUser == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound_Field("User", "username", user.getUsername()));
 
-        var alreadyPresent = databaseFinancialCategory.getResponsibleUsers().stream().anyMatch(ru -> Objects.equals(ru.getId(), databaseUser.getId()));
-        if(!alreadyPresent) {
-            return JsonResponseUtils.BAD(
-                    String.format("User '%s' is not responsible for category '%s'.",
-                            databaseUser.getUsername(),
-                            databaseFinancialCategory.getName()
-                    )
-            );
+            var alreadyPresent = databaseFinancialCategory.getResponsibleUsers().stream().anyMatch(ru -> Objects.equals(ru.getId(), databaseUser.getId()));
+            if (!alreadyPresent) {
+                return JsonResponseUtils.BAD(
+                        String.format("User '%s' is not responsible for category '%s'.",
+                                databaseUser.getUsername(),
+                                databaseFinancialCategory.getName()
+                        )
+                );
+            }
+
+            return JsonResponseUtils.OK(service.remove_ResponsibleUser(databaseFinancialCategory, databaseUser)
+                    .getResponsibleUsers());
         }
-
-        return JsonResponseUtils.OK(service.remove_ResponsibleUser(databaseFinancialCategory, databaseUser)
-                .getResponsibleUsers());
     }
 
     private boolean rest_ResponsibleUserValid(Integer id, User user) {
@@ -157,22 +175,24 @@ public class FinancialCategoryProxy extends AbstractControllerProxy<FinancialCat
     }
 
     private User getOwner(FinancialCategory financialCategory) {
-        var userService = new UserService(HibernateUtils.getSession());
+        try(var userService = new UserService(HibernateUtils.getSession())) {
 
-        if(!ownerPresent(financialCategory))
-            return null;
+            if (!ownerPresent(financialCategory))
+                return null;
 
-        return userService.find_Username(financialCategory.getOwner().getUsername());
+            return userService.find_Username(financialCategory.getOwner().getUsername());
+        }
     }
 
 
     private FinancialCategory getParent(FinancialCategory financialCategory) {
-        var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession());
+        try(var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession())) {
 
-        if(!parentPresent(financialCategory))
-            return null;
+            if (!parentPresent(financialCategory))
+                return null;
 
-        return financialCategoryService.find(financialCategory.getParent().getId());
+            return financialCategoryService.find(financialCategory.getParent().getId());
+        }
     }
 
     @Override

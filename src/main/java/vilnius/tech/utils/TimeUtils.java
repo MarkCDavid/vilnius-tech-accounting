@@ -2,6 +2,7 @@ package vilnius.tech.utils;
 
 import javafx.scene.control.DatePicker;
 
+import javax.ejb.Local;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,7 +18,6 @@ public class TimeUtils {
     public static ZonedDateTime nowZoned() {
         return ZonedDateTime.now(ZoneId.systemDefault());
     }
-
     public static Timestamp of(DatePicker picker, Instant _default) {
         if(picker.getValue() == null)
             return Timestamp.from(_default);
@@ -35,6 +35,21 @@ public class TimeUtils {
     }
 
 
+    public static Timestamp yearStart() {
+        return Timestamp.from(
+                Instant.ofEpochSecond(
+                        LocalDate.of(nowZoned().getYear(), 1, 1).toEpochDay() * SECONDS_PER_DAY
+                )
+        );
+    }
+
+    public static Timestamp yearEnd() {
+        return Timestamp.from(
+                Instant.ofEpochSecond(
+                        LocalDate.of(nowZoned().plusYears(1).getYear(), 1, 1).toEpochDay() * SECONDS_PER_DAY
+                )
+        );
+    }
 
     static final int HOURS_PER_DAY = 24;
     static final int MINUTES_PER_HOUR = 60;

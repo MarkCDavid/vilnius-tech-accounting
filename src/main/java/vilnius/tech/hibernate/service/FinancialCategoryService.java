@@ -21,23 +21,34 @@ public class FinancialCategoryService extends HibernateService<FinancialCategory
 
 
     public FinancialCategory update(FinancialCategory financialCategory, FinancialCategory parent, String name, User owner) {
-        financialCategory.setParent(parent);
-        financialCategory.setName(name);
-        financialCategory.setOwner(owner);
-        return getCrudService().update(financialCategory);
+        try (var entityManager = getEntityManager();
+             var service = new FinancialCategoryService(getSession())
+        ) {
+            financialCategory.setParent(parent);
+            financialCategory.setName(name);
+            financialCategory.setOwner(owner);
+            return service.update(financialCategory);
+        }
     }
 
     public FinancialCategory add_ResponsibleUser(FinancialCategory category, User responsible) {
-        category.getResponsibleUsers().add(responsible);
-        return getCrudService().update(category);
+        try (var entityManager = getEntityManager();
+            var service = new FinancialCategoryService(getSession())) {
+            category.getResponsibleUsers().add(responsible);
+            return service.update(category);
+        }
     }
 
     public FinancialCategory remove_ResponsibleUser(FinancialCategory category, User responsible) {
-        CRUDUtils.remove(category.getResponsibleUsers(), responsible);
-        CRUDUtils.remove(responsible.getResponsibleForCategories(), category);
+        try (var entityManager = getEntityManager();
+             var financialCategoryService = new FinancialCategoryService(getSession());
+             var userService = new UserService(getSession())) {
+            CRUDUtils.remove(category.getResponsibleUsers(), responsible);
+            CRUDUtils.remove(responsible.getResponsibleForCategories(), category);
 
-        getCrudService().update(responsible);
-        return getCrudService().update(category);
+            userService.update(responsible);
+            return financialCategoryService.update(category);
+        }
     }
 
     public List<FinancialCategory> find_User(User user) {

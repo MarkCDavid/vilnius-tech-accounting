@@ -16,14 +16,15 @@ public class PhysicalUserProxy extends AbstractControllerProxy<PhysicalUser, Phy
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
         var contactInformation = getContactInformation(physicalUser);
-
-        return JsonResponseUtils.OK(createService().create(
-                physicalUser.getUsername(),
-                physicalUser.getPassword(),
-                physicalUser.getName(),
-                physicalUser.getSurname(),
-                contactInformation
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    physicalUser.getUsername(),
+                    physicalUser.getPassword(),
+                    physicalUser.getName(),
+                    physicalUser.getSurname(),
+                    contactInformation
+            ));
+        }
     }
 
     @Override
@@ -31,28 +32,29 @@ public class PhysicalUserProxy extends AbstractControllerProxy<PhysicalUser, Phy
         if(put_Invalid(physicalUser))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databasePhysicalUser = service.find(physicalUser.getId());
-        if(databasePhysicalUser == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), physicalUser.getId()));
+            var databasePhysicalUser = service.find(physicalUser.getId());
+            if (databasePhysicalUser == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), physicalUser.getId()));
 
-        if(contactInformationPresent(physicalUser)) {
-            var contactInformation = getContactInformation(physicalUser);
-            if(contactInformation == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, physicalUser.getContactInformation().getId()));
-            databasePhysicalUser.setContactInformation(contactInformation);
+            if (contactInformationPresent(physicalUser)) {
+                var contactInformation = getContactInformation(physicalUser);
+                if (contactInformation == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, physicalUser.getContactInformation().getId()));
+                databasePhysicalUser.setContactInformation(contactInformation);
+            }
+
+            if (namePresent(physicalUser)) {
+                databasePhysicalUser.setName(physicalUser.getName());
+            }
+
+            if (surnamePresent(physicalUser)) {
+                databasePhysicalUser.setSurname(physicalUser.getSurname());
+            }
+
+            return JsonResponseUtils.OK(service.update(databasePhysicalUser));
         }
-
-        if(namePresent(physicalUser)) {
-            databasePhysicalUser.setName(physicalUser.getName());
-        }
-
-        if(surnamePresent(physicalUser)) {
-            databasePhysicalUser.setSurname(physicalUser.getSurname());
-        }
-
-        return JsonResponseUtils.OK(service.update(databasePhysicalUser));
     }
 
     private boolean post_Invalid(PhysicalUser physicalUser) {
@@ -92,12 +94,13 @@ public class PhysicalUserProxy extends AbstractControllerProxy<PhysicalUser, Phy
     }
 
     private ContactInformation getContactInformation(PhysicalUser physicalUser) {
-        var contactInformationService = new ContactInformationService(HibernateUtils.getSession());
+        try(var contactInformationService = new ContactInformationService(HibernateUtils.getSession())) {
 
-        if(!contactInformationPresent(physicalUser))
-            return null;
+            if (!contactInformationPresent(physicalUser))
+                return null;
 
-        return contactInformationService.find(physicalUser.getContactInformation().getId());
+            return contactInformationService.find(physicalUser.getContactInformation().getId());
+        }
     }
 
     @Override

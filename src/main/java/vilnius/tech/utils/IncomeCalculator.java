@@ -20,6 +20,20 @@ public class IncomeCalculator {
         this.financialCategoryService = new FinancialCategoryService(session);
     }
 
+    public long getTotal_IncludeChildren() {
+        return getTotal_IncludeChildren(null, null);
+    }
+
+    public long getTotal_IncludeChildren(Timestamp from, Timestamp to) {
+        long total = getTotal(from, to);
+
+        for(var childCategory : financialCategoryService.find_Parent(category)) {
+            total += new IncomeCalculator(childCategory, session).getTotal_IncludeChildren(from, to);
+        }
+
+        return total;
+    }
+
     public long getTotal() {
         return getTotal(null, null);
     }
@@ -27,12 +41,8 @@ public class IncomeCalculator {
     public long getTotal(Timestamp from, Timestamp to) {
         long total = 0;
 
-        for(var income : incomeService.find_Category(category, from, to)) {
-            total += income.getSum();
-        }
-
-        for(var childCategory : financialCategoryService.find_Parent(category)) {
-            total += new IncomeCalculator(childCategory, session).getTotal(from, to);
+        for(var expense : incomeService.find_Category(category, from, to)) {
+            total += expense.getSum();
         }
 
         return total;

@@ -10,7 +10,7 @@ public class Income extends Flow {
     @Expose
     private IncomeType type;
 
-    public Income(User owner, long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
+    public Income(User owner, Long sum, Timestamp timestamp, FinancialCategory category, IncomeType type) {
         super(owner, sum, timestamp, category);
         this.type = type;
     }

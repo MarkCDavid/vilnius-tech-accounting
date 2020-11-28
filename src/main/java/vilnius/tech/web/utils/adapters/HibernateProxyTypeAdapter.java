@@ -1,4 +1,4 @@
-package vilnius.tech.web.utils;
+package vilnius.tech.web.utils.adapters;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

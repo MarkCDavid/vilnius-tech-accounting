@@ -15,6 +15,7 @@
     <bean name="financialCategory" class="vilnius.tech.web.controller.FinancialCategoryController"/>
     <bean name="income" class="vilnius.tech.web.controller.IncomeController"/>
     <bean name="incomeType" class="vilnius.tech.web.controller.IncomeTypeController"/>
+    <bean name="flow" class="vilnius.tech.web.controller.FlowController"/>
     <bean name="juridicalUser" class="vilnius.tech.web.controller.JuridicalUserController"/>
     <bean name="physicalUser" class="vilnius.tech.web.controller.PhysicalUserController"/>
     <bean name="user" class="vilnius.tech.web.controller.UserController"/>

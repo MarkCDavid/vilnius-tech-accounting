@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import vilnius.tech.hibernate.FinancialCategory;
 import vilnius.tech.hibernate.User;
-import vilnius.tech.hibernate.service.CRUDService;
 import vilnius.tech.hibernate.service.FinancialCategoryService;
 import vilnius.tech.utils.GUIUtils;
 import vilnius.tech.view.controller.modal.ResponsibleUserModalController;
@@ -18,14 +17,11 @@ import java.io.IOException;
 
 public class ResponsibleUserCRUDListController extends CRUDListController<User> {
 
-
-    private final CRUDService crudService;
     private final FinancialCategoryService financialCategoryService;
 
     public ResponsibleUserCRUDListController(View previousView, FinancialCategory category, User user, Session session) {
         super(previousView, user, session);
 
-        this.crudService = new CRUDService(session);
         this.financialCategoryService = new FinancialCategoryService(session);
         this.category = this.financialCategoryService.find(category);
     }

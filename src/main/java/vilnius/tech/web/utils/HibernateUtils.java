@@ -20,11 +20,7 @@ public class HibernateUtils {
             sessionFactory = configuration.buildSessionFactory();
         }
 
-        if(session == null || !session.isOpen()) {
-            session = sessionFactory.openSession();
-        }
-
-        return session;
+        return sessionFactory.openSession();
     }
 
     private HibernateUtils() {}

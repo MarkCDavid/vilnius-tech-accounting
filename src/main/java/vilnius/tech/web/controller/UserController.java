@@ -30,7 +30,7 @@ public class UserController {
         if(user == null)
             return JsonResponseUtils.BAD(Messages.invalidUsernameOrPassword());
 
-        return JsonResponseUtils.OK(new Message("PSEUDO_SESSION_ID"));
+        return JsonResponseUtils.OK(new Message(user.getId().toString()));
     }
 
     @PostMapping(path = "/user/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)

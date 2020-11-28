@@ -22,5 +22,9 @@ public class Messages {
         return "Invalid username or password.";
     }
 
+    public static String invalidDateFormat(String parameter) {
+        return String.format("Date format of field '%s' is invalid!", parameter);
+    }
+
     private Messages() { }
 }

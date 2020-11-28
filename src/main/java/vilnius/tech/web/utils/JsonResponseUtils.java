@@ -15,6 +15,11 @@ public class JsonResponseUtils {
         return RESPONSE(HttpStatus.OK, object);
     }
 
+    public static ResponseEntity<String> UNSUPPORTED() {
+        return BAD("Operation not supported!");
+    }
+
+
     public static ResponseEntity<String> BAD(String message) {
         return RESPONSE(HttpStatus.BAD_REQUEST, new Message(message));
     }

@@ -27,51 +27,52 @@ public class IncomeProxy extends AbstractControllerProxy<Income, IncomeService> 
         var financialCategory = getFinancialCategory(income);
         if(financialCategory == null)
             return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), income.getCategory().getId()));
-
-        return JsonResponseUtils.OK(createService().create(
-                owner,
-                income.getSum(),
-                TimeUtils.now(),
-                financialCategory,
-                incomeType
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    owner,
+                    income.getSum(),
+                    TimeUtils.now(),
+                    financialCategory,
+                    incomeType
+            ));
+        }
     }
 
     @Override
     public ResponseEntity<String> put(Income income) {
         if(put_Invalid(income))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
+        try(var service = createService()) {
 
-        var service = createService();
+            var databaseIncome = service.find(income.getId());
+            if (databaseIncome == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), income.getId()));
 
-        var databaseIncome = service.find(income.getId());
-        if(databaseIncome == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), income.getId()));
+            if (sumPresent(income)) {
+                databaseIncome.setSum(income.getSum());
+            }
 
-        if(sumPresent(income)) {
-            databaseIncome.setSum(income.getSum());
+            if (incomeTypePresent(income)) {
+                var incomeType = getIncomeType(income);
+                if (incomeType == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", income.getType().getCode()));
+                databaseIncome.setType(incomeType);
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseIncome));
         }
-
-        if(incomeTypePresent(income)) {
-            var incomeType = getIncomeType(income);
-            if(incomeType == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound_Field(getEntityName(), "code", income.getType().getCode()));
-            databaseIncome.setType(incomeType);
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseIncome));
     }
 
     public ResponseEntity<String> get_Category(Integer id) {
 
-        var categoryService = new FinancialCategoryService(HibernateUtils.getSession());
-        var category = categoryService.find(id);
+        try(var categoryService = new FinancialCategoryService(HibernateUtils.getSession())) {
+            var category = categoryService.find(id);
 
-        // TODO
-        if(category == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(FinancialCategoryProxy.ENTITY_NAME, id));
+            if (category == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(FinancialCategoryProxy.ENTITY_NAME, id));
 
-        return JsonResponseUtils.OK( createService().find_Category(category));
+            return JsonResponseUtils.OK(createService().find_Category(category));
+        }
     }
 
     private boolean post_Invalid(Income income) {
@@ -113,30 +114,33 @@ public class IncomeProxy extends AbstractControllerProxy<Income, IncomeService> 
 
 
     private User getOwner(Income income) {
-        var userService = new UserService(HibernateUtils.getSession());
+        try(var userService = new UserService(HibernateUtils.getSession())) {
 
-        if(!ownerPresent(income))
-            return null;
+            if (!ownerPresent(income))
+                return null;
 
-        return userService.find_Username(income.getOwner().getUsername());
+            return userService.find_Username(income.getOwner().getUsername());
+        }
     }
 
     private FinancialCategory getFinancialCategory(Income income) {
-        var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession());
+        try(var financialCategoryService = new FinancialCategoryService(HibernateUtils.getSession())) {
 
-        if(!financialCategoryPresent(income))
-            return null;
+            if (!financialCategoryPresent(income))
+                return null;
 
-        return financialCategoryService.find(income.getCategory().getId());
+            return financialCategoryService.find(income.getCategory().getId());
+        }
     }
 
     private IncomeType getIncomeType(Income income) {
-        var typeService = new IncomeTypeService(HibernateUtils.getSession());
+        try(var typeService = new IncomeTypeService(HibernateUtils.getSession())) {
 
-        if(!incomeTypePresent(income))
-            return null;
+            if (!incomeTypePresent(income))
+                return null;
 
-        return typeService.find_Code(income.getType().getCode());
+            return typeService.find_Code(income.getType().getCode());
+        }
     }
 
     @Override

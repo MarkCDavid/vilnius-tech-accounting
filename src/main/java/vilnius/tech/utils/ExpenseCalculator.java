@@ -20,7 +20,19 @@ public class ExpenseCalculator {
         this.financialCategoryService = new FinancialCategoryService(session);
     }
 
+    public long getTotal_IncludeChildren() {
+        return getTotal_IncludeChildren(null, null);
+    }
 
+    public long getTotal_IncludeChildren(Timestamp from, Timestamp to) {
+        long total = getTotal(from, to);
+
+        for(var childCategory : financialCategoryService.find_Parent(category)) {
+            total += new ExpenseCalculator(childCategory, session).getTotal_IncludeChildren(from, to);
+        }
+
+        return total;
+    }
 
     public long getTotal() {
         return getTotal(null, null);
@@ -31,10 +43,6 @@ public class ExpenseCalculator {
 
         for(var expense : expensesService.find_Category(category, from, to)) {
             total += expense.getSum();
-        }
-
-        for(var childCategory : financialCategoryService.find_Parent(category)) {
-            total += new ExpenseCalculator(childCategory, session).getTotal(from, to);
         }
 
         return total;

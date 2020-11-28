@@ -19,14 +19,15 @@ public class JuridicalUserProxy extends AbstractControllerProxy<JuridicalUser, J
 
         var contactUser = getContactUser(juridicalUser);
         var address = getAddress(juridicalUser);
-
-        return JsonResponseUtils.OK(createService().create(
-                juridicalUser.getUsername(),
-                juridicalUser.getPassword(),
-                juridicalUser.getName(),
-                address,
-                contactUser
-        ));
+        try(var service = createService()) {
+            return JsonResponseUtils.OK(service.create(
+                    juridicalUser.getUsername(),
+                    juridicalUser.getPassword(),
+                    juridicalUser.getName(),
+                    address,
+                    contactUser
+            ));
+        }
     }
 
     @Override
@@ -34,31 +35,32 @@ public class JuridicalUserProxy extends AbstractControllerProxy<JuridicalUser, J
         if(put_Invalid(juridicalUser))
             return JsonResponseUtils.BAD(Messages.invalidData(getEntityName()));
 
-        var service = createService();
+        try(var service = createService()) {
 
-        var databaseJuridicalUser = service.find(juridicalUser.getId());
-        if(databaseJuridicalUser == null)
-            return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), juridicalUser.getId()));
+            var databaseJuridicalUser = service.find(juridicalUser.getId());
+            if (databaseJuridicalUser == null)
+                return JsonResponseUtils.BAD(Messages.itemNotFound(getEntityName(), juridicalUser.getId()));
 
-        if(addressPresent(juridicalUser)) {
-            var address = getAddress(juridicalUser);
-            if(address == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, juridicalUser.getAddress().getId()));
-            databaseJuridicalUser.setAddress(address);
+            if (addressPresent(juridicalUser)) {
+                var address = getAddress(juridicalUser);
+                if (address == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound(AddressProxy.ENTITY_NAME, juridicalUser.getAddress().getId()));
+                databaseJuridicalUser.setAddress(address);
+            }
+
+            if (contactUserPresent(juridicalUser)) {
+                var contactUser = getContactUser(juridicalUser);
+                if (contactUser == null)
+                    return JsonResponseUtils.BAD(Messages.itemNotFound_Field(AddressProxy.ENTITY_NAME, "username", juridicalUser.getContactUser().getUsername()));
+                databaseJuridicalUser.setContactUser(contactUser);
+            }
+
+            if (namePresent(juridicalUser)) {
+                databaseJuridicalUser.setName(juridicalUser.getName());
+            }
+
+            return JsonResponseUtils.OK(service.update(databaseJuridicalUser));
         }
-
-        if(contactUserPresent(juridicalUser)) {
-            var contactUser = getContactUser(juridicalUser);
-            if(contactUser == null)
-                return JsonResponseUtils.BAD(Messages.itemNotFound_Field(AddressProxy.ENTITY_NAME, "username", juridicalUser.getContactUser().getUsername()));
-            databaseJuridicalUser.setContactUser(contactUser);
-        }
-
-        if(namePresent(juridicalUser)) {
-            databaseJuridicalUser.setName(juridicalUser.getName());
-        }
-
-        return JsonResponseUtils.OK(service.update(databaseJuridicalUser));
     }
 
     private boolean post_Invalid(JuridicalUser juridicalUser) {
@@ -100,22 +102,24 @@ public class JuridicalUserProxy extends AbstractControllerProxy<JuridicalUser, J
     }
 
     private PhysicalUser getContactUser(JuridicalUser juridicalUser) {
-        var physicalUserService = new PhysicalUserService(HibernateUtils.getSession());
+       try(var physicalUserService = new PhysicalUserService(HibernateUtils.getSession())) {
 
-        if(!contactUserPresent(juridicalUser))
-            return null;
+           if (!contactUserPresent(juridicalUser))
+               return null;
 
-        return physicalUserService.find_Username(juridicalUser.getContactUser().getUsername());
+           return physicalUserService.find_Username(juridicalUser.getContactUser().getUsername());
+       }
     }
 
 
     private Address getAddress(JuridicalUser juridicalUser) {
-        var addressService = new AddressService(HibernateUtils.getSession());
+        try(var addressService = new AddressService(HibernateUtils.getSession())) {
 
-        if(!addressPresent(juridicalUser))
-            return null;
+            if (!addressPresent(juridicalUser))
+                return null;
 
-        return addressService.find(juridicalUser.getAddress().getId());
+            return addressService.find(juridicalUser.getAddress().getId());
+        }
     }
 
     @Override
