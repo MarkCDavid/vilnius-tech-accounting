@@ -13,14 +13,15 @@ import java.util.Map;
 
 public class EntityManagerAutoClosable implements EntityManager, AutoCloseable {
 
-    public EntityManagerAutoClosable(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public EntityManagerAutoClosable(EntityManagerFactory entityManagerFactory) {
+        this.entityManager = entityManagerFactory.createEntityManager();
         this.entityManager.getTransaction().begin();
     }
 
     @Override
     public void close() {
         this.entityManager.getTransaction().commit();
+        this.entityManager.close();
     }
 
     @Override

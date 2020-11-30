@@ -10,12 +10,12 @@
             <generator class="native"/>
         </id>
 
-        <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address"/>
+        <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address" lazy="false" fetch="join"/>
 
         <property name = "email" column = "email" type = "string"/>
         <property name = "phoneNumber" column = "phoneNumber" type = "string"/>
 
-        <set name = "physicalUsers" cascade="all">
+        <set name = "physicalUsers" cascade="all" lazy="false" fetch="join">
             <key column = "contactInformation"/>
             <one-to-many class="vilnius.tech.hibernate.PhysicalUser"/>
         </set>

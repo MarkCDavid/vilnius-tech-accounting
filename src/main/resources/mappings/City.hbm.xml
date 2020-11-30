@@ -12,9 +12,9 @@
 
         <property name = "name" column = "name" type = "string" unique="true"/>
 
-        <many-to-one name = "country" column = "country" class="vilnius.tech.hibernate.Country" not-null="true"/>
+        <many-to-one name="country" column="country" class="vilnius.tech.hibernate.Country" not-null="true" lazy="false" fetch="join"/>
 
-        <set name = "addresses" cascade="all">
+        <set name = "addresses" cascade="all" lazy="false" fetch="join">
             <key column = "city"/>
             <one-to-many class="vilnius.tech.hibernate.Address"/>
         </set>

@@ -13,17 +13,17 @@
         <property name = "name" column = "name" type = "string" not-null="true"/>
         <property name = "code" column = "code" type = "string" unique="true" not-null="true"/>
 
-        <joined-subclass name = "vilnius.tech.hibernate.IncomeType" table = "INCOME_TYPE">
+        <joined-subclass name = "vilnius.tech.hibernate.IncomeType" table = "INCOME_TYPE" lazy="false">
             <key column="flowtype_id"/>
-            <set name = "incomes" cascade="all">
+            <set name = "incomes" cascade="all" lazy="false" fetch="join">
                 <key column = "type"/>
                 <one-to-many class="vilnius.tech.hibernate.Income"/>
             </set>
         </joined-subclass>
 
-        <joined-subclass name = "vilnius.tech.hibernate.ExpenseType" table = "EXPENSE_TYPE">
+        <joined-subclass name = "vilnius.tech.hibernate.ExpenseType" table = "EXPENSE_TYPE" lazy="false">
             <key column="flowtype_id"/>
-            <set name = "expenses" cascade="all">
+            <set name = "expenses" cascade="all" lazy="false" fetch="join">
                 <key column = "type"/>
                 <one-to-many class="vilnius.tech.hibernate.Expense"/>
             </set>

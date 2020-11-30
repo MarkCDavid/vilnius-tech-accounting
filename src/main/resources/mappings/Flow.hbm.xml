@@ -10,20 +10,20 @@
             <generator class="native"/>
         </id>
 
-        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
+        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true" lazy="false" fetch="join"/>
         <property name = "sum" column = "sum" type = "long" not-null="true"/>
         <property name = "timestamp" column = "dateTime" type = "timestamp" not-null="true"/>
-        <many-to-one name = "category" column = "category" class="vilnius.tech.hibernate.FinancialCategory"  not-null="true"/>
+        <many-to-one name = "category" column = "category" class="vilnius.tech.hibernate.FinancialCategory"  not-null="true" lazy="false" fetch="join"/>
 
         <joined-subclass name = "vilnius.tech.hibernate.Income" table = "INCOME">
             <key column="flow_id"/>
-            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.IncomeType" not-null="true"/>
+            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.IncomeType" not-null="true" lazy="false" fetch="join"/>
         </joined-subclass>
 
 
         <joined-subclass name = "vilnius.tech.hibernate.Expense" table = "EXPENSE" >
             <key column="flow_id"/>
-            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.ExpenseType" not-null="true"/>
+            <many-to-one name = "type" column = "type" class="vilnius.tech.hibernate.ExpenseType" not-null="true" lazy="false" fetch="join"/>
         </joined-subclass>
     </class>
 </hibernate-mapping>

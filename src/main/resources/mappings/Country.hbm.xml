@@ -13,7 +13,7 @@
         <property name = "name" column = "name" type = "string"/>
         <property name = "code" column = "code" type = "string" unique="true"/>
 
-        <set name = "cities" cascade="all">
+        <set name = "cities" cascade="all" lazy="false" fetch="join">
             <key column = "country"/>
             <one-to-many class="vilnius.tech.hibernate.City"/>
         </set>

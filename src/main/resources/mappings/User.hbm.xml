@@ -14,30 +14,30 @@
         <property name = "password" column = "password" type = "string"/>
         <property name = "salt" column = "salt" type = "string"/>
 
-        <set name = "ownedCategories" cascade="all">
+        <set name = "ownedCategories" cascade="all" lazy="false" fetch="join">
             <key column = "owner"/>
             <one-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
         </set>
 
-        <set name = "responsibleForCategories" cascade="all" table="RESPONSIBLE_FOR_CATEGORY">
+        <set name = "responsibleForCategories" cascade="all" table="RESPONSIBLE_FOR_CATEGORY" lazy="false" fetch="join">
             <key column = "user_id"/>
             <many-to-many column="category_id" class="vilnius.tech.hibernate.FinancialCategory"/>
         </set>
 
-        <joined-subclass name = "vilnius.tech.hibernate.JuridicalUser" table = "JURIDICAL_USER">
+        <joined-subclass name = "vilnius.tech.hibernate.JuridicalUser" table = "JURIDICAL_USER" lazy="false">
             <key column="user_id"/>
             <property name = "name" column = "name" type = "string"/>
             <many-to-one name = "address" column = "address" class="vilnius.tech.hibernate.Address"/>
             <many-to-one name = "contactUser" column = "contactUser" class="vilnius.tech.hibernate.PhysicalUser"/>
         </joined-subclass>
 
-        <joined-subclass name = "vilnius.tech.hibernate.PhysicalUser" table = "PHYSICAL_USER">
+        <joined-subclass name = "vilnius.tech.hibernate.PhysicalUser" table = "PHYSICAL_USER" lazy="false">
             <key column="user_id"/>
             <property name = "name" column = "name" type = "string"/>
             <property name = "surname" column = "surname" type = "string"/>
-            <many-to-one name = "contactInformation" column = "contactInformation" class="vilnius.tech.hibernate.ContactInformation"/>
+            <many-to-one name = "contactInformation" column = "contactInformation" class="vilnius.tech.hibernate.ContactInformation" lazy="false" fetch="join"/>
 
-            <set name = "juridicalContact" cascade="all">
+            <set name = "juridicalContact" cascade="all" lazy="false" fetch="join">
                 <key column = "contactUser"/>
                 <one-to-many class="vilnius.tech.hibernate.JuridicalUser"/>
             </set>

@@ -10,28 +10,28 @@
             <generator class="native"/>
         </id>
 
-        <many-to-one name = "parent" column = "parent" class="vilnius.tech.hibernate.FinancialCategory"/>
+        <many-to-one name = "parent" column = "parent" class="vilnius.tech.hibernate.FinancialCategory" lazy="false" fetch="join"/>
 
-        <set name = "children" cascade="all">
+        <set name = "children" cascade="all" lazy="false" fetch="join">
             <key column = "parent"/>
             <one-to-many class="vilnius.tech.hibernate.FinancialCategory"/>
         </set>
 
         <property name = "name" column = "name" type = "string"/>
 
-        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true"/>
+        <many-to-one name = "owner" column = "owner" class="vilnius.tech.hibernate.User" not-null="true" lazy="false" fetch="join"/>
 
-        <set name = "responsibleUsers" cascade="all" table="RESPONSIBLE_FOR_CATEGORY">
+        <set name = "responsibleUsers" cascade="all" table="RESPONSIBLE_FOR_CATEGORY" lazy="false" fetch="join">
             <key column = "category_id"/>
             <many-to-many column="user_id" class="vilnius.tech.hibernate.User"/>
         </set>
 
-        <set name = "expenses" cascade="all">
+        <set name = "expenses" cascade="all" lazy="false" fetch="join">
             <key column = "category"/>
             <one-to-many class="vilnius.tech.hibernate.Expense"/>
         </set>
 
-        <set name = "incomes" cascade="all">
+        <set name = "incomes" cascade="all" lazy="false" fetch="join">
             <key column = "category"/>
             <one-to-many class="vilnius.tech.hibernate.Income"/>
         </set>

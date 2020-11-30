@@ -91,8 +91,9 @@ public abstract class HibernateService<T extends BaseEntity> implements AutoClos
     }
 
     protected EntityManagerAutoClosable getEntityManager() {
-        return new EntityManagerAutoClosable(entityManagerFactory.createEntityManager());
+        return new EntityManagerAutoClosable(entityManagerFactory);
     }
+
 
     protected QueryBuilder<T> constructQueryBuilder() {
         return new QueryBuilder<>(getType(), getSession());

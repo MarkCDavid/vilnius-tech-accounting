@@ -10,17 +10,17 @@
             <generator class="native"/>
         </id>
 
-        <many-to-one name = "city" column = "city" class="vilnius.tech.hibernate.City"/>
+        <many-to-one name = "city" column = "city" class="vilnius.tech.hibernate.City" lazy="false" fetch="join"/>
 
         <property name = "street" column = "street" type = "string"/>
         <property name = "postal" column = "postal" type = "string"/>
 
-        <set name = "contactInformations" cascade="all">
+        <set name = "contactInformations" cascade="all" lazy="false" fetch="join">
             <key column = "address"/>
             <one-to-many class="vilnius.tech.hibernate.ContactInformation"/>
         </set>
 
-        <set name = "juridicalUsersAtAddress" cascade="all">
+        <set name = "juridicalUsersAtAddress" cascade="all" lazy="false" fetch="join">
             <key column = "address"/>
             <one-to-many class="vilnius.tech.hibernate.JuridicalUser"/>
         </set>
